@@ -81,6 +81,13 @@ WSGI_APPLICATION = 'WeChatMall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        # 'OPTIONS': {
+        #     'database': 'WeChatMall',
+        #     'user': 'root',
+        #     'password': 'liuyu1994',
+        #     'host': '127.0.0.1',
+        #     'port': 3306,
+        # },
         'OPTIONS': {
             'database': 'WeChatMall',
             'user': 'root',
