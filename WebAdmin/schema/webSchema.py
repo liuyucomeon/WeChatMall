@@ -40,14 +40,14 @@ loginSchema = ManualSchema(fields=[
         coreapi.Field(
             "username",
             required=True,
-            location="query",
+            location="form",
             description="用户名",
             schema=coreschema.String()
         ),
         coreapi.Field(
             "password",
             required=True,
-            location="query",
+            location="form",
             description="密码",
             schema=coreschema.String()
         )
