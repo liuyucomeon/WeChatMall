@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from WebAdmin.views import verification, login
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
+from WebAdmin.views.news import NewsTypeViewSet
 from WebAdmin.views.staff import  StaffViewSet
 
 router = DefaultRouter()
@@ -10,6 +11,7 @@ router = DefaultRouter()
 router.register(r'staffs', StaffViewSet)
 router.register(r'hotels', HotelViewSet)
 router.register(r'hotelBranchs', HotelBranchViewSet)
+router.register(r'newsTypes', NewsTypeViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
