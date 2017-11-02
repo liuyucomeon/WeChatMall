@@ -1,0 +1,11 @@
+.idea/
+
+WebAdmin/migrations/
+
+log/
+
+uploaded/
+
+
+*.pyc
+
