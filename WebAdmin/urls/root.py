@@ -3,10 +3,10 @@ from rest_framework.routers import DefaultRouter
 
 from WebAdmin.views import verification, login
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
-from WebAdmin.views.staff import UserViewSet, StaffViewSet
+from WebAdmin.views.staff import  StaffViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
+# router.register(r'users', UserViewSet)
 router.register(r'staffs', StaffViewSet)
 router.register(r'hotels', HotelViewSet)
 router.register(r'hotelBranchs', HotelBranchViewSet)
