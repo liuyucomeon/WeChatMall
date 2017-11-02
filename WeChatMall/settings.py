@@ -25,7 +25,7 @@ SECRET_KEY = 'h*c4v$emq-yjwn7k4_wyo$cq4jko*c2#6l7ldj4(y-d5vq2d^s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,13 +81,6 @@ WSGI_APPLICATION = 'WeChatMall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        # 'OPTIONS': {
-        #     'database': 'WeChatMall',
-        #     'user': 'root',
-        #     'password': 'liuyu1994',
-        #     'host': '127.0.0.1',
-        #     'port': 3306,
-        # },
         'OPTIONS': {
             'database': 'WeChatMall',
             'user': 'root',
@@ -95,6 +88,13 @@ DATABASES = {
             'host': '127.0.0.1',
             'port': 3306,
         }
+        # 'OPTIONS': {
+        #     'database': 'WeChatMall',
+        #     'user': 'root',
+        #     'password': 'beijingyan',
+        #     'host': '114.215.220.241',
+        #     'port': 3306,
+        # }
     }
 }
 
@@ -235,7 +235,9 @@ LOGGING = {
 }
 
 # 服务器信息
-SERVER_URL = 'http://127.0.0.1:8000/'
+SERVER_URL = 'http://114.215.220.241:8083/'
+# SERVER_URL = 'http://127.0.0.1:8000/'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
