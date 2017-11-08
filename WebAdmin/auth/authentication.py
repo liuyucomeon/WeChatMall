@@ -7,8 +7,9 @@ NOT_AUTH_URL = ["/WebAdmin/","/docs/","/WebAdmin/login/","/WebAdmin/register_cod
 
 class MyTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        if request.path in NOT_AUTH_URL:
-            return
+        for path in NOT_AUTH_URL:
+            if path in request.path:
+                return
         token = request.META.get('HTTP_TOKEN')
         if not token:
             raise exceptions.AuthenticationFailed('No token')

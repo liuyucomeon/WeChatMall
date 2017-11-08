@@ -1,11 +1,14 @@
 from django.core.cache import cache
+from django.db.models import Max
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from WebAdmin.models import Hotel, HotelBranch
+from WebAdmin.models.news import NewsType
 from WebAdmin.schema.webSchema import  CustomSchema
 from WebAdmin.serializers.hotel import HotelSerializer, HotelBranchSerializer
+from WebAdmin.serializers.news import NewsTypeSerializer
 
 
 class HotelViewSet(viewsets.ModelViewSet):
