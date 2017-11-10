@@ -5,9 +5,9 @@ from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from WebAdmin.models.news import NewsType
+from WebAdmin.models.news import NewsType, News
 from WebAdmin.schema.webSchema import CustomSchema, swapNewsSchema
-from WebAdmin.serializers.news import NewsTypeSerializer
+from WebAdmin.serializers.news import NewsTypeSerializer, NewsSerializer
 
 
 class NewsTypeViewSet(viewsets.ModelViewSet):
@@ -79,3 +79,23 @@ def swapNewsTypeOrder(request, branchId):
         newsType1.save()
         newsType2.save()
         return Response(status.HTTP_200_OK)
+
+
+class NewsViewSet(viewsets.ModelViewSet):
+    """
+    create:
+        创建新闻
+    partial_update:
+        根据id局部更新新闻
+    update:
+        根据id更新新闻
+    destroy:
+        根据id删除新闻
+    list:
+        查询新闻类型
+    retrieve:
+        根据id查询新闻
+    """
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+    schema = CustomSchema()

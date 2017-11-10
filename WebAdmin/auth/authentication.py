@@ -1,14 +1,16 @@
 import pickle
+import re
 
 from django_redis import get_redis_connection
 from rest_framework import authentication, exceptions
 
-NOT_AUTH_URL = ["/WebAdmin/","/docs/","/WebAdmin/login/","/WebAdmin/register_code/"]
+NOT_AUTH_URL = [r"^/WebAdmin/$",r"^/docs/$",r"^/WebAdmin/login/$",r"^/WebAdmin/register_code/\d+/$",
+                r"^/WebAdmin/wechatVerify/"]
 
 class MyTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         for path in NOT_AUTH_URL:
-            if path in request.path:
+            if re.match(path, request.path):
                 return
         token = request.META.get('HTTP_TOKEN')
         if not token:

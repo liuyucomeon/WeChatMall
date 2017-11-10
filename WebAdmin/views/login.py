@@ -6,7 +6,7 @@ from rest_framework import response, status
 from rest_framework.decorators import api_view, schema
 
 from WebAdmin.models import Staff
-from WebAdmin.schema.webSchema import loginSchema, tokenField, CustomSchema, tokenSchema, logoutSchema
+from WebAdmin.schema.webSchema import loginSchema,logoutSchema
 from WebAdmin.utils.common import generateToken
 
 
@@ -31,7 +31,8 @@ def login(request):
     staffPic = pickle.dumps(staff)
 
     redisDB.rpush("tokenList:"+staff.user.username, token)
-    redisDB.set("token:"+token, staffPic)
+    redisDB.expire("tokenList:"+staff.user.username, 24*60*60)
+    redisDB.setex("token:"+token,24*60*60, staffPic)
 
     return response.Response({"token": token}, status=status.HTTP_200_OK)
 

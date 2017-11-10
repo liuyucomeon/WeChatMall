@@ -23,7 +23,9 @@ tokenSchema = ManualSchema(fields=[
         tokenField
     ])
 
-registerSchema = ManualSchema(fields=[
+registerSchema = ManualSchema(
+    description="获取注册验证码",
+    fields=[
         coreapi.Field(
             "phone",
             required=True,
@@ -89,17 +91,53 @@ swapNewsSchema = ManualSchema(
 )
 
 # 上传文件
-uploadFileSchema = ManualSchema(
-    description="上传文件",
+uploadNewsTypeSchema = ManualSchema(
+    description="上传新闻类型图标",
     fields=[
         tokenField,
         coreapi.Field(
-            "branchId",
+            "file",
             required=True,
-            location="path",
-            description="酒店id",
+            location="form",
+            description="文件",
             schema=coreschema.String()
         ),
+        coreapi.Field(
+            "lastPath",
+            required=False,
+            location="form",
+            description="上次路径",
+            schema=coreschema.String()
+        ),
+    ]
+)
+# 上传新闻图像
+uploadNewsPicSchema = ManualSchema(
+    description="上传新闻图标",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "file",
+            required=True,
+            location="form",
+            description="文件",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "lastPath",
+            required=False,
+            location="form",
+            description="上次路径",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
+# 上传新闻音频
+uploadNewsAudioSchema = ManualSchema(
+    description="上传新闻音频",
+    fields=[
+        tokenField,
         coreapi.Field(
             "file",
             required=True,

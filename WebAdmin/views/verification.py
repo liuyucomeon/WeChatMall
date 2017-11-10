@@ -1,3 +1,7 @@
+import hashlib
+import json
+import logging
+
 from django_redis import get_redis_connection
 from rest_framework import response, status
 from rest_framework.decorators import api_view, schema
@@ -6,6 +10,7 @@ from WebAdmin.utils.common import getRandomChar
 from WebAdmin.utils.convertCoding import convertByteFromMap
 from WebAdmin.utils.sendSMS import sendRegisterCode
 
+logger = logging.getLogger('django')
 
 @api_view(['GET'])
 @schema(registerSchema)
@@ -35,3 +40,29 @@ def register_code(request, phone):
         return response.Response({"error_msg": ["发送验证码失败"]},
                                  status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return response.Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def wechatVerify(request):
+    data = request.query_params
+    if len(data) == 0:
+        logger.info("未接收到微信验证参数")
+    logger.info("微信服务器请求参数为："+str(data))
+
+    signature = data['signature']
+    timestamp = data['timestamp']
+    nonce = data['nonce']
+    echostr = data['echostr']
+    token = "hengaigaoke"  # 请按照公众平台官网\基本配置中信息填写
+
+    parmList = [token, timestamp, nonce]
+    parmList.sort()
+    paramStr = ''.join(parmList)
+
+    hashcode = hashlib.sha1(paramStr.encode()).hexdigest()
+    if hashcode == signature:
+        logger.info("相等")
+        return response.Response(data=echostr)
+    else:
+        logger.info("不相等")
+        return ""
