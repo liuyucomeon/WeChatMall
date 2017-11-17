@@ -64,7 +64,7 @@ class HotelBranchMenusList(mixins.ListModelMixin,
         """
         获取单个酒店微信菜单
         """
-        menus = WeChatMenu.objects.filter(branch_id=branchId)
+        menus = WeChatMenu.objects.filter(branch_id=branchId).order_by('order')
         result, childMenuMap = {},{}
         mainMenuList,resultList = [],[]
         for menu in menus:
@@ -77,12 +77,10 @@ class HotelBranchMenusList(mixins.ListModelMixin,
                 childMenuMap[menu.parent_id] = childMenuList
 
         # 对主菜单排序
-        sortedMainMenuList = sorted(mainMenuList, key=lambda x:x.order)
-        for menu in sortedMainMenuList:
+        # sortedMainMenuList = sorted(mainMenuList, key=lambda x:x.order)
+        for menu in mainMenuList:
             mainSerializer = WeChatMenuSerializer(menu)
             data = mainSerializer.data
-            #
-            sortedChildMenuList = sorted(mainMenuList, key=lambda x:x.order)
             data["childMenuList"] = childMenuMap[menu.id]
             resultList.append(data)
 
