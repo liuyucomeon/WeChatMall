@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     # 'rest_framework.authtoken'
     'WebAdmin.apps.WebadminConfig',
+    'WeChat',
 ]
 
 MIDDLEWARE = [
@@ -81,20 +82,20 @@ WSGI_APPLICATION = 'WeChatMall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        # 'OPTIONS': {
-        #     'database': 'WeChatMall',
-        #     'user': 'root',
-        #     'password': 'liuyu1994',
-        #     'host': '127.0.0.1',
-        #     'port': 3306,
-        # }
         'OPTIONS': {
             'database': 'WeChatMall',
             'user': 'root',
-            'password': 'beijingyan',
-            'host': '114.215.220.241',
+            'password': 'liuyu1994',
+            'host': '127.0.0.1',
             'port': 3306,
         }
+        # 'OPTIONS': {
+        #     'database': 'WeChatMall',
+        #     'user': 'root',
+        #     'password': 'beijingyan',
+        #     'host': '114.215.220.241',
+        #     'port': 3306,
+        # }
     }
 }
 
@@ -150,6 +151,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 # logging日志配置
 LOGGING = {
@@ -235,7 +240,7 @@ LOGGING = {
 }
 
 # 服务器信息
-SERVER_URL = 'http://114.215.220.241:8083/'
+# SERVER_URL = 'http://114.215.220.241:8083/'
 # SERVER_URL = 'http://127.0.0.1:80/'
 
 
@@ -249,5 +254,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
         'WebAdmin.auth.authentication.MyTokenAuthentication', # 不加逗号运行不了--元组
-    )
+    ),
 }
+
+# 微信公众号参数
+APPID = "wx3e306817b699239a"
+APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"

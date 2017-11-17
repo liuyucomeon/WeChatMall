@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django_redis import get_redis_connection
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.schemas import AutoSchema
 
 from WebAdmin.models import Staff
 from WebAdmin.schema.webSchema import CustomSchema

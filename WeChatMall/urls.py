@@ -26,7 +26,8 @@ schema_view = get_schema_view(title='Users API', renderer_classes=[OpenAPIRender
 
 
 urlpatterns = [
-    url(r'^', include('WebAdmin.urls')),
+    url(r'^WebAdmin/', include('WebAdmin.urls')),
+    url(r'^WeChat/', include('WeChat.urls')),
     url(r'^docs/', schema_view, name="docs"),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

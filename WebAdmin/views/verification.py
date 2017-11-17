@@ -9,6 +9,7 @@ from WebAdmin.schema.webSchema import registerSchema
 from WebAdmin.utils.common import getRandomChar
 from WebAdmin.utils.convertCoding import convertByteFromMap
 from WebAdmin.utils.sendSMS import sendRegisterCode
+from django.http import HttpResponse
 
 logger = logging.getLogger('django')
 
@@ -53,7 +54,7 @@ def wechatVerify(request):
     timestamp = data['timestamp']
     nonce = data['nonce']
     echostr = data['echostr']
-    token = "hengaigaoke"  # 请按照公众平台官网\基本配置中信息填写
+    token = "TcZHbjlQQqGTelkrk0phenaigaoke"  # 请按照公众平台官网\基本配置中信息填写
 
     parmList = [token, timestamp, nonce]
     parmList.sort()
@@ -62,7 +63,8 @@ def wechatVerify(request):
     hashcode = hashlib.sha1(paramStr.encode()).hexdigest()
     if hashcode == signature:
         logger.info("相等")
-        return response.Response(data=echostr)
+        # return response.Response(data=echostr)
+        return HttpResponse(echostr)
     else:
         logger.info("不相等")
-        return ""
+        return HttpResponse()

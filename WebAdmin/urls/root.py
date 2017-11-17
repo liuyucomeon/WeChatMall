@@ -1,8 +1,9 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
-from WebAdmin.views import verification, login, news, common
+from WebAdmin.views import verification, login, news, common, menu
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
+from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
 from WebAdmin.views.staff import  StaffViewSet
 
@@ -13,6 +14,7 @@ router.register(r'hotels', HotelViewSet)
 router.register(r'hotelBranchs', HotelBranchViewSet)
 router.register(r'newsTypes', NewsTypeViewSet)
 router.register(r'news', NewsViewSet)
+router.register(r'weChatMenus', WeChatMenuViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
@@ -26,6 +28,9 @@ urlpatterns = [
         name='HotelBranchNewsTypes-list'),
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/newsTypes/swap/$',
         news.swapNewsTypeOrder, name='swapNewsOrder'),
+    # 酒店微信菜单
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/wechatMenus/$', menu.HotelBranchMenusList.as_view(),
+        name='HotelBranchWechatMenus-list'),
     url(r'^upload/NewsTypePic/$', common.uploadNewsTypePic, name='uploadNewsTypePic'),
     url(r'^upload/NewsPic/$', common.uploadNewsPic, name='uploadNewsPic'),
     url(r'^upload/NewsAudio/$', common.uploadNewsAudio, name='uploadNewsAudio'),

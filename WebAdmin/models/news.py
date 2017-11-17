@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class NewsType(models.Model):
     name = models.CharField(max_length=30, blank=True, default='', help_text="新闻类型名称")
     icon = models.CharField(max_length=100, blank=True, default='', help_text="图标")
