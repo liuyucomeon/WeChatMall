@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'corsheaders',
     # 'rest_framework.authtoken'
     'WebAdmin.apps.WebadminConfig',
     'WeChat',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -256,6 +258,8 @@ REST_FRAMEWORK = {
         'WebAdmin.auth.authentication.MyTokenAuthentication', # 不加逗号运行不了--元组
     ),
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # 微信公众号参数
 APPID = "wx3e306817b699239a"
