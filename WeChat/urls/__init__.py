@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 
-from WeChat.urls import auth
+from WeChat.urls import weChatroot
 
 urlpatterns = [
-    url(r'^', include(auth.urlpatterns ,namespace='auth')),
+    url(r'^', include(weChatroot.urlpatterns, namespace='weChatroot')),
 ]

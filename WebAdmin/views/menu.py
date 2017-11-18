@@ -1,12 +1,17 @@
+import json
+
+import requests
 from django.db.models import Max
 from rest_framework import viewsets, status, mixins, generics
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import api_view, schema
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from WeChatMall.settings import wechatUrl, logger
 from WebAdmin.models.menu import WeChatMenu
-from WebAdmin.schema.webSchema import CustomSchema
+from WebAdmin.schema.webSchema import CustomSchema, swapMenuSchema, tokenSchema, publishMenuSchema
 from WebAdmin.serializers.menu import WeChatMenuSerializer
-
+import urllib
 
 class WeChatMenuViewSet(viewsets.ModelViewSet):
     """
@@ -53,19 +58,15 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
 
 class HotelBranchMenusList(mixins.ListModelMixin,
                                generics.GenericAPIView):
-    """
-    单个酒店的微信菜单
-    """
-
     queryset = WeChatMenu.objects.all()
     serializer_class = WeChatMenuSerializer
     schema = CustomSchema()
 
-    def get(self, request, branchId):
+    def get(self, request, hotelId):
         """
         获取单个酒店微信菜单
         """
-        menus = WeChatMenu.objects.filter(branch_id=branchId).order_by('order')
+        menus = WeChatMenu.objects.filter(hotel_id=hotelId).order_by('order')
         result, childMenuMap = {},{}
         mainMenuList,resultList = [],[]
         for menu in menus:
@@ -88,6 +89,64 @@ class HotelBranchMenusList(mixins.ListModelMixin,
         result["result"] = resultList
 
         return Response(result)
+
+@api_view(['POST'])
+@schema(swapMenuSchema)
+def swapWechatMenuOrder(request, hotelId):
+        """
+        交换目录类型顺序
+        """
+        data = request.data
+        menu1 = get_object_or_404(WeChatMenu, pk=data['menu1'], hotel=hotelId)
+        menu2 = get_object_or_404(WeChatMenu, pk=data['menu2'], hotel=hotelId)
+
+        if menu1.parent_id != menu2.parent_id:
+            return Response({"error": ["只能交换同一个父目录或同一个父目录的子目录"]}, status=status.HTTP_403_FORBIDDEN)
+
+        tmp = menu1.order
+        menu1.order = menu2.order
+        menu2.order = tmp
+        menu1.save()
+        menu2.save()
+        return Response(status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@schema(publishMenuSchema)
+def publishWechatMenu(request,  hotelId):
+    """
+    发布微信目录
+    :param access_token: 微信验证token
+    :param request: 
+    :return: 
+    """
+    access_token = request.data["access_token"]
+    url = wechatUrl + "menu/create?access_token=" + access_token
+    #获取酒店所有微信目录
+    menus = WeChatMenu.objects.filter(hotel_id=hotelId).order_by("order")
+    result, childMenuMap = {}, {}
+    mainMenuList, resultList = [], []
+    for menu in menus:
+        childMenuList = childMenuMap.get(menu.parent_id, [])
+        if menu.parent_id is None:
+            mainMenuList.append(menu)
+        else:
+            childMenuList.append({"type":menu.type,"name":menu.name,"url":menu.url})
+            childMenuMap[menu.parent_id] = childMenuList
+
+    for menu in mainMenuList:
+        data = dict()
+        data["sub_button"] = childMenuMap[menu.id]
+        data["name"] = menu.name
+        resultList.append(data)
+    result["button"] = resultList
+
+    r = requests.post(url=url, data=json.dumps(result,ensure_ascii=False).encode('utf-8'))
+    # req = urllib.request.Request()
+    res = r.text
+    logger.info(res)
+
+    return Response(result)
 
 
 def insertMenu(data, menus):

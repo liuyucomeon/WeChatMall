@@ -43,18 +43,18 @@ class NewsTypeViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HotelBranchNewsTypesList(mixins.ListModelMixin,
+class HotelNewsTypesList(mixins.ListModelMixin,
                                generics.GenericAPIView):
 
     queryset = NewsType.objects.all()
     serializer_class = NewsTypeSerializer
     schema = CustomSchema()
 
-    def get(self, request, branchId):
+    def get(self, request, hotelId):
         """
         获取单个酒店新闻类型
         """
-        newsTypes = NewsType.objects.filter(branch_id=branchId)
+        newsTypes = NewsType.objects.filter(hotel_id=hotelId)
         page = self.paginate_queryset(newsTypes)
         if page is not None:
             serializer = NewsTypeSerializer(page, many=True)
@@ -65,13 +65,13 @@ class HotelBranchNewsTypesList(mixins.ListModelMixin,
 
 @api_view(['POST'])
 @schema(swapNewsSchema)
-def swapNewsTypeOrder(request, branchId):
+def swapNewsTypeOrder(request, hotelId):
         """
         交换新闻类型顺序
         """
         data = request.data
-        newsType1 = get_object_or_404(NewsType, pk=data['newsType1'], branch=branchId)
-        newsType2 = get_object_or_404(NewsType, pk=data['newsType2'], branch=branchId)
+        newsType1 = get_object_or_404(NewsType, pk=data['newsType1'], hotel=hotelId)
+        newsType2 = get_object_or_404(NewsType, pk=data['newsType2'], hotel=hotelId)
 
         tmp = newsType1.order
         newsType1.order = newsType2.order

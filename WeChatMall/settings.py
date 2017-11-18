@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import logging
+
+from corsheaders.defaults import default_headers
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -260,7 +264,13 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = default_headers + (
+    'token',
+)
+
+logger = logging.getLogger('django')
 
 # 微信公众号参数
-APPID = "wx3e306817b699239a"
-APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
+# APPID = "wx3e306817b699239a"
+# APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
+wechatUrl = "https://api.weixin.qq.com/cgi-bin/"

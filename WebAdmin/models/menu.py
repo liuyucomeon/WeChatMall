@@ -9,7 +9,7 @@ class WeChatMenu(models.Model):
     url = models.CharField(max_length=128, help_text="网页链接")
     order = models.IntegerField(default=0, help_text="排列顺序")
     parent = models.ForeignKey('self', default=None, null=True, help_text="父菜单")
-    branch = models.ForeignKey('HotelBranch', models.CASCADE, 'menus', default=None, null=True, help_text="所属酒店")
+    hotel = models.ForeignKey('Hotel', models.CASCADE, 'menus', default=None, null=True, help_text="所属酒店品牌")
     createTime =  models.DateTimeField(default=timezone.now)
     updateTime = models.DateTimeField(auto_now=timezone.now)
 

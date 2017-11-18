@@ -7,7 +7,7 @@ from rest_framework import authentication, exceptions
 
 logger = logging.getLogger('django')
 NOT_AUTH_URL = [r"^/WebAdmin/$",r"^/docs/$",r"^/WebAdmin/login/$",r"^/WebAdmin/register_code/\d+/$",
-                r"^/WebAdmin/wechatVerify/",r'/WeChat/auth/$',r'/WeChat/getAccessToken/$']
+                r"^/WebAdmin/wechatVerify/",r'/WeChat/auth/$']
 
 class MyTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):

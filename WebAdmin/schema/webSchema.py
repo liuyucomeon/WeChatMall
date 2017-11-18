@@ -90,6 +90,57 @@ swapNewsSchema = ManualSchema(
     ]
 )
 
+# 交换目录顺序
+swapMenuSchema= ManualSchema(
+    description="交换新闻类型顺序 ",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "branchId",
+            required=True,
+            location="path",
+            description="酒店id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "menu1",
+            required=True,
+            location="form",
+            description="目录一",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "menu2",
+            required=True,
+            location="form",
+            description="目录一",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
+# 发布目录
+publishMenuSchema= ManualSchema(
+    description="发布微信目录到公众号 ",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "access_token",
+            required=True,
+            location="form",
+            description="微信accessToken",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "hotelId",
+            required=True,
+            location="path",
+            description="酒店id",
+            schema=coreschema.String()
+        )
+    ]
+)
+
 # 上传文件
 uploadNewsTypeSchema = ManualSchema(
     description="上传新闻类型图标",
