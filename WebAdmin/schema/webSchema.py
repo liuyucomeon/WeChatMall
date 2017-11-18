@@ -213,3 +213,19 @@ deleteFileSchema = ManualSchema(
         )
     ]
 )
+
+# 根据token获取酒店信息
+hotelBranchTokenSchema = ManualSchema(
+    description="根据token获取酒店信息",
+    fields=[
+        tokenField
+    ]
+)
+
+# 根据token获取员工信息
+staffTokenSchema = ManualSchema(
+    description="根据token获取员工信息",
+    fields=[
+        tokenField
+    ]
+)

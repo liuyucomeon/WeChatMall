@@ -72,4 +72,4 @@ def _getAccessToken(hotel):
                               hotel.appId + "&secret=" + hotel.appsecret)
         accessToken = json.loads(result.content.decode('utf-8'))['access_token']
         redisDB.setex("accessToken:"+str(hotel.id), 60*60*2, accessToken)
-    return accessToken
+    return accessToken.decode('utf-8')

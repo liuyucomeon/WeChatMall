@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django_redis import get_redis_connection
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, schema
 from rest_framework.response import Response
 from rest_framework.schemas import AutoSchema
 
 from WebAdmin.models import Staff
-from WebAdmin.schema.webSchema import CustomSchema
+from WebAdmin.schema.webSchema import CustomSchema, staffTokenSchema
 from WebAdmin.serializers.staff import UserSerializer, StaffSerializer
 from WebAdmin.utils.convertCoding import convertByteFromMap
 
@@ -97,3 +98,14 @@ class StaffViewSet(viewsets.ModelViewSet):
         serializer = StaffSerializer(staffs, many=True)
         return Response(serializer.data)
 
+
+@api_view(['GET'])
+@schema(staffTokenSchema)
+def getStaffByToken(request):
+    """
+    根据token获取酒店信息
+    :param request: 
+    :return: 
+    """
+    serializer = StaffSerializer(request.staff)
+    return Response(serializer.data)

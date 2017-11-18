@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
-from WebAdmin.views import verification, login, news, common, menu
+from WebAdmin.views import verification, login, news, common, menu, hotel, staff
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
 from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
@@ -43,4 +43,8 @@ urlpatterns = [
     url(r'^upload/NewsAudio/$', common.uploadNewsAudio, name='uploadNewsAudio'),
     url(r'^deleteFile/$', common.deleteFile, name='deleteFile'),
     url(r'^wechatVerify/$', verification.wechatVerify),
+    # 根据token获取酒店信息
+    url(r'^hotelBranchByToken/$', hotel.getHotelBranchByToken, name="getHotelBranchByToken"),
+    # 根据token获取员工信息
+    url(r'^staffByToken/$', staff.getStaffByToken, name="getStaffByToken"),
 ]

@@ -273,4 +273,4 @@ logger = logging.getLogger('django')
 # 微信公众号参数
 # APPID = "wx3e306817b699239a"
 # APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
-wechatUrl = "https://api.weixin.qq.com/cgi-bin/"
+wechatUrl = "http://api.weixin.qq.com/cgi-bin/"

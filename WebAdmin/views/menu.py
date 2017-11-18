@@ -41,7 +41,7 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
             mainMenus = WeChatMenu.objects.filter(hotel_id=data['hotel'], parent_id=None)
             if mainMenus.count() < 3:
                 serializer=insertMenu(data, mainMenus)
-                if serializer:
+                if serializer.is_valid():
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({"error": ["主菜单最多只能创建三个"]}, status=status.HTTP_403_FORBIDDEN)
@@ -49,7 +49,7 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
             childMenus = WeChatMenu.objects.filter(hotel_id=data['hotel'], parent_id=data['parent'])
             if childMenus.count() < 5:
                 serializer = insertMenu(data, childMenus)
-                if serializer:
+                if serializer.is_valid():
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({"error": ["子菜单最多只能创建五个"]}, status=status.HTTP_403_FORBIDDEN)
@@ -161,4 +161,4 @@ def insertMenu(data, menus):
     serializer = WeChatMenuSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        return serializer
+    return serializer
