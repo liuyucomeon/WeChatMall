@@ -19,4 +19,4 @@ def sendRegisterCode(phone, code):
 
 
 if __name__ == "__main__":
-    sendRegisterCode("15652294272", "1234")
+    sendRegisterCode("1565524272", "1234")

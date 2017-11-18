@@ -96,7 +96,7 @@ swapMenuSchema= ManualSchema(
     fields=[
         tokenField,
         coreapi.Field(
-            "branchId",
+            "hotelId",
             required=True,
             location="path",
             description="酒店id",
