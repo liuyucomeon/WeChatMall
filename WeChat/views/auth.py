@@ -71,5 +71,5 @@ def _getAccessToken(hotel):
         result = requests.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" +
                               hotel.appId + "&secret=" + hotel.appsecret)
         accessToken = json.loads(result.content.decode('utf-8'))['access_token']
-        redisDB.set("accessToken:"+str(hotel.id), accessToken)
+        redisDB.setex("accessToken:"+str(hotel.id), 60*60*2, accessToken)
     return accessToken

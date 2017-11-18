@@ -13,7 +13,7 @@ from WebAdmin.models import Hotel
 from WebAdmin.models.menu import WeChatMenu
 from WebAdmin.schema.webSchema import CustomSchema, swapMenuSchema, tokenSchema, publishMenuSchema
 from WebAdmin.serializers.menu import WeChatMenuSerializer
-import urllib
+
 
 class WeChatMenuViewSet(viewsets.ModelViewSet):
     """
@@ -38,7 +38,7 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
         data = request.data
         #主菜单不能大于五，子菜单不能大于三
         if not data.get("parent", None):
-            mainMenus = WeChatMenu.objects.filter(branch_id=data['branch'], parent_id=None)
+            mainMenus = WeChatMenu.objects.filter(hotel_id=data['hotel'], parent_id=None)
             if mainMenus.count() < 3:
                 serializer=insertMenu(data, mainMenus)
                 if serializer:
@@ -46,7 +46,7 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
             else:
                 return Response({"error": ["主菜单最多只能创建三个"]}, status=status.HTTP_403_FORBIDDEN)
         else:
-            childMenus = WeChatMenu.objects.filter(branch_id=data['branch'], parent_id=data['parent'])
+            childMenus = WeChatMenu.objects.filter(hotel_id=data['hotel'], parent_id=data['parent'])
             if childMenus.count() < 5:
                 serializer = insertMenu(data, childMenus)
                 if serializer:
