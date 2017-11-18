@@ -1,8 +1,10 @@
 import hashlib
+import json
 import logging
 
 import requests
 from django.http import HttpResponse
+from django_redis import get_redis_connection
 from rest_framework import response
 from rest_framework.decorators import api_view, schema
 
@@ -57,6 +59,17 @@ def getAccessToken(request):
     获取access_token ,有效期目前为2个小时
     """
     hotel = request.staff.branch.hotel
-    result = requests.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+
-                          hotel.appId + "&secret=" + hotel.appsecret)
-    return response.Response(data=result)
+    accessToken = _getAccessToken(hotel)
+    return response.Response(data={"accessToken":accessToken})
+
+
+def _getAccessToken(hotel):
+    redisDB = get_redis_connection('default')
+    # 将accessToken保存在redis（两小时）
+    accessToken = redisDB.get("accessToken:"+str(hotel.id))
+    if accessToken is None:
+        result = requests.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" +
+                              hotel.appId + "&secret=" + hotel.appsecret)
+        accessToken = json.loads(result.content.decode('utf-8'))['access_token']
+        redisDB.set("accessToken:"+str(hotel.id), accessToken)
+    return accessToken

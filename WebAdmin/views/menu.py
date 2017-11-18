@@ -7,7 +7,9 @@ from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from WeChat.views.auth import _getAccessToken
 from WeChatMall.settings import wechatUrl, logger
+from WebAdmin.models import Hotel
 from WebAdmin.models.menu import WeChatMenu
 from WebAdmin.schema.webSchema import CustomSchema, swapMenuSchema, tokenSchema, publishMenuSchema
 from WebAdmin.serializers.menu import WeChatMenuSerializer
@@ -113,14 +115,15 @@ def swapWechatMenuOrder(request, hotelId):
 
 @api_view(['POST'])
 @schema(publishMenuSchema)
-def publishWechatMenu(request,  hotelId):
+def publishWechatMenu(request, hotelId):
     """
     发布微信目录
     :param access_token: 微信验证token
     :param request: 
     :return: 
     """
-    access_token = request.data["access_token"]
+    hotel = get_object_or_404(Hotel, pk=hotelId)
+    access_token = _getAccessToken(hotel)
     url = wechatUrl + "menu/create?access_token=" + access_token
     #获取酒店所有微信目录
     menus = WeChatMenu.objects.filter(hotel_id=hotelId).order_by("order")

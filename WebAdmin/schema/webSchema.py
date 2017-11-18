@@ -125,13 +125,6 @@ publishMenuSchema= ManualSchema(
     fields=[
         tokenField,
         coreapi.Field(
-            "access_token",
-            required=True,
-            location="form",
-            description="微信accessToken",
-            schema=coreschema.String()
-        ),
-        coreapi.Field(
             "hotelId",
             required=True,
             location="path",
