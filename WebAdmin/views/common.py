@@ -67,3 +67,4 @@ def deleteFile(request):
     path = request.data['path']
     if os.path.exists(path):
         removeFile(path)
+    return response.Response(status=status.HTTP_200_OK)

@@ -31,7 +31,7 @@ class NewsTypeViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        maxOrder = NewsType.objects.filter(branch_id=data['branch']).aggregate(Max('order'))
+        maxOrder = NewsType.objects.filter(hotel_id=data['hotel']).aggregate(Max('order'))
         maxOrderNum = 0
         if maxOrder['order__max']:
             maxOrderNum = maxOrder['order__max']

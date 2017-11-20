@@ -205,7 +205,7 @@ deleteFileSchema = ManualSchema(
     fields=[
         tokenField,
         coreapi.Field(
-            "filePath",
+            "path",
             required=True,
             location="path",
             description="文件路径",
