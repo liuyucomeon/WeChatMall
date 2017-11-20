@@ -26,7 +26,6 @@ def wechatVerify(request):
         return HttpResponse(echostr)
     else:
         data = request.body
-        logger.info("hello")
         logger.info(data)
         return response.Response()
 

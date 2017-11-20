@@ -19,7 +19,7 @@ def uploadNewsTypePic(request):
         if os.path.exists(lastPath):
             removeFile(lastPath)
     file = request.data['file']
-    dir_name = 'uploaded/picture/branch/%d/NewsType/pic/' % request.staff.branch.id
+    dir_name = 'uploaded/picture/hotel/%d/NewsType/' % request.staff.branch.hotel_id
     fileName = uploadFile(file, dir_name)
     return response.Response({"fileName":fileName},status=status.HTTP_200_OK)
 
@@ -36,7 +36,7 @@ def uploadNewsPic(request):
         if os.path.exists(lastPath):
             removeFile(lastPath)
     file = request.data['file']
-    dir_name = 'uploaded/picture/branch/%d/News/pic/' % request.staff.branch.id
+    dir_name = 'uploaded/picture/hotel/%d/News/' % request.staff.branch.hotel_id
     fileName = uploadFile(file, dir_name)
     return response.Response({"fileName":fileName},status=status.HTTP_200_OK)
 
@@ -53,7 +53,7 @@ def uploadNewsAudio(request):
         if os.path.exists(lastPath):
             removeFile(lastPath)
     file = request.data['file']
-    dir_name = 'uploaded/picture/branch/%d/News/audio/' % request.staff.branch.id
+    dir_name = 'uploaded/picture/hotel/%d/News/audio/' % request.staff.branch.hotel_id
     fileName = uploadFile(file, dir_name)
     return response.Response({"fileName":fileName},status=status.HTTP_200_OK)
 
