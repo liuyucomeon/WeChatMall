@@ -150,8 +150,9 @@ def publishWechatMenu(request, hotelId):
     # req = urllib.request.Request()
     res = r.text
     logger.info(res)
-
-    return Response(result)
+    if json.loads(res)["errmsg"] == "ok":
+        return Response(result)
+    return Response(res, status=status.HTTP_400_BAD_REQUEST)
 
 
 def insertMenu(data, menus):
