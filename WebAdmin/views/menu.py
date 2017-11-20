@@ -134,6 +134,7 @@ def publishWechatMenu(request, hotelId):
         childMenuList = childMenuMap.get(menu.parent_id, [])
         if menu.parent_id is None:
             mainMenuList.append(menu)
+            childMenuMap[menu.id] = childMenuList
         else:
             childMenuList.append({"type":menu.type,"name":menu.name,"url":menu.url})
             childMenuMap[menu.parent_id] = childMenuList
