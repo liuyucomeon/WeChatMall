@@ -246,7 +246,7 @@ LOGGING = {
 }
 
 # 服务器信息
-SERVER_URL = 'http://114.215.220.241:8083/'
+# SERVER_URL = 'http://114.215.220.241:8083/'
 # SERVER_URL = 'http://127.0.0.1:80/'
 
 

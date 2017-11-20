@@ -12,7 +12,7 @@ from WebAdmin.schema.webSchema import tokenSchema
 
 logger = logging.getLogger('django')
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 # @parser_classes((XMLParser,))
 def wechatVerify(request):
     """
@@ -20,37 +20,15 @@ def wechatVerify(request):
     :param request: 
     :return: 
     """
-    data = request.query_params
-    if len(data) == 0:
-        logger.info("未接收到微信验证参数")
-    logger.info("微信服务器请求参数为："+str(data))
-
-    signature = data['signature']
-    timestamp = data['timestamp']
-    nonce = data['nonce']
-    echostr = data['echostr']
-    token = "TcZHbjlQQqGTelkrk0phenaigaoke"  # 请按照公众平台官网\基本配置中信息填写
-
-    parmList = [token, timestamp, nonce]
-    parmList.sort()
-    paramStr = ''.join(parmList)
-
-    hashcode = hashlib.sha1(paramStr.encode()).hexdigest()
-    if hashcode == signature:
-        logger.info("相等")
-        # return response.Response(data=echostr)
+    # 验证微信公众号回调地址
+    if request.method == "GET":
+        echostr = verifyCallUrl(request)
         return HttpResponse(echostr)
     else:
-        logger.info("不相等")
-        return ""
-
-# @api_view(['POST'])
-# def wechatVerify(request):
-#     data = request.body
-#     msg = parse_message(data.decode())
-#     return response.Response()
-
-
+        data = request.body
+        logger.info("hello")
+        logger.info(data)
+        return response.Response()
 
 @api_view(['GET'])
 @schema(tokenSchema)
@@ -72,4 +50,31 @@ def _getAccessToken(hotel):
                               hotel.appId + "&secret=" + hotel.appsecret)
         accessToken = json.loads(result.content.decode('utf-8'))['access_token']
         redisDB.setex("accessToken:"+str(hotel.id), 60*60*2, accessToken)
+        return accessToken
     return accessToken.decode('utf-8')
+
+
+def verifyCallUrl(request):
+    data = request.query_params
+    if len(data) == 0:
+        logger.info("未接收到微信验证参数")
+    logger.info("微信服务器请求参数为：" + str(data))
+
+    signature = data['signature']
+    timestamp = data['timestamp']
+    nonce = data['nonce']
+    echostr = data['echostr']
+    token = "TcZHbjlQQqGTelkrk0phenaigaoke"  # 请按照公众平台官网\基本配置中信息填写
+
+    parmList = [token, timestamp, nonce]
+    parmList.sort()
+    paramStr = ''.join(parmList)
+
+    hashcode = hashlib.sha1(paramStr.encode()).hexdigest()
+    if hashcode == signature:
+        logger.info("相等")
+        # return response.Response(data=echostr)
+        return echostr
+    else:
+        logger.info("不相等")
+        return ""

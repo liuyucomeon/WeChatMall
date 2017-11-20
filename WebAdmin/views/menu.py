@@ -75,6 +75,7 @@ class HotelBranchMenusList(mixins.ListModelMixin,
             childMenuList = childMenuMap.get(menu.parent_id, [])
             if menu.parent_id is None:
                 mainMenuList.append(menu)
+                childMenuMap[menu.id] = childMenuList
             else:
                 childSerializer = WeChatMenuSerializer(menu)
                 childMenuList.append(childSerializer.data)
