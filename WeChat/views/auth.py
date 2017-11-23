@@ -3,14 +3,22 @@ import json
 import logging
 
 import requests
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django_redis import get_redis_connection
 from rest_framework import response
 from rest_framework.decorators import api_view, schema
+from rest_framework.generics import get_object_or_404
+from wechatpy import parse_message
 
+from WeChatMall.settings import wechatUrl
+from WebAdmin.models import Hotel, Follower
 from WebAdmin.schema.webSchema import tokenSchema
+from WebAdmin.utils.common import formatTimeStamp, updateByDict
 
 logger = logging.getLogger('django')
+
+
 
 @api_view(['GET','POST'])
 # @parser_classes((XMLParser,))
@@ -26,6 +34,13 @@ def wechatVerify(request):
         return HttpResponse(echostr)
     else:
         data = request.body
+        msg = parse_message(data.decode('utf-8'))
+        # 订阅
+        if msg.event == "subscribe":
+            saveUserInfo(msg)
+        # 取消订阅
+        elif msg.event == "unsubscribe":
+            invalidUser(msg)
         logger.info(data)
         return response.Response()
 
@@ -77,3 +92,47 @@ def verifyCallUrl(request):
     else:
         logger.info("不相等")
         return ""
+
+def saveUserInfo(msg):
+    """
+    关注时保存用户信息
+    :param msg: 
+    :return: 
+    """
+    fromUser = msg.source
+    toUser = msg.target
+    hotel = get_object_or_404(Hotel, originId=toUser)
+    accessToken = _getAccessToken(hotel)
+    url = wechatUrl + "user/info?access_token=" + accessToken + "&openid=" +  fromUser + "&lang=zh_CN"
+    result = requests.get(url)
+    data = json.loads(result.content.decode('utf-8'))
+    logger.info("openid="+data['openid'] + ",nickname=" + data["nickname"] + "关注公众号")
+    followers = Follower.objects.filter(openid=data["openid"], hotel_id=hotel.id)
+    if followers.count() > 0:
+        follower = followers[0]
+        updateByDict(follower, data)
+        follower.subscribe_time = formatTimeStamp(data["subscribe_time"])
+        follower.isActive = True
+        follower.save()
+    else:
+        follower = Follower(openid=data["openid"], nickname=data["nickname"], sex=data["sex"],
+                        language=data["language"], city=data["city"], province=data["province"],
+                        country=data["country"], headimgurl=data["headimgurl"],
+                        subscribe_time=formatTimeStamp(data["subscribe_time"]),hotel_id=hotel.id)
+        try:
+            follower.save()
+        except IntegrityError:
+            logger.error("数据库唯一键重复，用户已存在")
+
+def invalidUser(msg):
+    """
+    将用户变为未订阅状态
+    :param msg: 
+    :return: 
+    """
+    fromUser = msg.source
+    toUser = msg.target
+    hotel = get_object_or_404(Hotel, originId=toUser)
+    follower = get_object_or_404(Follower, openid=fromUser, hotel_id=hotel.id)
+    follower.isActive = False
+    follower.save()

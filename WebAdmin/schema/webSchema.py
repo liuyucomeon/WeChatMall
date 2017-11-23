@@ -119,6 +119,35 @@ swapMenuSchema= ManualSchema(
     ]
 )
 
+# 交换商品类型
+swapCommodityTypeSchema = ManualSchema(
+    description="交换商品类型顺序 ",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "branchId",
+            required=True,
+            location="path",
+            description="门店id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "type1",
+            required=True,
+            location="form",
+            description="商品类型1",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "type2",
+            required=True,
+            location="form",
+            description="商品类型1",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
 # 发布目录
 publishMenuSchema= ManualSchema(
     description="发布微信目录到公众号 ",

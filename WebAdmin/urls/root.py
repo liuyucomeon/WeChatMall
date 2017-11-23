@@ -1,7 +1,8 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
-from WebAdmin.views import verification, login, news, common, menu, hotel, staff
+from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity
+from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
 from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
@@ -15,6 +16,8 @@ router.register(r'hotelBranchs', HotelBranchViewSet)
 router.register(r'newsTypes', NewsTypeViewSet)
 router.register(r'news', NewsViewSet)
 router.register(r'weChatMenus', WeChatMenuViewSet)
+router.register(r'commodityTypes', CommodityTypeViewSet)
+router.register(r'commoditys', CommodityViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
@@ -29,6 +32,8 @@ urlpatterns = [
     # 交换新闻顺序
     url(r'^hotels/(?P<hotelId>[0-9]+)/newsTypes/swap/$',
         news.swapNewsTypeOrder, name='swapNewsOrder'),
+    # 根据新闻类型获取新闻
+    url(r'newsTypes/(?P<typeId>[0-9]+)/news/$', news.NewsByType.as_view(), name='newsByType-list'),
     # 交换微信目录顺序
     url(r'^hotels/(?P<hotelId>[0-9]+)/wechatMenus/swap/$',
         menu.swapWechatMenuOrder, name='swapWechatMenuOrder'),
@@ -47,4 +52,16 @@ urlpatterns = [
     url(r'^hotelBranchByToken/$', hotel.getHotelBranchByToken, name="getHotelBranchByToken"),
     # 根据token获取员工信息
     url(r'^staffByToken/$', staff.getStaffByToken, name="getStaffByToken"),
+    # 交换商品类型
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/swap/$',commodity.swapCommodityTypeOrder
+        , name='swapCommodityTypeOrder'),
+    # 获取单个门店商品类型
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/$', commodity.BranchCommodityTypesList.as_view()
+        , name='BranchCommodityTypes-List'),
+    # 获取单个门店下的商品
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commoditys/$', commodity.BranchCommoditysList.as_view()
+        , name='BranchCommoditys-List'),
+    # 获取单个门店下的商品（按类型）
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/(?P<commodityType>[0-9]+)/commoditys/$',
+        commodity.BranchCommoditysList.as_view(), name='BranchCommoditysByType-List'),
 ]

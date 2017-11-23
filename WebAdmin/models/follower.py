@@ -10,10 +10,13 @@ class Follower(models.Model):
     city = models.CharField(max_length=20, default="", help_text="城市")
     province = models.CharField(max_length=20, default="", help_text="省份")
     country = models.CharField(max_length=20, default="", help_text="国家")
-    headimgurl = models.CharField(max_length=100, default="", help_text="头像地址")
+    headimgurl = models.CharField(max_length=200, default="", help_text="头像地址")
     subscribe_time = models.DateTimeField(help_text="订阅时间")
     hotel = models.ForeignKey('Hotel', models.CASCADE, 'follwers', default=None,
                               null=True, help_text="所属酒店")
+    isActive = models.BooleanField(default=True, help_text="用户是否已关注")
 
     class Meta:
         ordering = ['-subscribe_time']
+        # 联合索引
+        unique_together = ('hotel', 'openid',)

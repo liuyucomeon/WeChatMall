@@ -1,5 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
@@ -8,6 +11,7 @@ from rest_framework.response import Response
 from WebAdmin.models.news import NewsType, News
 from WebAdmin.schema.webSchema import CustomSchema, swapNewsSchema
 from WebAdmin.serializers.news import NewsTypeSerializer, NewsSerializer
+from WebAdmin.utils.page import TwentySetPagination
 
 
 class NewsTypeViewSet(viewsets.ModelViewSet):
@@ -81,6 +85,28 @@ def swapNewsTypeOrder(request, hotelId):
         return Response(status.HTTP_200_OK)
 
 
+class NewsByType(mixins.ListModelMixin,generics.GenericAPIView):
+    """
+    获取新闻类型下的所有新闻
+    :param request:
+    :param typeId: 新闻类型
+    :return:
+    """
+    queryset = NewsType.objects.all()
+    serializer_class = NewsSerializer
+    schema = CustomSchema()
+    pagination_class = TwentySetPagination
+
+    def get(self, request, typeId):
+        """
+        获取新闻类型下的所有新闻
+        """
+        news = News.objects.filter(type_id=typeId)
+        page = self.paginate_queryset(news)
+        serializer = NewsSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
 class NewsViewSet(viewsets.ModelViewSet):
     """
     create:
@@ -92,7 +118,7 @@ class NewsViewSet(viewsets.ModelViewSet):
     destroy:
         根据id删除新闻
     list:
-        查询新闻类型
+        查询新闻
     retrieve:
         根据id查询新闻
     """

@@ -131,17 +131,21 @@ def publishWechatMenu(request, hotelId):
     result, childMenuMap = {}, {}
     mainMenuList, resultList = [], []
     for menu in menus:
-        childMenuList = childMenuMap.get(menu.parent_id, [])
         if menu.parent_id is None:
             mainMenuList.append(menu)
-            childMenuMap[menu.id] = childMenuList
+            childMenuMap[menu.id] = childMenuMap.get(menu.id, [])
         else:
+            childMenuList = childMenuMap.get(menu.parent_id, [])
             childMenuList.append({"type":menu.type,"name":menu.name,"url":menu.url})
             childMenuMap[menu.parent_id] = childMenuList
 
     for menu in mainMenuList:
         data = dict()
-        data["sub_button"] = childMenuMap[menu.id]
+        if len(childMenuMap[menu.id]) > 0:
+            data["sub_button"] = childMenuMap[menu.id]
+        else:
+            data["type"] = menu.type
+            data["url"] = menu.url
         data["name"] = menu.name
         resultList.append(data)
     result["button"] = resultList
