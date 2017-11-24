@@ -11,7 +11,8 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'username': {
                 'validators': [UnicodeUsernameValidator()],
-            }
+            },
+            'password': {'write_only': True}
         }
 
 

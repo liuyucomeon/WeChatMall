@@ -4,9 +4,9 @@ from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from WebAdmin.models import CommodityType, Commodity
-from WebAdmin.schema.webSchema import CustomSchema, swapCommodityTypeSchema
-from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer
+from WebAdmin.models import CommodityType, Commodity, CommodityFormat
+from WebAdmin.schema.webSchema import CustomSchema, swapCommodityTypeSchema, tokenSchema, CommodityFormatBySortSchema
+from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer, CommodityFormatSerializer
 from WebAdmin.utils.page import TwentySetPagination
 
 
@@ -120,6 +120,49 @@ class CommodityViewSet(viewsets.ModelViewSet):
     #         serializer.save()
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def retrieve(self, request, pk=None):
+        commodity = get_object_or_404(Commodity, pk=pk)
+        commoditySerializer = CommoditySerializer(commodity)
+        data = commoditySerializer.data
+        # 获取所有规格
+        commodityFormats = CommodityFormat.objects.filter(commodity_id=pk)
+        commodityFormatSerializer = CommodityFormatSerializer(commodityFormats, many=True)
+        data["formats"] = commodityFormatSerializer.data
+        return Response(data)
+
+
+@api_view(['GET'])
+@schema(CommodityFormatBySortSchema)
+def getCommodityFormatsByCommodity(request, commodityId):
+        """
+        根据商品id获取所有规格
+        :param
+            commodityId:商品id
+        """
+        commodityFormats = CommodityFormat.objects.filter(commodity_id=commodityId)
+        serializer = CommodityFormatSerializer(commodityFormats, many=True)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+
+class CommodityFormatViewSet(viewsets.ModelViewSet):
+    """
+    create:
+        创建商品规格
+    partial_update:
+        根据id局部更新商品规格
+    update:
+        根据id更新商品规格
+    destroy:
+        根据id删除商品规格
+    list:
+        查询商品规格
+    retrieve:
+        根据id查询商品规格
+    """
+    queryset = CommodityFormat.objects.all()
+    serializer_class = CommodityFormatSerializer
+    schema = CustomSchema()
+    pagination_class = TwentySetPagination
 
 
 class BranchCommoditysList(mixins.ListModelMixin,

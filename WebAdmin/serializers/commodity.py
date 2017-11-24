@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from WebAdmin.models import Commodity, CommodityType
+from WebAdmin.models import Commodity, CommodityType, CommodityFormat
 
 
 class CommoditySerializer(serializers.ModelSerializer):
@@ -8,6 +8,12 @@ class CommoditySerializer(serializers.ModelSerializer):
     updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     class Meta:
         model = Commodity
+        fields = '__all__'
+
+
+class CommodityFormatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommodityFormat
         fields = '__all__'
 
 

@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
 from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity
-from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet
+from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet, CommodityFormatViewSet
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
 from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
@@ -18,6 +18,8 @@ router.register(r'news', NewsViewSet)
 router.register(r'weChatMenus', WeChatMenuViewSet)
 router.register(r'commodityTypes', CommodityTypeViewSet)
 router.register(r'commoditys', CommodityViewSet)
+router.register(r'commodityFormats', CommodityFormatViewSet)
+
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
@@ -46,6 +48,10 @@ urlpatterns = [
     url(r'^upload/NewsTypePic/$', common.uploadNewsTypePic, name='uploadNewsTypePic'),
     url(r'^upload/NewsPic/$', common.uploadNewsPic, name='uploadNewsPic'),
     url(r'^upload/NewsAudio/$', common.uploadNewsAudio, name='uploadNewsAudio'),
+    # 上传商品图片
+    url(r'^upload/CommodityPic/$', common.uploadCommodityPic, name='uploadCommodityPic'),
+    # 上传商品类型图片
+    url(r'^upload/CommodityTypePic/$', common.uploadCommodityTypePic, name='uploadCommodityTypePic'),
     url(r'^deleteFile/$', common.deleteFile, name='deleteFile'),
     url(r'^wechatVerify/$', verification.wechatVerify),
     # 根据token获取酒店信息
@@ -64,4 +70,7 @@ urlpatterns = [
     # 获取单个门店下的商品（按类型）
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/(?P<commodityType>[0-9]+)/commoditys/$',
         commodity.BranchCommoditysList.as_view(), name='BranchCommoditysByType-List'),
+    # 根据商品id获取所以规格
+    url(r'^commoditys/(?P<commodityId>[0-9]+)/commodityFormats/$', commodity.getCommodityFormatsByCommodity
+        , name='CommodityFormatsByCommodity'),
 ]

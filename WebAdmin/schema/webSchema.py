@@ -228,6 +228,21 @@ uploadNewsAudioSchema = ManualSchema(
     ]
 )
 
+# 根据商品id获取所有规格
+CommodityFormatBySortSchema = ManualSchema(
+    description="根据商品id获取所有规格",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "commodityId",
+            required=True,
+            location="path",
+            description="商品id",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
 # 删除文件
 deleteFileSchema = ManualSchema(
     description="删除文件",
