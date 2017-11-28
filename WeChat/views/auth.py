@@ -55,6 +55,15 @@ def getAccessToken(request):
     return response.Response(data={"accessToken":accessToken})
 
 
+@api_view(['GET'])
+def authRedirect(request):
+    """
+    用户授权后回调接口
+    """
+    logger.info(request.query_params)
+    return response.Response()
+
+
 def _getAccessToken(hotel):
     redisDB = get_redis_connection('default')
     # 将accessToken保存在redis（两小时）
@@ -136,3 +145,4 @@ def invalidUser(msg):
     follower = get_object_or_404(Follower, openid=fromUser, hotel_id=hotel.id)
     follower.isActive = False
     follower.save()
+

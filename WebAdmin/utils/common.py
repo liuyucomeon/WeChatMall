@@ -5,6 +5,9 @@ import string
 import binascii
 
 import time
+import urllib.parse
+
+import requests
 
 
 def getRandomChar(num):
@@ -38,6 +41,10 @@ def updateByDict(targetObject,data):
         if hasattr(targetObject, k):
             setattr(targetObject, k, v)
 
+def urlEncode(url):
+    print(urllib.parse.quote(url))
+    print(urllib.parse.urlencode({"redirect":"https://6482cd77.ngrok.io/static/test.html"}))
+
 
 if __name__ == '__main__':
-    print(formatTimeStamp(1381419600))
+    urlEncode("114.215.220.241:8083/WebAdmin/logout/")

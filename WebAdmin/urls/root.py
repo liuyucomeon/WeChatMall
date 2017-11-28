@@ -1,8 +1,10 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
+from WeChat.views import customer
 from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity
 from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet, CommodityFormatViewSet
+from WebAdmin.views.customer import CustomerViewSet
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
 from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
@@ -19,6 +21,7 @@ router.register(r'weChatMenus', WeChatMenuViewSet)
 router.register(r'commodityTypes', CommodityTypeViewSet)
 router.register(r'commoditys', CommodityViewSet)
 router.register(r'commodityFormats', CommodityFormatViewSet)
+router.register(r'customers', CustomerViewSet)
 
 
 # The API URLs are now determined automatically by the router.
@@ -50,6 +53,8 @@ urlpatterns = [
     url(r'^upload/NewsAudio/$', common.uploadNewsAudio, name='uploadNewsAudio'),
     # 上传商品图片
     url(r'^upload/CommodityPic/$', common.uploadCommodityPic, name='uploadCommodityPic'),
+    # 上传商品详情图片
+    url(r'^upload/CommodityFormatsPic/$', common.uploadCommodityPic, name='uploadCommodityFormatsPic'),
     # 上传商品类型图片
     url(r'^upload/CommodityTypePic/$', common.uploadCommodityTypePic, name='uploadCommodityTypePic'),
     url(r'^deleteFile/$', common.deleteFile, name='deleteFile'),

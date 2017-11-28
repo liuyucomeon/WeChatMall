@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from WeChatMall.settings import logger
 from WebAdmin.models import CommodityType, Commodity, CommodityFormat
 from WebAdmin.schema.webSchema import CustomSchema, swapCommodityTypeSchema, tokenSchema, CommodityFormatBySortSchema
 from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer, CommodityFormatSerializer
@@ -42,6 +43,12 @@ class CommodityTypeViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, *args, **kwargs):
+        commodityType = get_object_or_404(CommodityType, pk=kwargs.get("pk", 0))
+        commodityType.isEnabled = False
+        commodityType.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['POST'])
 @schema(swapCommodityTypeSchema)
@@ -79,7 +86,7 @@ class BranchCommodityTypesList(mixins.ListModelMixin,
         """
         获取单个酒店商品类型
         """
-        newsTypes = CommodityType.objects.filter(branch_id=branchId)
+        newsTypes = CommodityType.objects.filter(branch_id=branchId, isEnabled=True)
         page = self.paginate_queryset(newsTypes)
         if page is not None:
             serializer = CommodityTypeSerializer(page, many=True)
@@ -106,6 +113,7 @@ class CommodityViewSet(viewsets.ModelViewSet):
     """
     queryset = Commodity.objects.all()
     serializer_class = CommoditySerializer
+    pagination_class = TwentySetPagination
     schema = CustomSchema()
 
     # def create(self, request, *args, **kwargs):
@@ -166,7 +174,7 @@ class CommodityFormatViewSet(viewsets.ModelViewSet):
 
 
 class BranchCommoditysList(mixins.ListModelMixin,
-                               generics.GenericAPIView):
+                            generics.GenericAPIView):
 
     queryset = Commodity.objects.all()
     serializer_class = CommoditySerializer
@@ -183,7 +191,7 @@ class BranchCommoditysList(mixins.ListModelMixin,
         ,currentPrice])
         :return: 
         """
-        commoditys = Commodity.objects.filter(type__branch_id=branchId).order_by(order)
+        commoditys = Commodity.objects.filter(type__branch_id=branchId, isEnabled=True).order_by(order)
         if commodityType is not None:
             commoditys = commoditys.filter(type=commodityType)
         page = self.paginate_queryset(commoditys)
