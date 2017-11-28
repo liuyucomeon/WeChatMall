@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from WeChat.views import auth, customer, news
+from WeChat.views import auth, customer, news, order
 from django.conf.urls import url, include
 
 from WeChat.views.customer import CustomerAddressViewSet
@@ -25,5 +25,10 @@ urlpatterns = [
     url(r'newsTypes/(?P<typeId>[0-9]+)/news/$', news.NewsByType.as_view(), name='newsByType-listw'),
     # 根据新闻类型获取新闻
     url(r'news/(?P<pk>[0-9]+)/$', news.NewsDetailView.as_view(), name='newsByType-list'),
-
+    # 获取用户购物车商品列表(有效商品)
+    url(r'^customers/(?P<pk>[0-9]+)/shoppingCarts/enabled/$', order.ShoppingCartByCustomer.as_view(),
+        name='ShoppingCartByCustomer'),
+    # 获取用户购物车商品列表(无效商品)
+    url(r'^customers/(?P<pk>[0-9]+)/shoppingCarts/unabled/$', order.ShoppingCartByCustomer.as_view(),
+        name='ShoppingCartByCustomer2'),
 ]
