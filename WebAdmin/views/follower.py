@@ -24,5 +24,3 @@ class FollowerViewSet(viewsets.ModelViewSet):
     serializer_class = FollowerSerializer
     schema = CustomSchema()
 
-
-

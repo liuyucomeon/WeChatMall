@@ -11,6 +11,14 @@ class CustomSchema(AutoSchema):
         link._fields = fields
         return link
 
+class WeChatCommonSchema(AutoSchema):
+    def get_link(self, path, method, base_url):
+        link = super().get_link(path, method, base_url)
+        fields = list(link.fields)
+        fields.append(openidField)
+        link._fields = fields
+        return link
+
 tokenField = coreapi.Field(
                 "token",
                 required=True,
@@ -19,9 +27,28 @@ tokenField = coreapi.Field(
                 schema=coreschema.String()
         )
 
+openidField = coreapi.Field(
+            "openid",
+            required=True,
+            location="header",
+            description="客户身份",
+            schema=coreschema.String()
+        )
+
 tokenSchema = ManualSchema(fields=[
         tokenField
     ])
+
+# 微信端用户认证
+# openidSchema = ManualSchema(fields=[
+#         coreapi.Field(
+#             "openid",
+#             required=True,
+#             location="header",
+#             description="客户身份",
+#             schema=coreschema.String()
+#         )
+#     ])
 
 registerSchema = ManualSchema(
     description="获取注册验证码",

@@ -2,8 +2,10 @@ from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
+from WeChat.permission.permission import ShoppingCartPermission
 from WeChatMall.settings import logger
 from WebAdmin.models import ShoppingCart
+from WebAdmin.schema.webSchema import WeChatCommonSchema
 from WebAdmin.serializers.order import ShoppingCartSerializer
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -26,6 +28,8 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer
     pagination_class = TwentySetPagination
+    permission_classes = (ShoppingCartPermission,)
+    schema = WeChatCommonSchema()
 
     def list(self, request, *args, **kwargs):
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -41,6 +45,8 @@ class ShoppingCartByCustomer(ListAPIView):
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer
     pagination_class = TwentySetPagination
+    schema = WeChatCommonSchema()
+
 
     def get(self, request, pk):
         """
