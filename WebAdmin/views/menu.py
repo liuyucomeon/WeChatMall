@@ -1,4 +1,5 @@
 import json
+import urllib
 
 import requests
 from django.db.models import Max
@@ -35,7 +36,19 @@ class WeChatMenuViewSet(viewsets.ModelViewSet):
     schema = CustomSchema()
 
     def create(self, request, *args, **kwargs):
+        """
+        创建微信菜单 \n
+            :param request: 
+            :param args: 
+            :param kwargs: 
+                        status=1 (表示创建连接为微商城)
+            :return: 
+        """
         data = request.data
+        if data.get("status", 0) == 1:
+            # 拼接微商城的链接t
+            data["url"] = mergeMallUrl(data["url"], data['hotel'])
+
         #主菜单不能大于五，子菜单不能大于三
         if not data.get("parent", None):
             mainMenus = WeChatMenu.objects.filter(hotel_id=data['hotel'], parent_id=None)
@@ -169,3 +182,18 @@ def insertMenu(data, menus):
     if serializer.is_valid():
         serializer.save()
     return serializer
+
+def mergeMallUrl(url, hotelId):
+    """
+    拼接微商城链接
+    :param hotelId: 酒店id
+    :param url: 微商城主页
+    :return: 
+    """
+    hotel = Hotel.objects.get(id=hotelId)
+    appId = hotel.appId
+    encodedUrl = urllib.parse.urlencode({"redirect_uri":url})
+    url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&" + encodedUrl \
+               + "&response_type=code&scope=snsapi_base&state="+ str(hotel.id) +"#wechat_redirect"
+    return url
+

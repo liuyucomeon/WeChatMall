@@ -41,9 +41,8 @@ def updateByDict(targetObject,data):
         if hasattr(targetObject, k):
             setattr(targetObject, k, v)
 
-def urlEncode(url):
-    print(urllib.parse.quote(url))
-    print(urllib.parse.urlencode({"redirect":"https://6482cd77.ngrok.io/static/test.html"}))
+def urlEncode(key, value):
+    return urllib.parse.urlencode({key:value})
 
 
 if __name__ == '__main__':
