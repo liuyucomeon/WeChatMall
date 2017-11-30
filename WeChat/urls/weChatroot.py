@@ -46,4 +46,7 @@ urlpatterns = [
     # 获取单个门店下的商品（按类型）
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/(?P<commodityType>[0-9]+)/commoditys/$',
         commodity.BranchCommoditysList.as_view(), name='BranchCommoditysByType-Listw'),
+    # 获取单个门店商品类型
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/$', commodity.BranchCommodityTypesList.as_view()
+        , name='BranchCommodityTypes-List'),
 ]

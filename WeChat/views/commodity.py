@@ -2,9 +2,9 @@ from rest_framework import mixins, generics
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
 from rest_framework.response import Response
 
-from WebAdmin.models import Commodity, CommodityFormat
+from WebAdmin.models import Commodity, CommodityFormat, CommodityType
 from WebAdmin.schema.webSchema import CustomSchema
-from WebAdmin.serializers.commodity import CommoditySerializer, CommodityFormatSerializer
+from WebAdmin.serializers.commodity import CommoditySerializer, CommodityFormatSerializer, CommodityTypeSerializer
 from WebAdmin.utils.page import TwentySetPagination
 
 
@@ -53,3 +53,27 @@ class BranchCommoditysList(mixins.ListModelMixin,
         page = self.paginate_queryset(commoditys)
         serializer = CommoditySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+class BranchCommodityTypesList(mixins.ListModelMixin,
+                               generics.GenericAPIView):
+    """
+    查询门店下的商品类型列表
+    """
+
+    queryset = CommodityType.objects.all()
+    serializer_class = CommodityTypeSerializer
+    pagination_class = TwentySetPagination
+
+    def get(self, request, branchId):
+        """
+        获取单个酒店商品类型
+        """
+        newsTypes = CommodityType.objects.filter(branch_id=branchId, isEnabled=True)
+        page = self.paginate_queryset(newsTypes)
+        if page is not None:
+            serializer = CommodityTypeSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = CommodityTypeSerializer(newsTypes, many=True)
+        return Response(serializer.data)

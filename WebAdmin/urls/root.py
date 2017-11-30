@@ -53,8 +53,8 @@ urlpatterns = [
     url(r'^upload/NewsAudio/$', common.uploadNewsAudio, name='uploadNewsAudio'),
     # 上传商品图片
     url(r'^upload/CommodityPic/$', common.uploadCommodityPic, name='uploadCommodityPic'),
-    # 上传商品详情图片
-    url(r'^upload/CommodityFormatsPic/$', common.uploadCommodityPic, name='uploadCommodityFormatsPic'),
+    # 上传商品规格图片
+    url(r'^upload/CommodityFormatPic/$', common.uploadCommodityFormatPic, name='uploadCommodityFormatPic'),
     # 上传商品类型图片
     url(r'^upload/CommodityTypePic/$', common.uploadCommodityTypePic, name='uploadCommodityTypePic'),
     url(r'^deleteFile/$', common.deleteFile, name='deleteFile'),
