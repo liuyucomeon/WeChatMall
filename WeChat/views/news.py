@@ -14,7 +14,7 @@ class NewsTypeView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         """
-        客户端获取新闻列表
+        客户端获取新闻类型列表
         """
         hotelId = kwargs["hotelId"]
         newsTypes = NewsType.objects.filter(hotel_id=hotelId)
@@ -24,6 +24,26 @@ class NewsTypeView(ListAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = NewsTypeSerializer(newsTypes, many=True)
+        return Response(serializer.data)
+
+
+class NewsView(ListAPIView):
+
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+
+    def get(self, request, *args, **kwargs):
+        """
+        客户端根据酒店品牌获取新闻列表
+        """
+        hotelId = kwargs["hotelId"]
+        news = News.objects.filter(type__hotel_id=hotelId)
+        page = self.paginate_queryset(news)
+        if page is not None:
+            serializer = NewsSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = NewsTypeSerializer(news, many=True)
         return Response(serializer.data)
 
 

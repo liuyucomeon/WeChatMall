@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from WeChat.permission.permission import CustomerPermission, CustomerAddressPermission
 from WebAdmin.models import Customer, CustomerAddress
-from WebAdmin.schema.webSchema import WeChatCommonSchema
+from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema
 from WebAdmin.serializers.customer import CustomerSerializer, CustomerAddressSerializer
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -51,7 +51,7 @@ class CustomerDetail(mixins.RetrieveModelMixin,
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = (CustomerPermission,)
-    schema = WeChatCommonSchema()
+    schema = CustomSchema()
 
     def retrieve(self, request, *args, **kwargs):
         pass
@@ -64,7 +64,7 @@ class CustomerDetail(mixins.RetrieveModelMixin,
         serializer = CustomerSerializer(customer, data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -87,7 +87,7 @@ class CustomerAddressViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerAddressSerializer
     pagination_class = TwentySetPagination
     permission_classes = (CustomerAddressPermission,)
-    schema = WeChatCommonSchema()
+    schema = CustomSchema()
 
     def list(self, request, *args, **kwargs):
         pass

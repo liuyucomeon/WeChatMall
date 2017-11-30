@@ -30,7 +30,7 @@ tokenField = coreapi.Field(
 openidField = coreapi.Field(
             "openid",
             required=True,
-            location="header",
+            location="form",
             description="客户身份",
             schema=coreschema.String()
         )
@@ -298,5 +298,13 @@ staffTokenSchema = ManualSchema(
     description="根据token获取员工信息",
     fields=[
         tokenField
+    ]
+)
+
+# 微商城登录
+weChatLoginSchema = ManualSchema(
+    description="微商城登录",
+    fields=[
+        openidField
     ]
 )

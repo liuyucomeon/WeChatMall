@@ -1,6 +1,22 @@
+import pickle
 import re
-from rest_framework import permissions
-from WebAdmin.models import Customer, CustomerAddress, ShoppingCart
+
+from django_redis import get_redis_connection
+from rest_framework import permissions, exceptions
+
+from WeChatMall.settings import logger
+from WebAdmin.models import CustomerAddress, ShoppingCart
+
+
+def validateToken(request):
+    token = request.META.get('HTTP_TOKEN')
+    redisDB = get_redis_connection('default')
+    customerByte = redisDB.get("wtoken:" + token)
+    if not customerByte:
+        raise exceptions.AuthenticationFailed('用户认证失败')
+    customer = pickle.loads(customerByte)
+    request.customer = customer
+    return customer
 
 
 class CustomerPermission(permissions.BasePermission):
@@ -12,13 +28,14 @@ class CustomerPermission(permissions.BasePermission):
         # 不然文档显示不出来
         if re.match(r'^/docs/$', request.path):
             return True
+
+        customer = validateToken(request)
         value = re.match(r'^/WeChat/customers/(\d+)/$', request.path)
         if value:
-            exists = Customer.objects.filter(id=value.group(1),
-                                    follower__openid=request.META.get('HTTP_OPENID')).exists()
-            if exists:
-                    return True
+            if customer.id == int(value.group(1)):
+                return True
         return False
+
 
 class CustomerAddressPermission(permissions.BasePermission):
     """
@@ -29,10 +46,12 @@ class CustomerAddressPermission(permissions.BasePermission):
         if re.match(r'^/docs/$', request.path):
             return True
 
+        customer = validateToken(request)
+        if re.match(r'^/WeChat/customerAddresses/$', request.path):
+            return True
         value = re.match(r'^/WeChat/customerAddresses/(\d+)/$', request.path)
         if value:
-            exists = CustomerAddress.objects.filter(id=value.group(1),
-                            customer__follower__openid=request.META.get('HTTP_OPENID')).exists()
+            exists = CustomerAddress.objects.filter(id=value.group(1), customer_id=customer.id).exists()
             if exists:
                 return True
         return False
@@ -47,10 +66,14 @@ class ShoppingCartPermission(permissions.BasePermission):
         if re.match(r'^/docs/$', request.path):
             return True
 
+        customer = validateToken(request)
+        if re.match(r'^/WeChat/shoppingCarts/$', request.path):
+            return True
         value = re.match(r'^/WeChat/shoppingCarts/(\d+)/$', request.path)
         if value:
-            exists = ShoppingCart.objects.filter(id=value.group(1),
-                            customer__follower__openid=request.META.get('HTTP_OPENID')).exists()
+            exists = ShoppingCart.objects.filter(id=value.group(1), customer_id=customer.id).exists()
             if exists:
                 return True
         return False
+
+

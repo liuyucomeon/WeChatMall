@@ -40,6 +40,7 @@ class CommodityFormat(models.Model):
     inventory = models.IntegerField(default=0, help_text="库存")
     currentPrice = models.FloatField(default=0, help_text="现价")
     commodity = models.ForeignKey('Commodity', models.CASCADE, 'formats', help_text="所属商品")
+    image = models.CharField(max_length=100, help_text="规格图片")
 
 
 class CommodityType(models.Model):

@@ -17,12 +17,6 @@ class MyTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         logger.info("开始验证")
 
-        # 验证微信顾客身份
-        # value = re.match(r'^/WeChat/customers/(\d+)/$', request.path)
-        # if value:
-        #     validateCustomer(value.group(1), request.META.get('HTTP_OPENID'))
-        #     return None
-
         for path in NOT_AUTH_URL:
             if re.match(path, request.path):
                 logger.info("跳过验证")

@@ -6,13 +6,11 @@ from WebAdmin.models import Customer, Follower, CustomerAddress
 
 class CustomerSerializer(serializers.ModelSerializer):
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
-    openid = serializers.CharField(required=False)
-    hotelId = serializers.IntegerField(required=False)
     # follower = serializers.IntegerField(required=False)
 
     class Meta:
         model = Customer
-        fields = ('id', 'name', 'openid', 'hotelId', 'createTime')
+        fields = ('id', 'name', 'createTime')
 
     def create(self, validated_data):
         openid = validated_data.pop('openid')
@@ -28,7 +26,6 @@ class CustomerSerializer(serializers.ModelSerializer):
             setattr(instance, k, validated_data.get(k, v))
 
         instance.save()
-
         return instance
 
 
