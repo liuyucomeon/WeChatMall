@@ -47,6 +47,12 @@ INSTALLED_APPS = [
     # 'rest_framework.authtoken'
     'WebAdmin.apps.WebadminConfig',
     'WeChat',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    # 每隔十分钟运行一次
+    ('* * * * *', 'django.core.management.call_command', ['cleanUnpaidOrder']),
 ]
 
 MIDDLEWARE = [

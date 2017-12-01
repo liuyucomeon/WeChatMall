@@ -6,14 +6,14 @@ import requests
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django_redis import get_redis_connection
-from rest_framework import response
+from rest_framework import response, status
 from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
 from wechatpy import parse_message
 
 from WeChatMall.settings import wechatUrl
 from WebAdmin.models import Hotel, Follower
-from WebAdmin.schema.webSchema import tokenSchema
+from WebAdmin.schema.webSchema import tokenSchema, webAccessTokenSchema
 from WebAdmin.utils.common import formatTimeStamp, updateByDict
 
 logger = logging.getLogger('django')
@@ -53,6 +53,28 @@ def getAccessToken(request):
     hotel = request.staff.branch.hotel
     accessToken = _getAccessToken(hotel)
     return response.Response(data={"accessToken":accessToken})
+
+
+@api_view(['GET'])
+@schema(webAccessTokenSchema)
+def getWebAccessToken(request):
+    """
+    获取web_access_token(网页授权)
+        :param
+            code:重定向url的code
+            state:重定向url的state
+    """
+    data = request.query_params
+    hotel = Hotel.objects.get(id=data["state"])
+    url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + str(hotel.appId) + \
+            "&secret=" +  hotel.appsecret + "&code=" + data["code"] + "&grant_type=authorization_code"
+    result = requests.get(url).text
+    if "errcode" in result:
+        return response.Response(data=result, status=status.HTTP_400_BAD_REQUEST)
+
+    result = json.loads(result)
+    openid = result["openid"]
+    return response.Response(data={"openid":openid})
 
 
 @api_view(['GET'])

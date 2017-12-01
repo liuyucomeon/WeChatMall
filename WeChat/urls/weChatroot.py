@@ -18,6 +18,8 @@ urlpatterns = [
     url(r'^getAccessToken/$', auth.getAccessToken),
     # 用户授权回调
     url(r'^authRedirect/$', auth.authRedirect),
+    # 授权认证时获取openid
+    url(r'^webAccessToken/$', auth.getWebAccessToken),
     # 创建客户
     # url(r'^customers/$', customer.CustomerList.as_view(), name="customer-list1"),
     url(r'^customers/(?P<pk>[0-9]+)/$', customer.CustomerDetail.as_view(), name="customer-detail1"),

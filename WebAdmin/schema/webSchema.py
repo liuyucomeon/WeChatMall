@@ -308,3 +308,24 @@ weChatLoginSchema = ManualSchema(
         openidField
     ]
 )
+
+# 获取accessToken和openid
+webAccessTokenSchema = ManualSchema(
+    description="获取openid",
+    fields=[
+        coreapi.Field(
+            "code",
+            required=True,
+            location="query",
+            description="验证码",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "state",
+            required=True,
+            location="query",
+            description="state参数",
+            schema=coreschema.String()
+        ),
+    ]
+)
