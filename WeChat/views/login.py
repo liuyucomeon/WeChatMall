@@ -1,6 +1,7 @@
 import pickle
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import model_to_dict
 from django_redis import get_redis_connection
 from rest_framework import response, status
 from rest_framework.decorators import api_view, schema
@@ -32,4 +33,5 @@ def loginByOpenId(request):
     staffPic = pickle.dumps(customer)
 
     redisDB.setex("wtoken:" + token, 2 * 60 * 60, staffPic)
-    return response.Response({"token": token}, status=status.HTTP_200_OK)
+
+    return response.Response({"token": token,"customer":model_to_dict(customer)}, status=status.HTTP_200_OK)
