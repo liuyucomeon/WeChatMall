@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from WebAdmin.models import Commodity, CommodityType, CommodityFormat
+from WebAdmin.models import Commodity, CommodityType, CommodityFormat, OrderCommodityFormatMapping
 
 
 class CommoditySerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from WeChat.views import auth, customer, news, order, login, commodity
+from WeChat.views import auth, customer, news, order, login, commodity, hotel
 from django.conf.urls import url, include
 
 from WeChat.views.customer import CustomerAddressViewSet
@@ -16,6 +16,9 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^auth/$', auth.wechatVerify),
     url(r'^getAccessToken/$', auth.getAccessToken),
+    # 根据酒店品牌获取酒店列表
+    url(r'^hotels/(?P<pk>[0-9]+)/allBranchs/$', hotel.BranchsByHotel.as_view()
+        , name='BranchsByHotelw'),
     # 用户授权回调
     url(r'^authRedirect/$', auth.authRedirect),
     # 授权认证时获取openid
@@ -38,6 +41,9 @@ urlpatterns = [
     # 获取用户购物车商品列表(无效商品)
     url(r'^customers/(?P<pk>[0-9]+)/shoppingCarts/unabled/$', order.ShoppingCartByCustomer.as_view(),
         name='ShoppingCartByCustomer2'),
+    # 用户订单
+    url(r'^customers/(?P<pk>[0-9]+)/orders/$', order.OrderByCustomer.as_view(),
+        name='OrderByCustomerw'),
     # 微商城登录
     url(r'^customers/login/$', login.loginByOpenId, name='loginByOpenId'),
     # 查询商品

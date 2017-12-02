@@ -1,20 +1,22 @@
 from django.db.models import F
+from django.forms import model_to_dict
 from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
-from WeChat.permission.permission import ShoppingCartPermission
+from WeChat.permission.permission import ShoppingCartPermission, OrderPermission
 from WeChatMall.settings import logger
-from WebAdmin.models import ShoppingCart, Order, CommodityFormat
-from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema
+from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping
+from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema
 from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer
+from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
 from WebAdmin.utils.page import TwentySetPagination
 
 
 class ShoppingCartViewSet(viewsets.ModelViewSet):
     """
     create:
-        购物车添加商品
+        
     partial_update:
         根据id局部更新购物车商品
     update:
@@ -35,10 +37,29 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    def create(self, request, *args, **kwargs):
+        """
+        购物车添加商品 \n
+            :param request: 
+            :param args: 
+            :param kwargs: 
+                    commodityFormat:商品规格ID
+                    count:商品数量
+            :return: 
+        """
+        data = request.data
+        data["customer"] = request.customer.id
+        serializer = ShoppingCartSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class ShoppingCartByCustomer(ListAPIView):
     """
-    获取用户购物车商品列表
+    获取用户购物车商品列表(根据不同门店)
     :param request:
     :param customerId: 顾客id
     :return:
@@ -46,14 +67,17 @@ class ShoppingCartByCustomer(ListAPIView):
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer
     pagination_class = TwentySetPagination
-    schema = WeChatCommonSchema()
+    schema = shoppingCartSchema
 
 
     def get(self, request, pk):
         """
         获取用户购物车商品列表(有效或无效)
         """
+        param = request.query_params
         shoppings = ShoppingCart.objects.filter(customer_id=pk)
+        if param.get("branchId", None):
+            shoppings = shoppings.filter(branch_id=param["branchId"])
         if "enabled" in request.path:
             shoppings = shoppings.filter(isEnabled=True)
         else:
@@ -69,25 +93,25 @@ class OrderViewSet(viewsets.ModelViewSet):
     create:
         
     partial_update:
-        根据id局部更新客户地址
+        根据id局部更新订单
     update:
-        根据id更新客户地址
+        根据id更新订单
     destroy:
-        根据id删除客户地址
+        根据id删除订单
     list:
-        查询客户地址列表
+        查询客户订单列表
     retrieve:
-        根据id查询客户地址
+        根据id查询订单
     """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = TwentySetPagination
-    # permission_classes = (OrderPermission,)
+    permission_classes = (OrderPermission,)
     # schema = WeChatCommonSchema()
 
     def create(self, request, *args, **kwargs):
         """
-        创建客户地址 \n
+        创建订单 \n
             status : 状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '交易完成'), 
             customer : 买家 
             leaveMessage :  买家留言, 
@@ -111,6 +135,66 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(data=orderSerializer.data)
         else:
             return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderByCustomer(ListAPIView):
+    """
+    查询用户订单列表(根据不同门店)
+    :param request:
+    :param customerId: 顾客id
+    :return:
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (OrderPermission,)
+    schema = orderSchema
+
+    def get(self, request, pk):
+        param = request.query_params
+        page = param.get("page", 1)
+        pageSize = param.get("pageSize", 10)
+        orders = Order.objects.filter(customer_id=pk)
+        if param.get("branchId", None):
+            orders = orders.filter(branch_id=param["branchId"])
+        orders = orders[(int(page)-1)*int(pageSize) : int(pageSize)]
+
+        orderIdList = getFieldList(orders)
+
+        ocfms = OrderCommodityFormatMapping.objects.filter(order_id__in=orderIdList)
+        # 商品id集合
+        commodityFormatIdSet = getFieldSet(ocfms, "commodityFormat_id")
+        commodityFormats = CommodityFormat.objects.filter(id__in=commodityFormatIdSet)
+
+        commodityFormatMap = convertToMapByField(commodityFormats, "id")
+        for k,v in commodityFormatMap.items():
+            commodityFormatMap[k] = model_to_dict(v)
+
+        orderCommodityFormatMap = {}
+        for ocfm in ocfms:
+            # ocfm.commodityFormat = commodityFormatMap[ocfm.commodityFormat_id]
+            # 订单id为键，商品列表为值
+            commodityFormatList = orderCommodityFormatMap.get(ocfm.order_id,[])
+            commodityFormatList.append({"count":ocfm.count,
+                                        "commodityFormat":commodityFormatMap[ocfm.commodityFormat_id]})
+            orderCommodityFormatMap[ocfm.order_id] = commodityFormatList
+
+        result=[]
+        for order in orders:
+            order = model_to_dict(order)
+            order["commoditys"] = orderCommodityFormatMap.get(order["id"], [])
+            result.append(order)
+
+        return Response(result)
+
+        # 这个方法简单，效率低。。。。
+        # param = request.query_params
+        # orders = Order.objects.filter(customer_id=pk)
+        # if param.get("branchId", None):
+        #     orders = orders.filter(branch_id=param["branchId"])
+        # page = self.paginate_queryset(orders)
+        # serializer = OrderSerializer(page, many=True)
+        # return self.get_paginated_response(serializer.data)
 
 
 

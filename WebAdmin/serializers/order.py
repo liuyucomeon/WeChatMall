@@ -12,14 +12,17 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShoppingCart
-        fields = ('id', 'commodityFormat', 'commodityFormatObj', 'count', 'isEnabled', 'customer', 'createTime')
+        fields = ('id', 'commodityFormat', 'commodityFormatObj', 'count','customer',
+                  'branch','isEnabled', 'createTime')
 
 
 class OrderCommodityFormatMappingSerializer(serializers.ModelSerializer):
     order = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all(), required=False)
+    commodityFormat = CommodityFormatSerializer(read_only=True)
+
     class Meta:
         model = OrderCommodityFormatMapping
-        fields = '__all__'
+        fields = ('count', 'commodityFormat', 'order')
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -27,6 +30,11 @@ class OrderSerializer(serializers.ModelSerializer):
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     totalPrice = serializers.FloatField(required=False, read_only=True)
     status = serializers.IntegerField(required=False, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'commoditys')
 
     def create(self, validated_data):
         commoditys = validated_data.pop('commoditys')
@@ -46,8 +54,6 @@ class OrderSerializer(serializers.ModelSerializer):
         order.commoditys = orderCommodityFormatList
         return order
 
-    class Meta:
-        model = Order
-        fields = ("status", 'customer', 'createTime', 'customerAddress', 'totalPrice','leaveMessage', 'commoditys')
+
 
 

@@ -329,3 +329,61 @@ webAccessTokenSchema = ManualSchema(
         ),
     ]
 )
+
+# 顾客购物车
+shoppingCartSchema = ManualSchema(
+    description="获取用户不同门店下购物车列表",
+    fields=[
+        openidField,
+        coreapi.Field(
+            "id",
+            required=True,
+            location="path",
+            description="客户id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "branchId",
+            required=True,
+            location="query",
+            description="门店id",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
+# 顾客订单列表
+orderSchema = ManualSchema(
+    description="获取用户不同门店下订单列表",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "id",
+            required=True,
+            location="path",
+            description="客户id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "branchId",
+            required=True,
+            location="query",
+            description="门店id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "page",
+            required=True,
+            location="query",
+            description="页数",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "pageSize",
+            required=True,
+            location="query",
+            description="每页大小",
+            schema=coreschema.String()
+        ),
+    ]
+)

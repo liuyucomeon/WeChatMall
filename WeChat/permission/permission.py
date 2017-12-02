@@ -5,7 +5,7 @@ from django_redis import get_redis_connection
 from rest_framework import permissions, exceptions
 
 from WeChatMall.settings import logger
-from WebAdmin.models import CustomerAddress, ShoppingCart
+from WebAdmin.models import CustomerAddress, ShoppingCart, Order
 
 
 def validateToken(request):
@@ -76,4 +76,29 @@ class ShoppingCartPermission(permissions.BasePermission):
                 return True
         return False
 
+
+class OrderPermission(permissions.BasePermission):
+    """
+    验证顾客订单权限
+    """
+
+    def has_permission(self, request, view):
+        if re.match(r'^/docs/$', request.path):
+            return True
+
+        customer = validateToken(request)
+        # 客户订单列表
+        value1 = re.match(r'^/WeChat/customers/(\d+)/orders/$', request.path)
+        if value1 and int(value1.group(1))==customer.id:
+            return True
+
+        if re.match(r'^/WeChat/orders/$', request.path):
+            return True
+
+        value = re.match(r'^/WeChat/orders/(\d+)/$', request.path)
+        if value:
+            exists = Order.objects.filter(id=value.group(1), customer_id=customer.id).exists()
+            if exists:
+                return True
+        return False
 
