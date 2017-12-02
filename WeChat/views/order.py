@@ -1,13 +1,18 @@
+import json
+
+import requests
 from django.db.models import F
 from django.forms import model_to_dict
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, schema
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
 from WeChat.permission.permission import ShoppingCartPermission, OrderPermission
 from WeChatMall.settings import logger
-from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping
-from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema
+from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany
+from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
+     queryTrackSchema
 from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer
 from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
 from WebAdmin.utils.page import TwentySetPagination
@@ -196,5 +201,37 @@ class OrderByCustomer(ListAPIView):
         # serializer = OrderSerializer(page, many=True)
         # return self.get_paginated_response(serializer.data)
 
+
+@api_view(['GET'])
+@schema(queryTrackSchema)
+def queryTrack(request):
+    """
+    根据快递单号查询
+    :param request:
+    :return:
+    """
+    param = request.query_params
+    key = "295b109e65aa680d0b3160a37f45d046"
+    url = "http://v.juhe.cn/exp/index?key=" + key + "&com=" + param["com"] \
+          + "&no=" + param["no"]
+    result = requests.get(url).text
+    return Response(json.loads(result))
+
+
+@api_view(['GET'])
+def TrackComNum(request):
+    """
+    把快递公司对照表导入自己数据库
+    :param request: 
+    :return: 
+    """
+    result = requests.get("http://v.juhe.cn/exp/com?key=295b109e65aa680d0b3160a37f45d046")
+    companys = json.loads(result.text)["result"]
+    order=1
+    for one in companys:
+        company = TrackCompany(fullName=one["com"], shortName=one["no"], order=order)
+        company.save()
+        order += 1
+    return Response(status=status.HTTP_200_OK)
 
 

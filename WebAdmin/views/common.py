@@ -134,7 +134,7 @@ def uploadCommodityPic(request):
     # smallFileNameList = []
     data = request.data
     if "lastPath" in data.keys():
-        lastPath = data.pop('lastPath')
+        lastPath = data.pop('lastPath')[0]
         if lastPath:
             # 判断文件是否存在
             for path in lastPath.split(","):

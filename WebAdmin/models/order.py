@@ -31,6 +31,8 @@ class Order(models.Model):
     totalPrice = models.FloatField(default=0, help_text="订单总金额")
     customerAddress = models.ForeignKey('CustomerAddress', models.CASCADE, help_text="收货地址")
     leaveMessage = models.CharField(max_length=100, default="", help_text="买家留言")
+    trackingNumber = models.CharField(max_length=50, default="", blank=True, help_text="快递单号")
+    shortName = models.CharField(max_length=10, help_text="快递公司缩写")
 
     class Meta:
         ordering = ['-createTime']
@@ -45,3 +47,12 @@ class OrderCommodityFormatMapping(models.Model):
     count = models.IntegerField(default=1, help_text="商品数量")
     order = models.ForeignKey('Order', related_name='commoditys',
                               on_delete=models.CASCADE, help_text="订单id")
+
+
+class TrackCompany(models.Model):
+    """
+    快递公司对照表
+    """
+    fullName = models.CharField(max_length=20, help_text="快递公司全称")
+    shortName = models.CharField(max_length=10, help_text="快递公司缩写")
+    order = models.IntegerField(default=0, help_text="排序")

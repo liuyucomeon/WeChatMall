@@ -1,13 +1,13 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
-from WeChat.views import customer
-from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity
+from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity, order
 from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet, CommodityFormatViewSet
 from WebAdmin.views.customer import CustomerViewSet
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
 from WebAdmin.views.menu import WeChatMenuViewSet
 from WebAdmin.views.news import NewsTypeViewSet, NewsViewSet
+from WebAdmin.views.order import OrderViewSet
 from WebAdmin.views.staff import  StaffViewSet
 
 router = DefaultRouter()
@@ -22,6 +22,7 @@ router.register(r'commodityTypes', CommodityTypeViewSet)
 router.register(r'commoditys', CommodityViewSet)
 router.register(r'commodityFormats', CommodityFormatViewSet)
 router.register(r'customers', CustomerViewSet)
+router.register(r'orders', OrderViewSet)
 
 
 # The API URLs are now determined automatically by the router.
@@ -78,4 +79,6 @@ urlpatterns = [
     # 根据商品id获取所以规格
     url(r'^commoditys/(?P<commodityId>[0-9]+)/commodityFormats/$', commodity.getCommodityFormatsByCommodity
         , name='CommodityFormatsByCommodity'),
+    # 获取快递公司列表
+    url(r'^trackCompanys/$', order.TrackCompanyListView.as_view(), name='trackCompanys')
 ]

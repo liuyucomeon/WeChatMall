@@ -387,3 +387,24 @@ orderSchema = ManualSchema(
         ),
     ]
 )
+
+# 快递查询
+queryTrackSchema = ManualSchema(
+    description="快递单号查询",
+    fields=[
+        coreapi.Field(
+            "com",
+            required=True,
+            location="query",
+            description="快递公司编号",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "no",
+            required=True,
+            location="query",
+            description="快递单号",
+            schema=coreschema.String()
+        ),
+    ]
+)

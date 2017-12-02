@@ -57,4 +57,8 @@ urlpatterns = [
     # 获取单个门店商品类型
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/$', commodity.BranchCommodityTypesList.as_view()
         , name='BranchCommodityTypes-List'),
+    # 查询快递单号
+    url(r'^queryTrack/$', order.queryTrack),
+    # 快递公司入库
+    url(r'^TrackComNum/$', order.TrackComNum)
 ]

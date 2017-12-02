@@ -1,7 +1,7 @@
 from django.forms import model_to_dict
 from rest_framework import serializers
 
-from WebAdmin.models import ShoppingCart, Order, OrderCommodityFormatMapping, CommodityFormat
+from WebAdmin.models import ShoppingCart, Order, OrderCommodityFormatMapping, CommodityFormat, TrackCompany
 from WebAdmin.serializers.commodity import CommodityFormatSerializer
 
 
@@ -34,7 +34,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys')
+                  'leaveMessage', 'commoditys', 'trackingNumber')
 
     def create(self, validated_data):
         commoditys = validated_data.pop('commoditys')
@@ -55,5 +55,9 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
 
+class TrackCompanySerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = TrackCompany
+        fields = '__all__'
 
