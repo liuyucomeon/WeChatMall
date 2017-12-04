@@ -87,10 +87,7 @@ class ShoppingCartPermission2(permissions.BasePermission):
 
         customer = validateToken(request)
 
-        if "enabled" in request.path:
-            value = re.match(r'^/WeChat/customers/(\d+)/shoppingCarts/enabled/$', request.path)
-        else:
-            value = re.match(r'^/WeChat/customers/(\d+)/shoppingCarts/unabled/$', request.path)
+        value = re.match(r'^/WeChat/customers/(\d+).+/$', request.path)
         if int(value.group(1))==customer.id:
             return True
         return False

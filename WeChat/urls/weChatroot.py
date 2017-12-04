@@ -41,6 +41,9 @@ urlpatterns = [
     # 获取用户购物车商品列表(无效商品)
     url(r'^customers/(?P<pk>[0-9]+)/shoppingCarts/unabled/$', order.ShoppingCartByCustomer.as_view(),
         name='ShoppingCartByCustomer2'),
+    # 批量删除购物车商品
+    url(r'^customers/(?P<pk>[0-9]+)/shoppingCarts/batchDel/$', order.deleteComInSCartBatch,
+        name='deleteComInSCartBatchw'),
     # 用户订单
     url(r'^customers/(?P<pk>[0-9]+)/orders/$', order.OrderByCustomer.as_view(),
         name='OrderByCustomerw'),

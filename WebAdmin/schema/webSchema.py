@@ -352,6 +352,28 @@ shoppingCartSchema = ManualSchema(
     ]
 )
 
+# 批量删除购物车货物
+deleteSCartBatch = ManualSchema(
+    description="批量删除购物车货物",
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "id",
+            required=True,
+            location="path",
+            description="顾客id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "idList",
+            required=True,
+            location="form",
+            description="购物车id列表",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
 # 顾客订单列表
 orderSchema = ManualSchema(
     description="获取用户不同门店下订单列表",

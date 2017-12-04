@@ -4,16 +4,16 @@ import requests
 from django.db.models import F
 from django.forms import model_to_dict
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, schema
-from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view, schema, permission_classes
+from rest_framework.generics import ListAPIView, DestroyAPIView
 from rest_framework.response import Response
 
 from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2
 from WeChatMall.settings import logger
 from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
-     queryTrackSchema
-from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer
+    queryTrackSchema, deleteSCartBatch
+from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer
 from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -64,14 +64,9 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
 
 
 class ShoppingCartByCustomer(ListAPIView):
-    """
-    获取用户购物车商品列表(根据不同门店)
-    :param request:
-    :param customerId: 顾客id
-    :return:
-    """
+
     queryset = ShoppingCart.objects.all()
-    serializer_class = ShoppingCartSerializer
+    serializer_class = ShoppingCartRSerializer
     pagination_class = TwentySetPagination
     permission_classes = (ShoppingCartPermission2,)
     schema = shoppingCartSchema
@@ -91,8 +86,26 @@ class ShoppingCartByCustomer(ListAPIView):
             shoppings = shoppings.filter(isEnabled=False)
 
         page = self.paginate_queryset(shoppings)
-        serializer = ShoppingCartSerializer(page, many=True)
+        serializer = ShoppingCartRSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes([ShoppingCartPermission2,])
+@schema(deleteSCartBatch)
+def deleteComInSCartBatch(request, pk):
+    """
+    批量删除购物车商品 \n
+        :param pk: 顾客id
+        :param request: 
+        :param args: 
+        :param kwargs:
+                    idList:购物车id列表 e.g.[1,2,3]
+        :return: 
+    """
+    idList = request.data["idList"]
+    ShoppingCart.objects.filter(id__in=idList, customer_id=pk).delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class OrderViewSet(viewsets.ModelViewSet):

@@ -6,13 +6,24 @@ from WebAdmin.serializers.commodity import CommodityFormatSerializer
 
 
 class ShoppingCartSerializer(serializers.ModelSerializer):
-    commodityFormatObj = CommodityFormatSerializer(read_only=True)
+    commodityFormat = serializers.PrimaryKeyRelatedField(queryset=CommodityFormat.objects.all())
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     isEnabled = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = ShoppingCart
-        fields = ('id', 'commodityFormat', 'commodityFormatObj', 'count','customer',
+        fields = ('id','commodityFormat', 'count','customer',
+                  'branch','isEnabled', 'createTime')
+
+
+class ShoppingCartRSerializer(serializers.ModelSerializer):
+    commodityFormat = CommodityFormatSerializer(read_only=True)
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    isEnabled = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = ShoppingCart
+        fields = ('id','commodityFormat','count','customer',
                   'branch','isEnabled', 'createTime')
 
 
