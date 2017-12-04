@@ -21,7 +21,7 @@ class BranchsByHotel(ListAPIView):
 
     def get(self, request, pk):
         """
-        获取用户购物车商品列表(有效或无效) \n
+        酒店下所有门店 \n
             :param request:
             :param pk: 酒店品牌id
         """

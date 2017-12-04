@@ -1,4 +1,6 @@
-from django.db.models import Max
+from django.db import transaction
+from django.db.models import Max, Min
+from django.forms import model_to_dict
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
@@ -8,6 +10,7 @@ from WeChatMall.settings import logger
 from WebAdmin.models import CommodityType, Commodity, CommodityFormat
 from WebAdmin.schema.webSchema import CustomSchema, swapCommodityTypeSchema, tokenSchema, CommodityFormatBySortSchema
 from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer, CommodityFormatSerializer
+from WebAdmin.utils.common import updateByDict
 from WebAdmin.utils.page import TwentySetPagination
 
 
@@ -147,7 +150,7 @@ def getCommodityFormatsByCommodity(request, commodityId):
         :param
             commodityId:商品id
         """
-        commodityFormats = CommodityFormat.objects.filter(commodity_id=commodityId)
+        commodityFormats = CommodityFormat.objects.filter(commodity_id=commodityId, isEnabled=True)
         serializer = CommodityFormatSerializer(commodityFormats, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -171,6 +174,39 @@ class CommodityFormatViewSet(viewsets.ModelViewSet):
     serializer_class = CommodityFormatSerializer
     schema = CustomSchema()
     pagination_class = TwentySetPagination
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        serializer = CommodityFormatSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            updateCommoditylowPrice(data["currentPrice"], data["commodity"])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        commodityFormat = get_object_or_404(CommodityFormat, pk=kwargs.get("pk", 0))
+        # updateByDict(commodityFormat, data)
+        serializer = CommodityFormatSerializer(commodityFormat, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            if data.get("currentPrice", None):
+                updateCommoditylowPrice(data["currentPrice"], commodityFormat.commodity_id)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        commodityFormat = get_object_or_404(CommodityFormat, pk=kwargs.get("pk", 0))
+        commodity = commodityFormat.commodity
+        commodityFormat.isEnabled = False
+        with transaction.atomic():
+            commodityFormat.save()
+            if commodityFormat.currentPrice <= commodity.lowPrice:
+                lowPrice = commodity.formats.filter(isEnabled=True).aggregate(Min('currentPrice'))
+                commodity.lowPrice = lowPrice["currentPrice__min"]
+                commodity.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BranchCommoditysList(mixins.ListModelMixin,
@@ -197,3 +233,10 @@ class BranchCommoditysList(mixins.ListModelMixin,
         page = self.paginate_queryset(commoditys)
         serializer = CommoditySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+def updateCommoditylowPrice(price, commodityId):
+    commodity = Commodity.objects.get(id=commodityId)
+    if price < commodity.lowPrice or commodity.lowPrice==0:
+        commodity.lowPrice = price
+        commodity.save()

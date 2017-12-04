@@ -17,6 +17,6 @@ class HotelBranchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HotelBranch
-        fields = ('name', 'icon', 'pictures', 'province', 'city', 'county', 'address', 'line',
+        fields = ('id', 'name', 'icon', 'pictures', 'province', 'city', 'county', 'address', 'line',
                   'navigation', 'meal_period', 'facility', 'pay_card', 'phone', 'cuisine', 'isEnabled',
                   'create_time', 'hotel', 'hotel_name', 'manager', 'manager_name')

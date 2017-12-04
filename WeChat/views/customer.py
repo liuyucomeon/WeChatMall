@@ -89,6 +89,4 @@ class CustomerAddressViewSet(viewsets.ModelViewSet):
     permission_classes = (CustomerAddressPermission,)
     schema = CustomSchema()
 
-    def list(self, request, *args, **kwargs):
-        pass
 

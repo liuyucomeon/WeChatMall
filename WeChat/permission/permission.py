@@ -59,7 +59,7 @@ class CustomerAddressPermission(permissions.BasePermission):
 
 class ShoppingCartPermission(permissions.BasePermission):
     """
-    验证顾客地址操作权限
+    验证购物车操作权限
     """
 
     def has_permission(self, request, view):
@@ -69,11 +69,30 @@ class ShoppingCartPermission(permissions.BasePermission):
         customer = validateToken(request)
         if re.match(r'^/WeChat/shoppingCarts/$', request.path):
             return True
+
         value = re.match(r'^/WeChat/shoppingCarts/(\d+)/$', request.path)
         if value:
             exists = ShoppingCart.objects.filter(id=value.group(1), customer_id=customer.id).exists()
             if exists:
                 return True
+        return False
+
+class ShoppingCartPermission2(permissions.BasePermission):
+    """
+    验证购物车操作权限
+    """
+    def has_permission(self, request, view):
+        if re.match(r'^/docs/$', request.path):
+            return True
+
+        customer = validateToken(request)
+
+        if "enabled" in request.path:
+            value = re.match(r'^/WeChat/customers/(\d+)/shoppingCarts/enabled/$', request.path)
+        else:
+            value = re.match(r'^/WeChat/customers/(\d+)/shoppingCarts/unabled/$', request.path)
+        if int(value.group(1))==customer.id:
+            return True
         return False
 
 

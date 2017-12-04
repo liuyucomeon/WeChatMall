@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, schema
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
-from WeChat.permission.permission import ShoppingCartPermission, OrderPermission
+from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2
 from WeChatMall.settings import logger
 from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
@@ -50,6 +50,7 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
             :param kwargs: 
                     commodityFormat:商品规格ID
                     count:商品数量
+                    branch_id
             :return: 
         """
         data = request.data
@@ -72,6 +73,7 @@ class ShoppingCartByCustomer(ListAPIView):
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer
     pagination_class = TwentySetPagination
+    permission_classes = (ShoppingCartPermission2,)
     schema = shoppingCartSchema
 
 

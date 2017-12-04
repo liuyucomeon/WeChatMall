@@ -11,6 +11,7 @@ class Commodity(models.Model):
     description = models.CharField(max_length=300, default='', blank=True, help_text="商品描述")
     saleCount = models.IntegerField(default=0, help_text="销量")
     originalPrice = models.FloatField(default=0, help_text="原价")
+    lowPrice = models.FloatField(default=0, help_text="商品列表展示的时候价格")
     isEnabled = models.BooleanField(default=True, help_text="是否可用")
     type = models.ForeignKey('CommodityType', models.CASCADE, 'commodities', help_text="所属类型")
     productionDateFrom = models.DateTimeField(default=timezone.now, help_text="生产日期开始")
@@ -40,7 +41,8 @@ class CommodityFormat(models.Model):
     inventory = models.IntegerField(default=0, help_text="库存")
     currentPrice = models.FloatField(default=0, help_text="现价")
     commodity = models.ForeignKey('Commodity', models.CASCADE, 'formats', help_text="所属商品")
-    image = models.CharField(max_length=100, help_text="规格图片")
+    image = models.CharField(max_length=100, default="", blank=True, help_text="规格图片")
+    isEnabled = models.BooleanField(default=True, help_text="是否可用")
 
 
 class CommodityType(models.Model):

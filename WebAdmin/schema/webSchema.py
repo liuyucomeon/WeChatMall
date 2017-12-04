@@ -334,7 +334,7 @@ webAccessTokenSchema = ManualSchema(
 shoppingCartSchema = ManualSchema(
     description="获取用户不同门店下购物车列表",
     fields=[
-        openidField,
+        tokenField,
         coreapi.Field(
             "id",
             required=True,
