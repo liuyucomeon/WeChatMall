@@ -144,7 +144,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """
         创建订单 \n
-            status : 状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '交易完成'), 
+            status : 状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')
+                                , (3, '已发货'), (4, '交易完成'), 
             customer : 买家 
             leaveMessage :  买家留言, 
             customerAddress : 收货地址

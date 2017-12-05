@@ -425,8 +425,8 @@ searchOrderSchema = ManualSchema(
             "status",
             required=False,
             location="query",
-            description="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '未发货')"
-                        ", (4, '已发货'), (5, '交易完成')",
+            description="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')"
+                        ", (3, '已发货'), (4, '交易完成')",
             schema=coreschema.String()
         ),
         coreapi.Field(

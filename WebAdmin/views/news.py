@@ -125,3 +125,11 @@ class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     schema = CustomSchema()
+
+
+@api_view(['POST'])
+@schema(publishNewsSchema)
+def publishNews(request, hotelId):
+    """
+    发布新闻到微信 
+    """
