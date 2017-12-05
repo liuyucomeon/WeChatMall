@@ -76,6 +76,8 @@ urlpatterns = [
     # 获取单个门店下的商品（按类型）
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/(?P<commodityType>[0-9]+)/commoditys/$',
         commodity.BranchCommoditysList.as_view(), name='BranchCommoditysByType-List'),
+    # 订单搜索
+    url(r'^hotelBranchs/(?P<branchId>[0-9]+)/orders/', order.OrderSearchView.as_view(), name='searchOrder'),
     # 根据商品id获取所以规格
     url(r'^commoditys/(?P<commodityId>[0-9]+)/commodityFormats/$', commodity.getCommodityFormatsByCommodity
         , name='CommodityFormatsByCommodity'),

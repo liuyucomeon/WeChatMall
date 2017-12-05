@@ -410,6 +410,49 @@ orderSchema = ManualSchema(
     ]
 )
 
+# 搜索订单
+searchOrderSchema = ManualSchema(
+    fields=[
+        tokenField,
+        coreapi.Field(
+            "branchId",
+            required=True,
+            location="path",
+            description="酒店id",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "status",
+            required=False,
+            location="query",
+            description="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '未发货')"
+                        ", (4, '已发货'), (5, '交易完成')",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "createTimeFrom",
+            required=False,
+            location="query",
+            description="创建时间起始",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "createTimeTo",
+            required=False,
+            location="query",
+            description="创建时间结束",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "orderNum",
+            required=False,
+            location="query",
+            description="订单号",
+            schema=coreschema.String()
+        ),
+    ]
+)
+
 # 快递查询
 queryTrackSchema = ManualSchema(
     description="快递单号查询",

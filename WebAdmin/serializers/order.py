@@ -44,7 +44,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+        fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
                   'leaveMessage', 'commoditys', 'trackingNumber')
 
     def create(self, validated_data):
@@ -65,6 +65,15 @@ class OrderSerializer(serializers.ModelSerializer):
         order.commoditys = orderCommodityFormatList
         return order
 
+class SimpOrderSerializer(serializers.ModelSerializer):
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    totalPrice = serializers.FloatField(required=False, read_only=True)
+    status = serializers.IntegerField(required=False, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'trackingNumber')
 
 class TrackCompanySerializer(serializers.ModelSerializer):
 

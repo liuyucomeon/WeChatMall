@@ -1,10 +1,11 @@
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, schema
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
 from WebAdmin.models import Order, TrackCompany
-from WebAdmin.schema.webSchema import CustomSchema
-from WebAdmin.serializers.order import OrderSerializer, TrackCompanySerializer
+from WebAdmin.schema.webSchema import CustomSchema, searchOrderSchema
+from WebAdmin.serializers.order import OrderSerializer, TrackCompanySerializer, SimpOrderSerializer
 from WebAdmin.utils.page import TwentySetPagination
 
 
@@ -30,6 +31,42 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         pass
+
+
+
+class OrderSearchView(ListAPIView):
+
+    queryset = Order.objects.all()
+    serializer_class = SimpOrderSerializer
+    schema = searchOrderSchema
+    pagination_class = TwentySetPagination
+
+    def get(self, request, *args, **kwargs):
+        """
+        搜索订单 \n
+            :param request: 
+            :param branchId: 酒店id 必须
+                    status:状态 非必须
+                    createTimeFrom: 起始日期 非必须
+                    createTimeTo: 结束日期 非必须
+                    orderNum: 订单号 非必须
+            :return: 
+        """
+
+        data = request.query_params
+        orders = Order.objects.filter(branch_id=kwargs["branchId"])
+        if data.get("status", None):
+            orders = orders.filter(status=data["status"])
+        if data.get("createTimeFrom", None):
+            orders = orders.filter(createTime__gte=data["createTimeFrom"])
+        if data.get("createTimeTo", None):
+            orders = orders.filter(createTime__lte=data["createTimeTo"])
+        if data.get("orderNum", None):
+            orders = orders.filter(id__contains=data["orderNum"])
+        page = self.paginate_queryset(orders)
+        serializer = SimpOrderSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
 
 
 class TrackCompanyListView(ListAPIView):

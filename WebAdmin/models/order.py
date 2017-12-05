@@ -23,8 +23,9 @@ class Order(models.Model):
     """
     订单
     """
-    status = models.IntegerField(choices=((0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '交易完成'))
-                                 ,default=1, help_text="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '交易完成')")
+    status = models.IntegerField(choices=((0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '未发货')
+                                , (4, '已发货'), (5, '交易完成')) ,default=1,
+                                 help_text="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付'), (3, '交易完成')")
     customer = models.ForeignKey('Customer', models.CASCADE, 'orders', help_text="顾客id")
     branch = models.ForeignKey('HotelBranch', models.CASCADE, help_text="所属门店id")
     createTime = models.DateTimeField(default=timezone.now, help_text="创建时间")

@@ -219,13 +219,13 @@ class BranchCommoditysList(mixins.ListModelMixin,
 
     def get(self, request, branchId, commodityType=None, order="-saleCount"):
         """
-        查询门店下的商品列表
-        :param commodityType: 商品类型
-        :param request: 
-        :param branchId: 门店id
-        :param order: 排序规则(+:由小->大, -:由大->小,可选字段[saleCount,createTime,originalPrice
-        ,currentPrice])
-        :return: 
+        查询门店下的商品列表 \n
+            :param commodityType: 商品类型
+            :param request: 
+            :param branchId: 门店id
+            :param order: 排序规则(+:由小->大, -:由大->小,可选字段[saleCount,createTime,originalPrice
+            ,currentPrice])
+            :return: 
         """
         commoditys = Commodity.objects.filter(type__branch_id=branchId, isEnabled=True).order_by(order)
         if commodityType is not None:
