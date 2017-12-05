@@ -127,9 +127,10 @@ class NewsViewSet(viewsets.ModelViewSet):
     schema = CustomSchema()
 
 
-@api_view(['POST'])
-@schema(publishNewsSchema)
-def publishNews(request, hotelId):
-    """
-    发布新闻到微信 
-    """
+# @api_view(['POST'])
+# # @schema(publishNewsSchema)
+# def publishNews(request, hotelId):
+#     """
+#     发布新闻到微信
+#     """
+#     pass
