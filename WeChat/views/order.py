@@ -2,7 +2,9 @@ import json
 
 import requests
 from django.db.models import F
+import datetime
 from django.forms import model_to_dict
+from django_redis import get_redis_connection
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, schema, permission_classes
 from rest_framework.generics import ListAPIView, DestroyAPIView
@@ -13,7 +15,8 @@ from WeChatMall.settings import logger
 from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany, Commodity
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
     queryTrackSchema, deleteSCartBatch
-from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer
+from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer, \
+    OrderShortSerializer
 from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -144,18 +147,20 @@ class OrderViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """
         创建订单 \n
-            status : 状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')
-                                , (3, '已发货'), (4, '交易完成'), 
-            customer : 买家 
+            branch : 商家id
             leaveMessage :  买家留言, 
-            customerAddress : 收货地址
+            customerAddress : 收货地址id
             commoditys : [
                 商品列表{commodityFormat:商品规格id,count:数量}
             ]
+            trackingNumber: 快递单号
         """
         data = request.data
-
-        orderSerializer = OrderSerializer(data=data)
+        orderNum = generateOrderNum()
+        data["orderNum"] = orderNum
+        data["customer"] = request.customer.id
+        data["status"] = 1
+        orderSerializer = OrderShortSerializer(data=data)
         if orderSerializer.is_valid():
             orderSerializer.save()
             # 减少库存
@@ -262,4 +267,15 @@ def TrackComNum(request):
         order += 1
     return Response(status=status.HTTP_200_OK)
 
+
+def generateOrderNum():
+    redisDB = get_redis_connection('default')
+    randomNum = str(redisDB.lpop("orderNum").decode('utf-8'))
+    zeroCount = 6 - len(randomNum)
+    randomNum = '0' * zeroCount + randomNum
+    now = datetime.datetime.now()
+    month = str(now.month) if len(str(now.month)) == 2 else '0' + str(now.month)
+    day = str(now.day) if len(str(now.day)) == 2 else '0' + str(now.day)
+    orderNum = str(now.year)[-2:] + month + day + randomNum
+    return orderNum
 

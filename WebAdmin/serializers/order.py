@@ -37,6 +37,14 @@ class OrderCommodityFormatMappingSerializer(serializers.ModelSerializer):
         model = OrderCommodityFormatMapping
         fields = ('count', 'commodityFormat', 'order')
 
+class OrderCmdFmtMappingShortSerializer(serializers.ModelSerializer):
+    order = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all(), required=False)
+    commodityFormat = serializers.PrimaryKeyRelatedField(queryset=CommodityFormat.objects.all())
+
+    class Meta:
+        model = OrderCommodityFormatMapping
+        fields = ('count', 'commodityFormat', 'order')
+
 
 class OrderSerializer(serializers.ModelSerializer):
     commoditys = OrderCommodityFormatMappingSerializer(many=True)
@@ -47,7 +55,36 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber')
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum')
+
+    # def create(self, validated_data):
+    #     commoditys = validated_data.pop('commoditys')
+    #     # 订单总金额
+    #     totalPrice = 0
+    #     for commodity in commoditys:
+    #         totalPrice += commodity["commodityFormat"].currentPrice * commodity["count"]
+    #
+    #     validated_data['totalPrice'] = totalPrice
+    #     order = Order.objects.create(**validated_data)
+    #     orderCommodityFormatList = []
+    #     for commodity in commoditys:
+    #         orderCommodityFormat = OrderCommodityFormatMapping.objects.create(order=order,
+    #                                     commodityFormat=commodity["commodityFormat"], count=commodity["count"])
+    #         orderCommodityFormatList.append(orderCommodityFormat)
+    #
+    #     order.commoditys = orderCommodityFormatList
+    #     return order
+
+class OrderShortSerializer(serializers.ModelSerializer):
+    commoditys = OrderCmdFmtMappingShortSerializer(many=True)
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    totalPrice = serializers.FloatField(required=False, read_only=True)
+    status = serializers.IntegerField(required=False, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum')
 
     def create(self, validated_data):
         commoditys = validated_data.pop('commoditys')

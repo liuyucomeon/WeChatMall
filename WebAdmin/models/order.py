@@ -35,6 +35,7 @@ class Order(models.Model):
     leaveMessage = models.CharField(max_length=100, default="", help_text="买家留言")
     trackingNumber = models.CharField(max_length=50, default="", blank=True, help_text="快递单号")
     shortName = models.CharField(max_length=10, help_text="快递公司缩写")
+    orderNum = models.CharField(help_text="订单号", max_length=20)
 
     class Meta:
         ordering = ['-createTime']
