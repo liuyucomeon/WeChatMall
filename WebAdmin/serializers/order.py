@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from WebAdmin.models import ShoppingCart, Order, OrderCommodityFormatMapping, CommodityFormat, TrackCompany
 from WebAdmin.serializers.commodity import CommodityFormatSerializer
+from WebAdmin.serializers.customer import CustomerAddressSerializer
 
 
 class ShoppingCartSerializer(serializers.ModelSerializer):
@@ -20,10 +21,11 @@ class ShoppingCartRSerializer(serializers.ModelSerializer):
     commodityFormat = CommodityFormatSerializer(read_only=True)
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     isEnabled = serializers.BooleanField(read_only=True)
+    description = serializers.CharField(read_only=True)
 
     class Meta:
         model = ShoppingCart
-        fields = ('id','commodityFormat','count','customer',
+        fields = ('id','commodityFormat','count','customer', 'description',
                   'branch','isEnabled', 'createTime')
 
 
@@ -66,6 +68,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
 class SimpOrderSerializer(serializers.ModelSerializer):
+    customerAddress = CustomerAddressSerializer()
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     totalPrice = serializers.FloatField(required=False, read_only=True)
     status = serializers.IntegerField(required=False, read_only=True)

@@ -68,7 +68,6 @@ class OrderSearchView(ListAPIView):
         return self.get_paginated_response(serializer.data)
 
 
-
 class TrackCompanyListView(ListAPIView):
 
     queryset = Order.objects.all()

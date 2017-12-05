@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2
 from WeChatMall.settings import logger
-from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany
+from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany, Commodity
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
     queryTrackSchema, deleteSCartBatch
 from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer
@@ -86,6 +86,18 @@ class ShoppingCartByCustomer(ListAPIView):
             shoppings = shoppings.filter(isEnabled=False)
 
         page = self.paginate_queryset(shoppings)
+
+        # 获取商品描述
+        commodityIdSet = set()
+        for one in page:
+            commodityIdSet.add(one.commodityFormat.commodity_id)
+        descriptions = Commodity.objects.filter(id__in=commodityIdSet).values("id", "description")
+        descriptionMap = {}
+        for description in descriptions:
+            descriptionMap[description["id"]] = description["description"]
+        for one in page:
+            one.description = descriptionMap[one.commodityFormat.commodity_id]
+
         serializer = ShoppingCartRSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
@@ -127,7 +139,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     pagination_class = TwentySetPagination
     permission_classes = (OrderPermission,)
-    # schema = WeChatCommonSchema()
+    schema = CustomSchema()
 
     def create(self, request, *args, **kwargs):
         """
