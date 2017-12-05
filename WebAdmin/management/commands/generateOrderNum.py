@@ -18,19 +18,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         randomList = random.sample(range(0, 1000000), 100000);
         redisDB = get_redis_connection('default')
-        redisDB.lpush("orderNum", randomList)
+        redisDB.lpush("orderNum", *randomList)
 
 if __name__ == "__main__":
-    # randomList = random.sample(range(0, 1000000), 100000);
-    # redisDB = get_redis_connection('default')
-    # redisDB.lpush("orderNum", *randomList)
+    randomList = random.sample(range(0, 1000000), 100000);
     redisDB = get_redis_connection('default')
-    a = redisDB.lpop("orderNum")
-    randomNum = str(redisDB.lpop("orderNum").decode('utf-8'))
-    zeroCount = 6 - len(randomNum)
-    randomNum = '0' * zeroCount + randomNum
-    now = datetime.datetime.now()
-    month = str(now.month) if len(str(now.month))==2 else '0'+ str(now.month)
-    day = str(now.day) if len(str(now.day))==2 else '0'+ str(now.day)
-    orderNum = str(now.year)[-2:] + month + day + randomNum
-    print(orderNum)
+    redisDB.lpush("orderNum", *randomList)
+    # redisDB = get_redis_connection('default')
+    # a = redisDB.lpop("orderNum")
+    # randomNum = str(redisDB.lpop("orderNum").decode('utf-8'))
+    # zeroCount = 6 - len(randomNum)
+    # randomNum = '0' * zeroCount + randomNum
+    # now = datetime.datetime.now()
+    # month = str(now.month) if len(str(now.month))==2 else '0'+ str(now.month)
+    # day = str(now.day) if len(str(now.day))==2 else '0'+ str(now.day)
+    # orderNum = str(now.year)[-2:] + month + day + randomNum
+    # print(orderNum)

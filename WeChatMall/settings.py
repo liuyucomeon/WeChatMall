@@ -54,7 +54,7 @@ CRONJOBS = [
     # 每隔十分钟运行一次
     ('* * * * *', 'django.core.management.call_command', ['cleanUnpaidOrder']),
     # 每天12:00运行一次
-    ('0 0 * * *', 'django.core.management.call_command', ['generateOrderNum']),
+    ('* * * * *', 'django.core.management.call_command', ['generateOrderNum']),
 ]
 
 MIDDLEWARE = [
@@ -117,7 +117,8 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
+        # "LOCATION": "redis://127.0.0.1:6379/0",
+        "LOCATION": "redis://114.215.220.241:6379/0",
         # "KEY_PREFIX": "prefix",   redis key前缀，默认为空
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
