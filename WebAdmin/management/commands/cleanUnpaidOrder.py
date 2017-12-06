@@ -19,8 +19,10 @@ from WebAdmin.models import Order
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        logger.info("begin clean expired order")
         Order.objects.filter(status=1, createTime__lte=(timezone.now() -
-                            datetime.timedelta(hours=1))).update(status=0)
+                             datetime.timedelta(hours=1))).update(status=0)
+        logger.info("clean expired order success")
 
 
 if __name__ == "__main__":

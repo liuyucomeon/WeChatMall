@@ -16,11 +16,14 @@ from WeChatMall.settings import logger
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        logger.info("生产订单号开始")
-        randomList = random.sample(range(0, 1000000), 100000);
-        redisDB = get_redis_connection('default')
-        redisDB.lpush("orderNum", *randomList)
-        logger.info("生产订单号结束")
+        logger.info("begin generate order")
+        try:
+            randomList = random.sample(range(0, 1000000), 100000);
+            redisDB = get_redis_connection('default')
+            redisDB.lpush("orderNum", *randomList)
+        except Exception as e:
+            logger.info(e)
+        logger.info("end generate order")
 
 if __name__ == "__main__":
     randomList = random.sample(range(0, 1000000), 100000);
