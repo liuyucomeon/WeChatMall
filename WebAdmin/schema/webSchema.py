@@ -395,14 +395,14 @@ orderSchema = ManualSchema(
         ),
         coreapi.Field(
             "page",
-            required=True,
+            required=False,
             location="query",
             description="页数",
             schema=coreschema.String()
         ),
         coreapi.Field(
             "pageSize",
-            required=True,
+            required=False,
             location="query",
             description="每页大小",
             schema=coreschema.String()
@@ -412,6 +412,7 @@ orderSchema = ManualSchema(
 
 # 搜索订单
 searchOrderSchema = ManualSchema(
+    description="搜索订单",
     fields=[
         tokenField,
         coreapi.Field(
@@ -426,7 +427,7 @@ searchOrderSchema = ManualSchema(
             required=False,
             location="query",
             description="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')"
-                        ", (3, '已发货'), (4, '交易完成')",
+                        ", (3, '已发货'), (4, '交易完成'), (5, '退货'),",
             schema=coreschema.String()
         ),
         coreapi.Field(

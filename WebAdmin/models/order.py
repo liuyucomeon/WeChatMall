@@ -24,9 +24,9 @@ class Order(models.Model):
     订单
     """
     status = models.IntegerField(choices=((0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')
-                                , (3, '已发货'), (4, '交易完成')) ,default=1,
+                                , (3, '已发货'), (4, '交易完成'), (5, '退货')) ,default=1,
                                  help_text="订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付未发货')"
-                                           ", (3, '已发货'), (4, '交易完成')")
+                                           ", (3, '已发货'), (4, '交易完成'), (5, '退货')")
     customer = models.ForeignKey('Customer', models.CASCADE, 'orders', help_text="顾客id")
     branch = models.ForeignKey('HotelBranch', models.CASCADE, help_text="所属门店id")
     createTime = models.DateTimeField(default=timezone.now, help_text="创建时间")
@@ -35,7 +35,11 @@ class Order(models.Model):
     leaveMessage = models.CharField(max_length=100, default="", help_text="买家留言")
     trackingNumber = models.CharField(max_length=50, default="", blank=True, help_text="快递单号")
     shortName = models.CharField(max_length=10, help_text="快递公司缩写")
-    orderNum = models.CharField(help_text="订单号", max_length=20)
+    orderNum = models.CharField(help_text="订单号", max_length=20, unique=True)
+    hasComment = models.BooleanField(default=False, help_text="是否已评价")
+    hasModifyComment =  models.BooleanField(default=False, help_text="是否已修改评价")
+    remarks = models.CharField(default="", blank=True, max_length=300, help_text="卖家备注")
+    isHideToCustomer = models.BooleanField(default=False, help_text="是否对用户可见(微信端删除订单)")
 
     class Meta:
         ordering = ['-createTime']

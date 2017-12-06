@@ -66,10 +66,11 @@ class CommodityComment(models.Model):
     """
     商品评论
     """
-    commodity = models.ForeignKey('Commodity', models.CASCADE, 'comments', help_text="所属商品")
+    commodity = models.ForeignKey('Commodity', models.CASCADE, 'comments', help_text="所属商品id")
     content = models.CharField(max_length=100, help_text="内容")
     icons = models.CharField(max_length=500, default='', blank=True, help_text="评论照片,路径以逗号分隔，最多六张")
-    customer = models.ForeignKey('Customer', models.CASCADE, 'comments', help_text="评论者")
+    customer = models.ForeignKey('Customer', models.CASCADE, 'comments', help_text="评论者id")
+    order = models.ForeignKey('Order', models.CASCADE, help_text="订单id")
     createTime = models.DateTimeField(default=timezone.now, help_text="创建时间")
     updateTime = models.DateTimeField(auto_now=timezone.now, help_text="更新时间")
 

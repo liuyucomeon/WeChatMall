@@ -7,7 +7,8 @@ from django.forms import model_to_dict
 from django_redis import get_redis_connection
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, schema, permission_classes
-from rest_framework.generics import ListAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, \
+    get_object_or_404
 from rest_framework.response import Response
 
 from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2
@@ -16,7 +17,7 @@ from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodity
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
     queryTrackSchema, deleteSCartBatch
 from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer, \
-    OrderShortSerializer
+    OrderShortSerializer, OrderDetailSerializer
 from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -175,6 +176,101 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CreateOrderView(CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderShortSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (OrderPermission,)
+    schema = CustomSchema()
+
+    def post(self, request, *args, **kwargs):
+        """
+        创建订单 \n
+            branch : 商家id
+            leaveMessage :  买家留言, 
+            customerAddress : 收货地址id
+            commoditys : [
+                商品列表{commodityFormat:商品规格id,count:数量}
+            ]
+            trackingNumber: 快递单号
+        """
+        data = request.data
+        orderNum = generateOrderNum()
+        data["orderNum"] = orderNum
+        data["customer"] = request.customer.id
+        data["status"] = 1
+        orderSerializer = OrderShortSerializer(data=data)
+        if orderSerializer.is_valid():
+            orderSerializer.save()
+            # 减少库存
+            commoditys = data["commoditys"]
+            for commodity in commoditys:
+                commodityId = commodity["commodityFormat"]
+                CommodityFormat.objects.filter(id=commodityId).update(
+                    inventory=(F("inventory") - commodity["count"]))
+
+            return Response(data=orderSerializer.data)
+        else:
+            return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderDetailSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (OrderPermission,)
+    schema = CustomSchema()
+
+    def get(self, request, *args, **kwargs):
+        """
+        根据订单号查询订单详情 \n
+            :param request: 
+            :param args: 
+            :param kwargs: 
+                        orderNum:订单号
+            :return: 
+        """
+        order = get_object_or_404(Order, orderNum=kwargs["orderNum"])
+        serializer = OrderDetailSerializer(order)
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        """
+        根据订单号修改订单 \n
+            :param request: 
+                        status:订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')"
+                        ", (3, '已发货'), (4, '交易完成'), (5, '退货')
+            :param args: 
+            :param kwargs: 
+                        orderNum:订单号
+            :return: 
+        """
+        data = request.data
+        insertData = {}
+        if "status" in data.keys():
+            insertData["status"] = data["status"]
+        order = get_object_or_404(Order, orderNum=kwargs["orderNum"])
+        serializer = OrderSerializer(order, data=insertData, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        """
+        删除订单 \n
+            :param request: 
+            :param args: 
+            :param kwargs: 
+                    orderNum:订单号
+            :return: 
+        """
+        order = get_object_or_404(Order, orderNum=kwargs["orderNum"])
+        order.isHideToCustomer = True
+        order.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class OrderByCustomer(ListAPIView):
     """
     查询用户订单列表(根据不同门店)
@@ -192,7 +288,7 @@ class OrderByCustomer(ListAPIView):
         param = request.query_params
         page = param.get("page", 1)
         pageSize = param.get("pageSize", 10)
-        orders = Order.objects.filter(customer_id=pk)
+        orders = Order.objects.filter(customer_id=pk, isHideToCustomer=False)
         if param.get("branchId", None):
             orders = orders.filter(branch_id=param["branchId"])
         orders = orders[(int(page)-1)*int(pageSize) : int(pageSize)]
@@ -200,7 +296,7 @@ class OrderByCustomer(ListAPIView):
         orderIdList = getFieldList(orders)
 
         ocfms = OrderCommodityFormatMapping.objects.filter(order_id__in=orderIdList)
-        # 商品id集合
+        # 商品规格id集合
         commodityFormatIdSet = getFieldSet(ocfms, "commodityFormat_id")
         commodityFormats = CommodityFormat.objects.filter(id__in=commodityFormatIdSet)
 
@@ -208,12 +304,20 @@ class OrderByCustomer(ListAPIView):
         for k,v in commodityFormatMap.items():
             commodityFormatMap[k] = model_to_dict(v)
 
+        # 获取商品描述
+        commodityIdSet = getFieldSet(commodityFormats, "commodity_id")
+        descriptions = Commodity.objects.filter(id__in=commodityIdSet).values("id", "description")
+        descriptionMap = {}
+        for description in descriptions:
+            descriptionMap[description["id"]] = description["description"]
+
         orderCommodityFormatMap = {}
         for ocfm in ocfms:
-            # ocfm.commodityFormat = commodityFormatMap[ocfm.commodityFormat_id]
             # 订单id为键，商品列表为值
             commodityFormatList = orderCommodityFormatMap.get(ocfm.order_id,[])
             commodityFormatList.append({"count":ocfm.count,
+                                        "description":descriptionMap[
+                                            commodityFormatMap[ocfm.commodityFormat_id]["commodity"]],
                                         "commodityFormat":commodityFormatMap[ocfm.commodityFormat_id]})
             orderCommodityFormatMap[ocfm.order_id] = commodityFormatList
 

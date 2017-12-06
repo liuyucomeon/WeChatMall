@@ -54,8 +54,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum')
+        fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum', 'hasComment',
+                  'hasModifyComment', 'remarks')
 
     # def create(self, validated_data):
     #     commoditys = validated_data.pop('commoditys')
@@ -84,7 +85,8 @@ class OrderShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum')
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum','hasComment',
+                  'hasModifyComment', 'remarks')
 
     def create(self, validated_data):
         commoditys = validated_data.pop('commoditys')
@@ -114,6 +116,24 @@ class SimpOrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
                   'leaveMessage', 'trackingNumber')
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    """
+    订单详情，最具体
+    """
+    commoditys = OrderCommodityFormatMappingSerializer(many=True)
+    customerAddress = CustomerAddressSerializer()
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    totalPrice = serializers.FloatField(required=False, read_only=True)
+    status = serializers.IntegerField(required=False, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum', 'hasComment',
+                  'hasModifyComment', 'remarks')
+
 
 class TrackCompanySerializer(serializers.ModelSerializer):
 

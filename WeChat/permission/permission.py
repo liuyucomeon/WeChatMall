@@ -113,7 +113,7 @@ class OrderPermission(permissions.BasePermission):
 
         value = re.match(r'^/WeChat/orders/(\d+)/$', request.path)
         if value:
-            exists = Order.objects.filter(id=value.group(1), customer_id=customer.id).exists()
+            exists = Order.objects.filter(orderNum=value.group(1), customer_id=customer.id).exists()
             if exists:
                 return True
         return False

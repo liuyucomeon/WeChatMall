@@ -22,7 +22,7 @@ router.register(r'commodityTypes', CommodityTypeViewSet)
 router.register(r'commoditys', CommodityViewSet)
 router.register(r'commodityFormats', CommodityFormatViewSet)
 router.register(r'customers', CustomerViewSet)
-router.register(r'orders', OrderViewSet)
+# router.register(r'orders', OrderViewSet)
 
 
 # The API URLs are now determined automatically by the router.
@@ -82,5 +82,7 @@ urlpatterns = [
     url(r'^commoditys/(?P<commodityId>[0-9]+)/commodityFormats/$', commodity.getCommodityFormatsByCommodity
         , name='CommodityFormatsByCommodity'),
     # 获取快递公司列表
-    url(r'^trackCompanys/$', order.TrackCompanyListView.as_view(), name='trackCompanys')
+    url(r'^trackCompanys/$', order.TrackCompanyListView.as_view(), name='trackCompanys'),
+    # 更新订单和根据订单号查询订单
+    url(r'^orders/(?P<orderNum>[0-9]+)/', order.OrderDetailView.as_view(), name='orderDetail'),
 ]

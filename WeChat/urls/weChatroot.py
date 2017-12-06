@@ -9,7 +9,7 @@ from WeChat.views.order import ShoppingCartViewSet, OrderViewSet
 router = DefaultRouter()
 router.register(r'customerAddresses', CustomerAddressViewSet)
 router.register(r'shoppingCarts', ShoppingCartViewSet)
-router.register(r'orders', OrderViewSet)
+# router.register(r'orders', OrderViewSet)
 
 
 urlpatterns = [
@@ -60,6 +60,9 @@ urlpatterns = [
     # 获取单个门店商品类型
     url(r'^hotelBranchs/(?P<branchId>[0-9]+)/commodityTypes/$', commodity.BranchCommodityTypesList.as_view()
         , name='BranchCommodityTypes-List'),
+    # 订单查询修改删除
+    url(r'^orders/(?P<orderNum>[0-9]+)/$', order.OrderDetailView.as_view()
+        , name='orderDetail'),
     # 查询快递单号
     url(r'^queryTrack/$', order.queryTrack),
     # 快递公司入库

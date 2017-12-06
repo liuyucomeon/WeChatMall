@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 CRONJOBS = [
     # 每隔十分钟运行一次
     ('* * * * *', 'django.core.management.call_command', ['cleanUnpaidOrder']),
-    # 每天12:00运行一次
+    # 每天00:00运行一次
     ('* * * * *', 'django.core.management.call_command', ['generateOrderNum']),
 ]
 
