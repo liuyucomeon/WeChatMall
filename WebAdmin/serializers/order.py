@@ -50,12 +50,12 @@ class OrderSerializer(serializers.ModelSerializer):
     commoditys = OrderCommodityFormatMappingSerializer(many=True)
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     totalPrice = serializers.FloatField(required=False, read_only=True)
-    status = serializers.IntegerField(required=False, read_only=True)
+    status = serializers.IntegerField(required=False)
 
     class Meta:
         model = Order
         fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum', 'hasComment',
+                  'leaveMessage', 'commoditys', 'trackingNumber','shortName', 'orderNum', 'hasComment',
                   'hasModifyComment', 'remarks')
 
     # def create(self, validated_data):
@@ -85,7 +85,7 @@ class OrderShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum','hasComment',
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'shortName','orderNum','hasComment',
                   'hasModifyComment', 'remarks')
 
     def create(self, validated_data):
@@ -115,7 +115,7 @@ class SimpOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'trackingNumber', 'orderNum','hasComment',
+                  'leaveMessage', 'trackingNumber', 'shortName','orderNum','hasComment',
                   'hasModifyComment', 'remarks' )
 
 
@@ -132,7 +132,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'commoditys', 'trackingNumber', 'orderNum', 'hasComment',
+                  'leaveMessage', 'commoditys', 'trackingNumber', 'shortName','orderNum', 'hasComment',
                   'hasModifyComment', 'remarks')
 
 

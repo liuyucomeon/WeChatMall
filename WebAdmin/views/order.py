@@ -1,5 +1,7 @@
 import copy
+import json
 
+import requests
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, schema
 from rest_framework.generics import ListAPIView, UpdateAPIView, get_object_or_404, RetrieveAPIView, \
@@ -8,7 +10,7 @@ from rest_framework.response import Response
 
 from WebAdmin.models import Order, TrackCompany
 from WebAdmin.permission.permission import OrderPermission
-from WebAdmin.schema.webSchema import CustomSchema, searchOrderSchema
+from WebAdmin.schema.webSchema import CustomSchema, searchOrderSchema, queryTrackSchema
 from WebAdmin.serializers.order import OrderSerializer, TrackCompanySerializer, SimpOrderSerializer, \
     OrderDetailSerializer
 from WebAdmin.utils.page import TwentySetPagination
@@ -174,3 +176,20 @@ class TrackCompanyListView(ListAPIView):
         serializer = TrackCompanySerializer(companys, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+@schema(queryTrackSchema)
+def queryTrack(request):
+    """
+    根据订单号查询物流状态
+    :param request:
+    :return:
+    """
+    param = request.query_params
+    orderNum = param["orderNum"]
+    order = get_object_or_404(Order, orderNum=orderNum)
+    key = "295b109e65aa680d0b3160a37f45d046"
+    url = "http://v.juhe.cn/exp/index?key=" + key + "&com=" + order.shortName \
+          + "&no=" + order.trackingNumber
+    result = requests.get(url).text
+    return Response(json.loads(result))

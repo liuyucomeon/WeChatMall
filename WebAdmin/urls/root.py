@@ -83,6 +83,8 @@ urlpatterns = [
         , name='CommodityFormatsByCommodity'),
     # 获取快递公司列表
     url(r'^trackCompanys/$', order.TrackCompanyListView.as_view(), name='trackCompanys'),
+    # 查询快递单号
+    url(r'^queryTrack/$', order.queryTrack),
     # 更新订单和根据订单号查询订单
     url(r'^orders/(?P<orderNum>[0-9]+)/', order.OrderDetailView.as_view(), name='orderDetail'),
 ]

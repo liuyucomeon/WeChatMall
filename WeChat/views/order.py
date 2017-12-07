@@ -343,14 +343,16 @@ class OrderByCustomer(ListAPIView):
 @schema(queryTrackSchema)
 def queryTrack(request):
     """
-    根据快递单号查询
+    根据订单号查询物流状态
     :param request:
     :return:
     """
     param = request.query_params
+    orderNum = param["orderNum"]
+    order = get_object_or_404(Order, orderNum=orderNum)
     key = "295b109e65aa680d0b3160a37f45d046"
-    url = "http://v.juhe.cn/exp/index?key=" + key + "&com=" + param["com"] \
-          + "&no=" + param["no"]
+    url = "http://v.juhe.cn/exp/index?key=" + key + "&com=" + order.shortName \
+          + "&no=" + order.trackingNumber
     result = requests.get(url).text
     return Response(json.loads(result))
 

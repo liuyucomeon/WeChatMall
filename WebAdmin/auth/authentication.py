@@ -10,7 +10,7 @@ from WebAdmin.models import Customer
 
 logger = logging.getLogger('django')
 NOT_AUTH_URL = [r"^/WebAdmin/$",r"^/docs/$",r"^/WebAdmin/login/$",r"^/WebAdmin/register_code/\d+/$",
-                r"^/WebAdmin/wechatVerify/",r'/WeChat/auth/$',r"/WeChat/.*"]
+                r"^/WebAdmin/wechatVerify/",r"^/WebAdmin/queryTrack/$",r'/WeChat/auth/$',r"/WeChat/.*"]
 
 
 class MyTokenAuthentication(authentication.BaseAuthentication):

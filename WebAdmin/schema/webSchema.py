@@ -456,20 +456,13 @@ searchOrderSchema = ManualSchema(
 
 # 快递查询
 queryTrackSchema = ManualSchema(
-    description="快递单号查询",
+    description="根据订单号查询物流",
     fields=[
         coreapi.Field(
-            "com",
+            "orderNum",
             required=True,
             location="query",
-            description="快递公司编号",
-            schema=coreschema.String()
-        ),
-        coreapi.Field(
-            "no",
-            required=True,
-            location="query",
-            description="快递单号",
+            description="订单号",
             schema=coreschema.String()
         ),
     ]
