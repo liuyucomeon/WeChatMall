@@ -64,9 +64,10 @@ class OrderDetailView(RetrieveUpdateAPIView):
         管理员更新订单 \n
             :param request: 
                         trackingNumber:物流单号
+                        shortName:快递公司简称
                         remarks:卖家备注
                         status:订单状态(0, '已失效'), (1, '待支付'), (2, '已完成支付|未发货')"
-                        ", (3, '已发货'), (4, '交易完成'), (5, '退货')
+                        ", (3, '已发货'), (4, '交易完成'), (5, '退货')           
             :param args: 
             :param kwargs:
                         orderNum:订单号(path)                       
@@ -110,6 +111,8 @@ class OrderDetailView(RetrieveUpdateAPIView):
             insertData["remarks"] = data["remarks"]
         if "status" in data.keys():
             insertData["status"] = data["status"]
+        if "shortName" in data.keys():
+            insertData["shortName"] = data["shortName"]
         order = get_object_or_404(Order, orderNum=kwargs["orderNum"])
         serializer = OrderSerializer(order, data=insertData, partial=True)
         if serializer.is_valid():
