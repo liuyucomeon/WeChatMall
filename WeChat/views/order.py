@@ -11,11 +11,12 @@ from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, 
     get_object_or_404
 from rest_framework.response import Response
 
-from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2
+from WeChat.permission.permission import ShoppingCartPermission, OrderPermission, ShoppingCartPermission2, \
+    ShoppingCartPermission3
 from WeChatMall.settings import logger
 from WebAdmin.models import ShoppingCart, Order, CommodityFormat, OrderCommodityFormatMapping, TrackCompany, Commodity
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema, shoppingCartSchema, orderSchema, \
-    queryTrackSchema, deleteSCartBatch
+    queryTrackSchema, deleteSCartBatch, shoppingCart2Schema
 from WebAdmin.serializers.order import ShoppingCartSerializer, OrderSerializer, ShoppingCartRSerializer, \
     OrderShortSerializer, OrderDetailSerializer
 from WebAdmin.utils.common import convertToMapByField, getFieldList, getFieldSet
@@ -66,6 +67,31 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ShoppingCartByIdList(ListAPIView):
+    queryset = ShoppingCart.objects.all()
+    serializer_class = ShoppingCartRSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (ShoppingCartPermission3,)
+    schema = shoppingCart2Schema
+
+    def get(self, request, *args, **kwargs):
+        """
+        根据id列表获取购物车商品 \n
+            :param request: 
+                    idList e.g 1,2,3
+            :param args: 
+            :param kwargs: 
+            :return: 
+        """
+        data = request.query_params
+        idStr = data["idList"]
+        idList = []
+        for id in idStr.split(","):
+            idList.append(int(id))
+        shoppingCarts = ShoppingCart.objects.filter(id__in=idList, customer_id=request.customer.id)
+        serializer = ShoppingCartRSerializer(shoppingCarts, many=True)
+        return Response(serializer.data)
+
 
 class ShoppingCartByCustomer(ListAPIView):
 
@@ -104,6 +130,9 @@ class ShoppingCartByCustomer(ListAPIView):
 
         serializer = ShoppingCartRSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+
 
 
 @api_view(['DELETE'])

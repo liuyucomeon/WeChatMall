@@ -2,6 +2,7 @@ import json
 
 import requests
 from django_redis import get_redis_connection
+from rest_framework import status
 from rest_framework.decorators import api_view, schema
 from rest_framework.response import Response
 
@@ -31,8 +32,12 @@ def pubGraphicMt(request):
         :return: 
     """
     data = request.data
-    hotel = Hotel.objects.get(data["hotelId"])
+    hotel = Hotel.objects.get(id=data["hotelId"])
     accessToken = getAccessToken(hotel)
+    file = request.FILES['file']
+    files =  { 'media' : ('tmp.jpg',file,'image/jpg')}
     url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + accessToken
-    result = requests.post(url, file=request.FILES)
+    result = requests.post(url, files=files)
+    if "errcode" in result.text:
+        return Response(result.text, status=status.HTTP_400_BAD_REQUEST)
     return Response(result.text)

@@ -69,6 +69,9 @@ urlpatterns = [
     # 订单查询修改删除
     url(r'^orders/(?P<orderNum>[0-9]+)/$', order.OrderDetailView.as_view()
         , name='orderDetail'),
+    # 根据id列表查找购物车
+    url(r'^shoppingCart/idList/$', order.ShoppingCartByIdList.as_view()
+        , name='ShoppingCartByIdList'),
     # 查询快递单号
     url(r'^queryTrack/$', order.queryTrack),
     # 快递公司入库

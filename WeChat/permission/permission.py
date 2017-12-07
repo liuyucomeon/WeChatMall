@@ -110,6 +110,18 @@ class ShoppingCartPermission2(permissions.BasePermission):
         return False
 
 
+class ShoppingCartPermission3(permissions.BasePermission):
+    """
+    验证购物车操作权限
+    """
+    def has_permission(self, request, view):
+        if re.match(r'^/docs/$', request.path):
+            return True
+
+        validateToken(request)
+        return True
+
+
 class OrderPermission(permissions.BasePermission):
     """
     验证顾客订单权限
