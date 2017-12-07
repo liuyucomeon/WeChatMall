@@ -114,8 +114,9 @@ class SimpOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("id", "status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
-                  'leaveMessage', 'trackingNumber')
+        fields = ("status", 'customer', 'branch', 'createTime', 'customerAddress', 'totalPrice',
+                  'leaveMessage', 'trackingNumber', 'orderNum','hasComment',
+                  'hasModifyComment', 'remarks' )
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):

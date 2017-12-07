@@ -1,8 +1,9 @@
+from django.db import transaction
 from rest_framework import mixins, generics, status, viewsets
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, RetrieveAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 
-from WeChat.permission.permission import CustomerPermission, CustomerAddressPermission
+from WeChat.permission.permission import CustomerPermission, CustomerAddressPermission, DefaultAddressPermission
 from WebAdmin.models import Customer, CustomerAddress
 from WebAdmin.schema.webSchema import WeChatCommonSchema, CustomSchema
 from WebAdmin.serializers.customer import CustomerSerializer, CustomerAddressSerializer
@@ -88,5 +89,80 @@ class CustomerAddressViewSet(viewsets.ModelViewSet):
     pagination_class = TwentySetPagination
     permission_classes = (CustomerAddressPermission,)
     schema = CustomSchema()
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        customer = request.customer
+        if data.get("isDefault"):
+            data["isDefault"] = False
+        exists = CustomerAddress.objects.filter(customer_id=customer.id).exists()
+        if not exists:
+            data["isDefault"] = True
+        serializer = CustomerAddressSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddressByCustomer(ListAPIView):
+    queryset = CustomerAddress.objects.all()
+    serializer_class = CustomerAddressSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (DefaultAddressPermission,)
+    schema = CustomSchema()
+
+    def get(self, request, *args, **kwargs):
+        """
+        获取用户地址列表 \n
+            :param request: 
+            :param args: 
+            :param kwargs: 
+            :return: 
+        """
+        addresses = CustomerAddress.objects.filter(customer_id=kwargs["pk"])\
+            .order_by("-isDefault")
+        serializer = CustomerAddressSerializer(addresses, many=True)
+        return Response(serializer.data)
+
+
+class DefaultAddress(RetrieveUpdateAPIView):
+    queryset = CustomerAddress.objects.all()
+    serializer_class = CustomerAddressSerializer
+    pagination_class = TwentySetPagination
+    permission_classes = (DefaultAddressPermission,)
+    schema = CustomSchema()
+
+    def get(self, request, *args, **kwargs):
+        """
+        获取用户默认地址 
+        """
+        customerId = kwargs["pk"]
+        defaultAddress = get_object_or_404(CustomerAddress, customer_id=customerId, isDefault=True)
+        serializer = CustomerAddressSerializer(defaultAddress)
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        """
+        修改用户默认地址 \n
+            :param request: 
+                        address:新地址id
+            :param args: 
+            :param kwargs: 
+                        id:用户id
+            :return: 
+        """
+        data = request.data
+        newDefaultAddress = get_object_or_404(CustomerAddress, id=data["address"])
+        newDefaultAddress.isDefault = True
+
+        oldDefaultAddress = CustomerAddress.objects.get(customer_id=kwargs["pk"], isDefault=True)
+        oldDefaultAddress.isDefault = False
+
+        with transaction.atomic():
+            newDefaultAddress.save()
+            oldDefaultAddress.save()
+        return Response(status=status.HTTP_200_OK)
+
 
 

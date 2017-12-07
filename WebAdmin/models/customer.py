@@ -20,6 +20,7 @@ class CustomerAddress(models.Model):
     address = models.CharField(max_length=70, default="", help_text="收获地址")
     receiver = models.CharField(max_length=20, default="", help_text="收获人")
     customer = models.ForeignKey('Customer', models.CASCADE, 'addresses', help_text="顾客id")
+    isDefault = models.BooleanField(default=False, help_text="是否为默认地址")
     createTime = models.DateTimeField(default=timezone.now, help_text="创建时间")
 
     class Meta:

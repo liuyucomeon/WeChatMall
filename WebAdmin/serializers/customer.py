@@ -3,6 +3,13 @@ from rest_framework.generics import get_object_or_404
 
 from WebAdmin.models import Customer, Follower, CustomerAddress
 
+class CustomerAddressSerializer(serializers.ModelSerializer):
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
+    class Meta:
+        model = CustomerAddress
+        fields = '__all__'
+
 
 class CustomerSerializer(serializers.ModelSerializer):
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
@@ -29,9 +36,5 @@ class CustomerSerializer(serializers.ModelSerializer):
         return instance
 
 
-class CustomerAddressSerializer(serializers.ModelSerializer):
-    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
-    class Meta:
-        model = CustomerAddress
-        fields = '__all__'
+

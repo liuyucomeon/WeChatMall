@@ -47,6 +47,12 @@ urlpatterns = [
     # 用户订单
     url(r'^customers/(?P<pk>[0-9]+)/orders/$', order.OrderByCustomer.as_view(),
         name='OrderByCustomerw'),
+    # 用户默认地址
+    url(r'^customers/(?P<pk>[0-9]+)/defaultAddress/$', customer.DefaultAddress.as_view(),
+        name='DefaultAddressw'),
+    # 用户地址列表
+    url(r'^customers/(?P<pk>[0-9]+)/address/$', customer.AddressByCustomer.as_view(),
+        name='AddressByCustomerw'),
     # 微商城登录
     url(r'^customers/login/$', login.loginByOpenId, name='loginByOpenId'),
     # 查询商品

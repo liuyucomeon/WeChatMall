@@ -25,3 +25,4 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
     pagination_class = TwentySetPagination
     schema = CustomSchema()
+
