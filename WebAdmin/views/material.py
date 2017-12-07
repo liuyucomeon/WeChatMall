@@ -3,6 +3,7 @@ import json
 import requests
 from django_redis import get_redis_connection
 from rest_framework.decorators import api_view, schema
+from rest_framework.response import Response
 
 from WebAdmin.models import Hotel
 
@@ -21,16 +22,17 @@ def getAccessToken(hotel):
 
 
 @api_view(['POST'])
-@schema()
 def pubGraphicMt(request):
     """
-    新增图文素材 \n
-        :param request: 
+    上传图文消息内的图片获取URL  \n
+        :param request:
+                    file:图片
+                    hotelId:酒店id
         :return: 
     """
     data = request.data
     hotel = Hotel.objects.get(data["hotelId"])
     accessToken = getAccessToken(hotel)
     url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + accessToken
-    requests.post(url, )
-    pass
+    result = requests.post(url, file=request.FILES)
+    return Response(result.text)

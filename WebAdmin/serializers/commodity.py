@@ -11,7 +11,19 @@ class CommoditySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ShortCommoditySerializer(serializers.ModelSerializer):
+    """
+    查看订单详情时用到
+    """
+    description = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Commodity
+        fields = ('id', 'description')
+
+
 class CommodityFormatSerializer(serializers.ModelSerializer):
+    commodity = ShortCommoditySerializer()
     class Meta:
         model = CommodityFormat
         fields = '__all__'

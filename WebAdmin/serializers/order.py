@@ -2,7 +2,7 @@ from django.forms import model_to_dict
 from rest_framework import serializers
 
 from WebAdmin.models import ShoppingCart, Order, OrderCommodityFormatMapping, CommodityFormat, TrackCompany
-from WebAdmin.serializers.commodity import CommodityFormatSerializer
+from WebAdmin.serializers.commodity import CommodityFormatSerializer, ShortCommoditySerializer
 from WebAdmin.serializers.customer import CustomerAddressSerializer
 
 
@@ -123,7 +123,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     """
     订单详情，最具体
     """
-    commoditys = OrderCommodityFormatMappingSerializer(many=True)
+    commoditys = OrderCommodityFormatMappingSerializer(many=True, read_only=True)
     customerAddress = CustomerAddressSerializer()
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     totalPrice = serializers.FloatField(required=False, read_only=True)

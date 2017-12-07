@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from rest_framework.routers import DefaultRouter
 
-from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity, order
+from WebAdmin.views import verification, login, news, common, menu, hotel, staff, commodity, order, material
 from WebAdmin.views.commodity import CommodityTypeViewSet, CommodityViewSet, CommodityFormatViewSet
 from WebAdmin.views.customer import CustomerViewSet
 from WebAdmin.views.hotel import HotelViewSet, HotelBranchViewSet
@@ -87,4 +87,6 @@ urlpatterns = [
     url(r'^queryTrack/$', order.queryTrack),
     # 更新订单和根据订单号查询订单
     url(r'^orders/(?P<orderNum>[0-9]+)/', order.OrderDetailView.as_view(), name='orderDetail'),
+    # 上传图文消息内的图片获取URL
+    url(r'^materials/pubGraphicMt/', material.pubGraphicMt, name='pubGraphicMt'),
 ]
