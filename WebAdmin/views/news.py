@@ -1,5 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework.decorators import api_view, schema
 from rest_framework.generics import get_object_or_404
@@ -8,6 +11,7 @@ from rest_framework.response import Response
 from WebAdmin.models.news import NewsType, News
 from WebAdmin.schema.webSchema import CustomSchema, swapNewsSchema
 from WebAdmin.serializers.news import NewsTypeSerializer, NewsSerializer
+from WebAdmin.utils.page import TwentySetPagination
 
 
 class NewsTypeViewSet(viewsets.ModelViewSet):
@@ -31,7 +35,7 @@ class NewsTypeViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        maxOrder = NewsType.objects.filter(branch_id=data['branch']).aggregate(Max('order'))
+        maxOrder = NewsType.objects.filter(hotel_id=data['hotel']).aggregate(Max('order'))
         maxOrderNum = 0
         if maxOrder['order__max']:
             maxOrderNum = maxOrder['order__max']
@@ -43,18 +47,18 @@ class NewsTypeViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HotelBranchNewsTypesList(mixins.ListModelMixin,
+class HotelNewsTypesList(mixins.ListModelMixin,
                                generics.GenericAPIView):
 
     queryset = NewsType.objects.all()
     serializer_class = NewsTypeSerializer
     schema = CustomSchema()
 
-    def get(self, request, branchId):
+    def get(self, request, hotelId):
         """
         获取单个酒店新闻类型
         """
-        newsTypes = NewsType.objects.filter(branch_id=branchId)
+        newsTypes = NewsType.objects.filter(hotel_id=hotelId)
         page = self.paginate_queryset(newsTypes)
         if page is not None:
             serializer = NewsTypeSerializer(page, many=True)
@@ -65,13 +69,13 @@ class HotelBranchNewsTypesList(mixins.ListModelMixin,
 
 @api_view(['POST'])
 @schema(swapNewsSchema)
-def swapNewsTypeOrder(request, branchId):
+def swapNewsTypeOrder(request, hotelId):
         """
         交换新闻类型顺序
         """
         data = request.data
-        newsType1 = get_object_or_404(NewsType, pk=data['newsType1'], branch=branchId)
-        newsType2 = get_object_or_404(NewsType, pk=data['newsType2'], branch=branchId)
+        newsType1 = get_object_or_404(NewsType, pk=data['newsType1'], hotel=hotelId)
+        newsType2 = get_object_or_404(NewsType, pk=data['newsType2'], hotel=hotelId)
 
         tmp = newsType1.order
         newsType1.order = newsType2.order
@@ -79,6 +83,28 @@ def swapNewsTypeOrder(request, branchId):
         newsType1.save()
         newsType2.save()
         return Response(status.HTTP_200_OK)
+
+
+class NewsByType(mixins.ListModelMixin,generics.GenericAPIView):
+    """
+    获取新闻类型下的所有新闻
+    :param request:
+    :param typeId: 新闻类型
+    :return:
+    """
+    queryset = NewsType.objects.all()
+    serializer_class = NewsSerializer
+    schema = CustomSchema()
+    pagination_class = TwentySetPagination
+
+    def get(self, request, typeId):
+        """
+        获取新闻类型下的所有新闻
+        """
+        news = News.objects.filter(type_id=typeId)
+        page = self.paginate_queryset(news)
+        serializer = NewsSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class NewsViewSet(viewsets.ModelViewSet):
@@ -92,10 +118,19 @@ class NewsViewSet(viewsets.ModelViewSet):
     destroy:
         根据id删除新闻
     list:
-        查询新闻类型
+        查询新闻
     retrieve:
         根据id查询新闻
     """
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     schema = CustomSchema()
+
+
+# @api_view(['POST'])
+# # @schema(publishNewsSchema)
+# def publishNews(request, hotelId):
+#     """
+#     发布新闻到微信
+#     """
+#     pass

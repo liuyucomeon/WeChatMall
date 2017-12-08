@@ -30,9 +30,9 @@ def login(request):
     token = generateToken()
     staffPic = pickle.dumps(staff)
 
-    redisDB.rpush("tokenList:"+staff.user.username, token)
+    redisDB.rpush("tokenList:" +staff.user.username, token)
     redisDB.expire("tokenList:"+staff.user.username, 24*60*60)
-    redisDB.setex("token:"+token,24*60*60, staffPic)
+    redisDB.setex("token:"+token ,24*60*60, staffPic)
 
     return response.Response({"token": token}, status=status.HTTP_200_OK)
 

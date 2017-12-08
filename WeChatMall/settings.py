@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import logging
+
+from corsheaders.defaults import default_headers
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -39,14 +43,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'corsheaders',
     # 'rest_framework.authtoken'
     'WebAdmin.apps.WebadminConfig',
     'WeChat',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    # 每隔十分钟运行一次
+    ('* * * * *', 'django.core.management.call_command', ['cleanUnpaidOrder']),
+    # 每天00:00运行一次
+    ('* * * * *', 'django.core.management.call_command', ['generateOrderNum']),
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,20 +96,20 @@ WSGI_APPLICATION = 'WeChatMall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'database': 'WeChatMall',
-            'user': 'root',
-            'password': 'liuyu1994',
-            'host': '127.0.0.1',
-            'port': 3306,
-        }
         # 'OPTIONS': {
         #     'database': 'WeChatMall',
         #     'user': 'root',
-        #     'password': 'beijingyan',
-        #     'host': '114.215.220.241',
+        #     'password': 'liuyu1994',
+        #     'host': '127.0.0.1',
         #     'port': 3306,
         # }
+        'OPTIONS': {
+            'database': 'WeChatMall',
+            'user': 'root',
+            'password': 'beijingyan',
+            'host': '114.215.220.241',
+            'port': 3306,
+        }
     }
 }
 
@@ -257,6 +271,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = default_headers + (
+    'token',
+    'openid',
+)
+
+logger = logging.getLogger('django')
+
 # 微信公众号参数
-APPID = "wx3e306817b699239a"
-APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
+# APPID = "wx3e306817b699239a"
+# APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
+wechatUrl = "http://api.weixin.qq.com/cgi-bin/"
