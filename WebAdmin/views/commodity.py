@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from WeChatMall.settings import logger
 from WebAdmin.models import CommodityType, Commodity, CommodityFormat
 from WebAdmin.schema.webSchema import CustomSchema, swapCommodityTypeSchema, tokenSchema, CommodityFormatBySortSchema
-from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer, CommodityFormatSerializer
+from WebAdmin.serializers.commodity import CommodityTypeSerializer, CommoditySerializer, CommodityFormatSerializer, \
+    CommodityFormatSipSerializer
 from WebAdmin.utils.common import updateByDict
 from WebAdmin.utils.page import TwentySetPagination
 
@@ -177,7 +178,7 @@ class CommodityFormatViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        serializer = CommodityFormatSerializer(data=data)
+        serializer = CommodityFormatSipSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             updateCommoditylowPrice(data["currentPrice"], data["commodity"])
@@ -188,7 +189,7 @@ class CommodityFormatViewSet(viewsets.ModelViewSet):
         data = request.data
         commodityFormat = get_object_or_404(CommodityFormat, pk=kwargs.get("pk", 0))
         # updateByDict(commodityFormat, data)
-        serializer = CommodityFormatSerializer(commodityFormat, data=data, partial=True)
+        serializer = CommodityFormatSipSerializer(commodityFormat, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             if data.get("currentPrice", None):

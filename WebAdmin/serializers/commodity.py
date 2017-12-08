@@ -29,6 +29,12 @@ class CommodityFormatSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CommodityFormatSipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommodityFormat
+        fields = '__all__'
+
+
 class CommodityTypeSerializer(serializers.ModelSerializer):
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
