@@ -238,6 +238,6 @@ class BranchCommoditysList(mixins.ListModelMixin,
 
 def updateCommoditylowPrice(price, commodityId):
     commodity = Commodity.objects.get(id=commodityId)
-    if price < commodity.lowPrice or commodity.lowPrice==0:
+    if int(price) < commodity.lowPrice or commodity.lowPrice==0:
         commodity.lowPrice = price
         commodity.save()
