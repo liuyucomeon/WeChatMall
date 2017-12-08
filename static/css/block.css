@@ -1,0 +1,93 @@
+.col-sm-4 {
+	display:table-cell;
+	width:120px;
+}
+.col-sm-8 {
+	display:table-cell;
+	vertical-align:top;
+}
+@media (min-width: 768px){
+	/*
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, 
+	.col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+		float: left;
+	}
+	.col-sm-4 {
+		width: 33.33333333%;
+	}
+	.col-sm-8 {
+		width: 66.66666667%;
+	}
+	*/
+}
+@media (min-width: 500px) and (max-width:1200px){
+	.col-lg-4 {
+		float: left;
+	}
+	.col-lg-4 {
+		width: 50%;
+	}
+}
+@media (min-width: 1200px){
+	.col-lg-4 {
+		float: left;
+	}
+	.col-lg-4 {
+		width: 33.33333333%;
+	}
+}
+@media (min-width: 2000px){
+	.col-lg-4 {
+		float: left;
+	}
+	.col-lg-4 {
+		width: 20%;
+	}
+}
+/*用户列表页 start*/
+.contact-box {
+	background-color: #ffffff;
+	border: 1px solid #e7eaec;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+.contact-box:after{content:"";display:block;clear:both;}
+.contact-box .img-responsive{
+	width:77px;
+	height:77px;
+}
+.contact-box a{display:block;width:100%;}
+.contact-box .inner{display:table;width:100%;}
+.contact-box .m-t-xs strong{
+	width:120px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display:block;
+}
+.contact-box .title{
+	width:100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display:block;
+	font-weight:bold;
+}
+.color_gray{color:#777;}
+@media (max-width: 767px){
+	.contact-box .col-sm-8 {
+		text-align:center;
+	}
+}
+/*用户列表页 end*/
+
+/*用户详细页 start*/
+.view_header{width:100%;display:table;}
+.view_header .row_l{width:80px;padding:10px;display:table-cell;vertical-align:top;}
+.view .avatar{width:60px;height:60px;}
+.view_header .row_r{padding:10px;display:table-cell;vertical-align:top;}
+.view_inner{width:100%;min-height:50px;background-color:#fff;padding:10px;}
+.view_inner .item{width:100%;height:35px;border-bottom:#ccc 1px solid;display:table;}
+.view_inner .item .item_l{display:table-cell;width:100px;padding-left:10px;text-align:left;}
+.view_inner .item .item_r{display:table-cell;text-align:left;}
+/*用户详细页 end*/

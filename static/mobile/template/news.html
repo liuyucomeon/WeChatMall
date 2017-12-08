@@ -1,0 +1,161 @@
+<style>
+	#navitoolbar{
+
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+	-webkit-transform: translateZ(0);
+	}
+	.view{
+		padding-top: 82px;
+	}
+</style>
+<div class="statusbar-overlay"></div>
+	<div class="panel-overlay"></div>
+	<div class="panel panel-right panel-cover layout-dark">
+		<div class="content-block-title close-panel">关闭</div>
+		<div class="list-block appendarea" style="height:100%;position:relative;"></div>
+	</div>
+
+	<div class="views">
+		<div class="view view-main" data-page="newsclass">
+			<div id="navitoolbar" class="">
+				<div class="">
+					<div class="top-bar-w" style="padding: 6px 0;background: #eee;">
+						<div class="top-bar-c">
+							<div class="s-input-select">
+								<div class="s-input-frame">
+									<form class="c-form-suggest" id="J_Search" method="get" action="/h5">
+										<div style="text-align: center;" class="s-form-search search-form">
+											<input style="width:85%;box-sizing: border-box;height: 30px;padding: 0 5px" type="search" name="q" class="J_autocomplete" autocomplete="off" placeholder="请输入关键词"><button style="background: #fff;border: 0;    vertical-align: top;box-sizing: border-box;height: 30px;"><img style="height: 100%"  src="./images/search.png" alt=""></button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<a class="logo" href="//m.taobao.com"><div class="icons-home"></div></a>
+					</div>
+					<div class="filterbar-container">
+						<div class="filter-bar J_sortTab">
+							<ul class="sort-tab" style="padding: 0;margin: 0;">
+								<li class="sort" data-value="_sale">按时间排序<span class="bar"></span></li>
+								<li class="droplist-trigger selected"><span class="text">分类筛选</span><span class="arrow"></span></li>
+								
+							</ul>
+							<div class="droplist" style="margin-left:50%">
+								<ul class="sorts" style="list-style: none;padding: 0;margin: 0;">
+									<li class="sort {{type==-1?'selected':''}}" data-value="">全部<span class="icons-checked-icon"></span></li>
+									<li ng-click="search_news(p.id)" class="sort {{type==p.id?'selected':''}}" ng-repeat = "p in typeList">{{p.name}}<span class="icons-checked-icon"></span></li>
+								</ul>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="pages navbar-through toolbar-through">
+				<div data-page="newsclass" class="page no-navbar newsclass bg-white page-on-center">
+		    		<div class="page-content infinite-scroll">
+						<div class="newslist scroll_list" style="margin-top:12px;">
+							<div ng-repeat="p in news_list.results track by $index" class="card ks-card-header-pic scroll_item">
+								<a class="dishref" ui-sref="/detail({id:p.id})">
+									<div valign="bottom" class="card-header color-white no-border" ><img src="{{p.url}}" alt="" style="width: 100%;height: 100%"></div>
+									<div class="card-content">
+										<div class="card-content-inner">
+							 				<p class="color-gray distitle">{{p.name}}</p>
+							 				<p class="summ dissummary clamp2">{{p.summary}}</p>
+										</div>
+									</div>
+								</a>
+							</div>
+					  		<!-- <div class="card ks-card-header-pic scroll_item" id="newsclass-24" itemid="24">
+								<a class="dishref" ui-sref="/detail">
+									<div valign="bottom" class="card-header color-white no-border" style="background-image: url(./images/14477411440624.png);"></div>
+									<div class="card-content">
+										<div class="card-content-inner">
+							 				<p class="color-gray distitle">大杨说味之 北京宴沙蒜煮豆面</p>
+							 				<p class="summ dissummary clamp2">大杨说味之 北京宴沙蒜煮豆面</p>
+										</div>
+									</div>
+								</a>
+							</div> -->
+				  		</div>
+				  	</div>
+				  	
+					<div class="emptytemplate" style="display:none;">
+						<div class="card emptyitem">
+							<div class="card-content">
+								<div class="card-content-inner">暂无新闻</div>
+							</div>
+						</div>
+					</div>
+					
+	    		</div>
+	  		</div>
+	  	</div>
+
+	</div>
+	<script>
+		
+	</script>
+
+
+	<!-- <audio id="newmsg" src="data/music/msg.mp3">
+		<script type="text/javascript">
+			var weixin_name = "北京宴";
+			var weixin_appid = "wx8dcfca85d3f2d081";
+			var followurl = "http://mp.weixin.qq.com/s?__biz=MjM5Mzg0NzI5MQ==&mid=402541962&idx=1&sn=7c8e10a3833a1a2af9af9ec750d13509#rd";
+			var englishname = "beijingyan88177777";
+			var uploaddir = "/data/user/b/beijingyan88177777/upload/";
+			var httpurl = "http://beijingyan88177777.foodplus.boka.cn";
+			var SHARETIPS = parseInt("");
+			var ISHANDLENAVI = false;
+			var DEFAULT_IMG = "/mobile/data/images/nopic.jpg";
+			var DEFAULT_AVATAR = "/data/upload/avatar/user.jpg";
+			var projectjs = "";
+			var projectjs_dir = "/mobile/data/js";
+			var plugindir  = "/data/user/b/beijingyan88177777/plugins/mobile/";
+			var istraining = "";
+			var havecustom = 0;
+			var preStr="";
+			var jsversion = "1.1.0.1";
+			var eqxiupath = "/data/user/b/beijingyan88177777/upload";
+
+		    	    	var wsServer = "ws://"+"www.foodplus.boka.cn"+":7272";
+			var myuid = "2301";
+			var mylinkman = "北京宴 凌建";
+		    	var englishname ="beijingyan88177777";
+		</script>
+		<script type="text/javascript" src="./js/setting.js"></script><script type="text/javascript" src="./js/swfobject.js"></script><script type="text/javascript" src="./js/web_socket.js"></script><script>
+			var socket_logindata = {
+				type:"login",
+				id:myuid,
+				client_name:mylinkman.replace(/"/g, '\\"'),
+				room_id:httpurl.toLowerCase().replace("http:\/\/","")+"-index",
+		        	englishname:englishname
+			};
+			var meeting_message_login,msg_message_login,meeting_message_say,msg_message_say,meeting_message_logout,msg_message_logout;
+			var metting_message_setnospeak;
+			var websocket;
+		</script>
+		<script type="text/javascript" src="./js/socket.js"></script>
+		<script type="text/javascript" src="./js/language.js"></script>
+		<script type="text/javascript" src="./js/framework7.min.js"></script>
+		<script type="text/javascript" data-main="data/js/index.js?v=1.1.0.1" src="./js/require.min.js"></script>
+	</audio> -->
+
+
+	<!-- <ul>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia sint minima, ab asperiores dolores, aspernatur tempora veritatis consectetur omnis ea dolor, doloremque impedit assumenda placeat quod eligendi! Error, quos, quidem.</li>
+	</ul> -->

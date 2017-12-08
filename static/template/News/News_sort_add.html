@@ -1,0 +1,91 @@
+
+<aside class="right-side cloud" style="">
+    <section class="content" style="">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body table-responsive">
+                        <form method="post" id="add" enctype="multipart/form-data" action="">
+
+                            <table id="example2" class="table table-bordered table-hover" style="min-width:320px;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="4" style="text-align:center;">项目</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="white-space:nowrap;">
+                                        <td style="width:15%">名称&nbsp;
+                                            <i style="color:red;font-size:11px;" class="fa fa-star"></i>
+                                        </td>
+                                        <td style="width:35%">
+                                            <input type="input" name="title" ng-model="sortDetail.name" placeholder="" value="" style="width:100%;">
+                                        </td>
+                                        <td style="width:15%">上级栏目&nbsp;
+                                            <!-- <i style="color:red;font-size:11px;" class="fa fa-star"></i> -->
+                                        </td>
+                                        <td style="width:35%">
+                                            <input name="parentid" type="hidden" value="0" id="parentid">
+                                            <select class="category_menu" id="add_parentid" ng-model="typeChoose">
+                                                <option value="0" selected="selected">顶级</option>
+                                                <!-- <option ng-repeat="p in typeList" value="{{p.id}}">{{p.name}}</option> -->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr style="white-space:nowrap;">
+                                        <td style="width:15%">是否隐藏&nbsp;
+                                            
+                                        </td>
+                                        <td style="width:35%">
+                                            <select name="ishidden" id="add_ishidden" style="width:100%;">
+                                                <option value="">请选择</option>
+                                                <option value="0" ng-selected="!sortDetail.hide">否</option>
+                                                <option value="1" ng-selected="sortDetail.hide">是</option>
+                                            </select>
+                                        </td>
+                                        <td style="width:15%">图像</td>
+                                        <td style="width:35%">
+                                            <!-- <div class="">
+                                                <input type="file" name="photo[]" id="add_photo">
+                                            </div> -->
+                                            <i style="color:red;font-size:11px;" class="fa fa-star"></i>
+                                            <div class="imgfilelist" ng-if="sortDetail.icon != undefined&&sortDetail.icon != ''">
+                                                <div class="item">
+                                                    <img src="http://114.215.220.241/{{sortDetail.icon}}" postname="photo" style="width:60px;height:60px;">
+                                                    <div class="delete_img icon" ng-click="deleteIcon(sortDetail.icon)">×</div>
+                                                    <a class="download_img icon" target="_blank" href="http://114.215.220.241/{{sortDetail.icon}}">
+                                                    <i class="fa fa-download"></i></a>
+                                                </div>
+                                            </div>
+                                            <div ng-change="upload(file)" name="file" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-select ng-model="file" >{{(file==""||file==undefined)?"请选择多个文件":file.name}}</div>
+                                            <!-- <span class="addclick  {{(file==''||file==undefined)?'disabled':''}}">增加</span> -->
+                                            <input type="hidden" ng-model="sortDetail.file_url">
+                                        </td>
+                                    </tr>
+                                    <tr style="white-space:nowrap;">
+                                        <td style="width:15%">分享描述</td>
+                                        <td style="width:35%">
+                                            <input type="input" name="seodescription" ng-model="sortDetail.shareDescription" placeholder="用户在分享此信息时的描述,重要,务必填写" value="" style="width:100%;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" style="text-align:center;">
+                                            <button ng-click="submit()" class="btn btn-warning">{{sortDetail.id?"修改":"保存"}}</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <input type="hidden" value="0" name="appid">
+                            <input type="hidden" value="newsclass" name="module">
+                            <input type="hidden" name="appid" value="0">
+                            <input type="hidden" id="extlink" value="&amp;appid=0">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</aside>

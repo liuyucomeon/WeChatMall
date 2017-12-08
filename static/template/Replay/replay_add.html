@@ -1,0 +1,93 @@
+<aside class="right-side cloud">
+	<section class="content">
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- <div class="alert alert-warning1 fade in">
+					<div>
+						1、回复类型选择文本，填写描述内容。<br>2、回复类型选择图文，填写链接地址。<br>3、回复类型选择图像，上传图像。<br>4、图文和描述都有，优先图文。
+					</div>
+				</div> -->
+				
+				<div class="box">
+					<div class="box-body table-responsive">
+						<form method="post" id="add" enctype="multipart/form-data" action="">
+							<table id="example2" class="table table-bordered table-hover" style="min-width:320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">项目</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">名称&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%"><input type="input" name="title" ng-model="replay_detail.name" placeholder="" value="" style="width:100%;"></td>
+										<td style="width:15%">回复类型&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%">
+											<select name="replytype" ng-model="replay_detail.type" id="add_replytype" style="width:100%;">
+												<option value="">请选择</option>
+												<option value="0" selected="">文本</option>
+												<option value="1">图文</option>
+												<option value="2">图像</option>
+											</select>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;" ng-show="replay_detail.type==0">
+										<td style="width:15%">描述</td>
+										<td style="width:35%">
+											<input type="input" name="memo" ng-model="replay_detail.content" placeholder="" value="" style="width:100%;">
+										</td>
+										
+									</tr>
+									<tr style="white-space:nowrap;" ng-show="replay_detail.type==1">
+										<td style="width:15%">链接地址</td>
+										<td style="width:35%">
+											<select name="modules" id="bigname" class="bigname">
+												<option value="-1">请选择</option>
+												<option value="channel">微站</option>
+												<option value="operator">微商城</option>
+												<option value="meeting">公众群</option>
+												<option value="polls">投票</option>
+												<option value="recommend">促销</option>
+											</select>
+											<!-- label>小类：</label>
+											<div style="margin-top:5px;"></div>
+											<div style="margin-top:5px;"></div>
+											<div style="margin-top:5px;"></div> -->
+											<br><br>
+											<input type="input" name="url" id="add_url" value="" placeholder="请从上面的分类中选择您想要的信息,自动生成链接地址" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;" ng-show="replay_detail.type==2">
+										<td style="width:15%">图像</td>
+										<td style="width:35%">
+											<div class="holder">建议:900*500</div>
+											<!-- <div class="inputfile"><input type="file" name="photo[]" id="add_photo"></div><span class="addclick disabled">增加</span> -->
+											<div  class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-select ng-model="file">{{(file==""||file==undefined)?"请选择文件":file.name}}</div>
+										</td>
+									
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align:center;">
+											<button id="submit" class="btn btn-warning">保存</button>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							
+							<input type="hidden" value="0" name="appid">
+							<input type="hidden" value="keywords" name="module">
+							<input type="hidden" id="extlink" value="">
+						</form>
+						<div class="dataTables_paginate paging_bootstrap">
+							<ul class="pagination">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</aside>
+		

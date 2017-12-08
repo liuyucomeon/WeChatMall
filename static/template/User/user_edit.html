@@ -1,0 +1,170 @@
+<aside class="right-side cloud">
+	<section class="content">
+		<link rel="stylesheet" href="./css/owl.css">
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-body table-responsive">
+						<form method="post" id="add" enctype="multipart/form-data" action="">
+							<table id="example2" class="table table-bordered table-hover" style="min-width:320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">修改用户资料</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">联系人</td>
+										<td style="width:35%">
+											<input type="input" name="linkman" id="add_linkman" placeholder="" value="人生" style="width:100%;">
+										</td>
+										<td style="width:15%">昵称</td>
+										<td style="width:35%">
+											<input type="input" name="nickname" id="add_nickname" placeholder="" value="人生" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">公司名称</td>
+										<td style="width:35%">
+											<input type="input" name="company" id="add_company" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">真实姓名</td>
+										<td style="width:35%">
+											<input type="input" name="position" id="add_position" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">性别</td>
+										<td style="width:35%">
+											<select name="sex" id="add_sex" style="width:100%;">
+												<option value="">请选择</option>
+												<option value="0">保密</option>
+												<option value="1">男</option>
+												<option value="2" selected="">女</option>
+											</select>
+										</td>
+										<td style="width:15%">年龄段</td>
+										<td style="width:35%"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">手机</td>
+										<td style="width:35%">
+											<input type="input" name="mobile" id="add_mobile" placeholder="请输入手机号,客户可以通过微信号码主动加此用户。" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">电子邮件</td>
+										<td style="width:35%">
+											<input type="input" name="email" id="add_email" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">头像</td>
+										<td style="width:35%">
+											<div class="imgfilelist">
+												<div class="item">
+													<img src="./images/108634.jpg"  style="width:60px;height:60px;">
+													<div class="delete_img icon">×</div>
+													<a class="download_img icon" href="./images/108634.jpg">
+														<i class="fa fa-download"></i>
+													</a>
+												</div>
+											</div>
+											<div style="width:100%;height:0px;clear:both"></div>
+											<div class="inputfile"><input type="file" name="avatar[]" id="add_avatar"></div>
+											<span class="addclick disabled">增加</span>
+											</td>
+										<td style="width:15%">地址</td>
+										<td style="width:35%">
+											<input type="input" name="address" id="add_address" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">邮编</td>
+										<td style="width:35%">
+											<input type="input" name="postcode" id="add_postcode" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">电话</td>
+										<td style="width:35%">
+											<input type="input" name="telephone" id="add_telephone" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">国家</td>
+										<td style="width:35%"><input type="input" name="country" id="add_country" placeholder="" value="中国" style="width:100%;"></td>
+										<td style="width:15%">省市</td>
+										<td style="width:35%"><input type="input" name="province" id="add_province" placeholder="" value="安徽" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">城市</td>
+										<td style="width:35%"><input type="input" name="city" id="add_city" placeholder="" value="宿州" style="width:100%;"></td>
+										<td style="width:15%">语言</td>
+										<td style="width:35%"><input type="input" name="language" id="add_language" placeholder="" value="zh_CN" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">微信号</td>
+										<td style="width:35%"><input type="input" name="weixinaccount" id="add_weixinaccount" placeholder="请输入微信号,用户可以通过微信号码主动加此用户。" value="" style="width:100%;"></td>
+										<td style="width:15%">认证信息</td>
+										<td style="width:35%"><input type="input" name="certification" id="add_certification" placeholder="" value="" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">客户等级</td>
+										<td style="width:35%">
+											<select name="memberslevel" id="add_memberslevel" style="width:100%;">
+												<option value="">请选择</option>
+												<option value="0" selected="">新建</option>
+												<option value="1">潜在</option>
+												<option value="2">成交</option>
+												<option value="3">长期</option>
+												<option value="4">流失</option>
+											</select>
+										</td>
+										<td style="width:15%">教师星级</td>
+										<td style="width:35%"><input type="input" name="star" id="add_star" placeholder="" value="0" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">教龄</td>
+										<td style="width:35%"><input type="input" name="teachingage" id="add_teachingage" placeholder="" value="0" style="width:100%;"></td>
+										<td style="width:15%">授课时长</td>
+										<td style="width:35%"><input type="input" name="lessons" id="add_lessons" placeholder="" value="0" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">学科</td>
+										<td style="width:35%"><input type="input" name="subject" id="add_subject" placeholder="" value="" style="width:100%;"></td>
+										<td style="width:15%">心情</td>
+										<td style="width:35%"><input type="input" name="motto" id="add_motto" placeholder="" value="" style="width:100%;"></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">个人简历</td>
+										<td style="width:35%"><input type="input" name="resume" id="add_resume" placeholder="" value="" style="width:100%;"></td>
+										<td style="width:15%">是否销售</td>
+										<td style="width:35%"></td>
+									</tr>
+									
+									<tr>
+										<td colspan="4" style="text-align:center;">
+											<button id="submit" class="btn btn-warning">修改</button>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							<input type="hidden" name="id" value="108634">
+							<input type="hidden" name="variable" value="">
+							<input type="hidden" name="appid" value="0">
+							<input type="hidden" name="operatorid" value="">
+							<input type="hidden" name="clevel" value="">
+							
+							<input type="hidden" name="getparameters" id="getparameters" value="{&quot;module&quot;:&quot;members&quot;,&quot;action&quot;:&quot;edit&quot;,&quot;uid&quot;:&quot;108634&quot;}">
+						</form>
+						<div class="dataTables_paginate paging_bootstrap">
+							<ul class="pagination">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</aside>
+		

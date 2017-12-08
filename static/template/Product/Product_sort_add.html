@@ -1,0 +1,94 @@
+<aside class="right-side cloud" style="">
+	<section class="content" style="">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-body table-responsive">
+						<form method="post" id="add" enctype="multipart/form-data" action="">
+							<table id="example2" class="table table-bordered table-hover" style="min-width:320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">项目</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">名称</td>
+										<td style="width:35%">
+											<input type="input" name="title" ng-model="product_sort_detail.name" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">上级栏目</td>
+										<td style="width:35%">
+											<input name="parentid" type="hidden" value="0" id="parentid">
+											<select class="category_menu" id="add_parentid" ng-model="product_sort_detail.type">
+												<option level="1" value="0" selected="selected">顶级</option>
+												<option level="1" value="1">熏肉类</option>
+												<option level="1" value="2">干果类</option>
+												<option level="1" value="3">零食类</option>
+											</select>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<!-- <td style="width:15%">隐藏</td>
+										<td style="width:35%">
+											<select name="ishidden" id="add_ishidden" style="width:100%;" ng-model="product_sort_detail.hide">
+												<option value="">请选择</option>
+												<option value="0" selected="">否</option>
+												<option value="1">是</option>
+											</select>
+										</td> -->
+										<td style="width:15%">图像</td>
+										<td style="width:35%">
+											<!-- <div class="inputfile">
+												<input type="file" name="photo[]" id="add_photo">
+											</div>
+											<span class="addclick disabled">增加</span> -->
+											<div ng-change="upload(file)" name="file" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-select ng-model="file" >{{(file==""||file==undefined)?"请选择文件":file.name}}</div>
+										</td>
+										<td style="width:15%">分享描述</td>
+										<td style="width:35%" >
+											<input type="input" ng-model='product_sort_detail.description' name="seodescription" id="add_seodescription" placeholder="用户在分享此信息时的描述,重要,务必填写" value="" style="width:100%;">
+										</td>
+									</tr>
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">分享标题</td>
+										<td style="width:35%">
+											<input type="input" name="seotitle" id="add_seotitle" placeholder="" value="" style="width:100%;" ng-model="product_sort_detail.title">
+										</td>
+										<td style="width:15%">分享描述</td>
+										<td style="width:35%" ng-model='product_sort_detail.discribtion'>
+											<input type="input" name="seodescription" id="add_seodescription" placeholder="用户在分享此信息时的描述,重要,务必填写" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">分享朋友圈</td>
+										<td style="width:35%">
+											<input type="input" name="seokeywords" id="add_seokeywords" placeholder="" value="" style="width:100%;">
+										</td>
+										
+									</tr> -->
+									
+									<tr>
+										<td colspan="4" style="text-align:center;">
+											<button id="submit" class="btn btn-warning" ng-click="submit()">{{id==-1?"保存":"修改"}}</button>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							
+							<input type="hidden" value="0" name="appid">
+							<input type="hidden" value="productclass" name="module">
+							<input type="hidden" name="appid" value="0"><input type="hidden" id="extlink" value="&amp;appid=0">
+						</form>
+						<div class="dataTables_paginate paging_bootstrap">
+							<ul class="pagination">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</aside>

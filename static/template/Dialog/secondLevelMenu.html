@@ -1,0 +1,97 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click = "cancelEdit()">×</button>
+        <h4 class="modal-title"><i class="fa fa-envelope-o"></i> {{menu_show_obj.x==undefined?"添加":"编辑"}}{{(obj.index!=undefined&&obj.j==undefined)?"二":"一"}}级菜单</h4>
+    </div>
+    <form id="uploadPhoto" enctype="multipart/form-data">
+        <input type="file" name="files" id="photofile" style="display:none;">
+    </form>
+    <form method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <input type="hidden" name="parentid" value="13">
+            <div class="form-group" ng-if="menu_show_obj.x==undefined">
+                <div class="input-group" ng-if="obj.index!=undefined&&obj.j==undefined">还能添加{{5-menuList[obj.index].childMenuList.length}}个二级菜单</div>
+                <div class="input-group" ng-if="!(obj.index!=undefined&&obj.j==undefined)">还能添加{{3-menuList.length}}个一级菜单</div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">标题：</span>
+                    <input type="text" class="form-control" name="title" ng-model = "obj.x.name">
+                </div>
+                <p style="color: red">*提示：一级菜单最多4个汉字，二级菜单最多7个汉字，多出来的部分将会以“...”代替。</p>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">图像：</span>
+                    <div class="form-control mpimgarea">
+                        <input type="hidden" id="add_photo" name="photo">
+                        <span class="btn btn-info btn-sm btnPhoto">添加</span>&nbsp;建议:900*500
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group"><span class="input-group-addon">类型：</span>
+                    <div class="form-control">
+                        <select id="add_type" name="type" class="select1" ng-model="obj.x.type">
+                            <option value="-1">请选择</option>
+                            <!-- <option value="parent">父级菜单(有下级)</option> -->
+                            <!-- <option value="click">点击(增加与用户48小时交互机会)</option> -->
+                            <option value="view">链接(不能增加与用户48小时交互机会)</option>
+                            <!-- <option value="scancode_push">扫码推事件</option>
+                            <option value="scancode_waitmsg">扫码推事件且弹出“消息接收中”提示框</option>
+                            <option value="pic_sysphoto">弹出系统拍照发图</option>
+                            <option value="pic_photo_or_album">弹出拍照或者相册发图</option>
+                            <option value="pic_weixin">弹出微信相册发图器</option>
+                            <option value="location_select">弹出地理位置选择器</option> -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group"><span class="input-group-addon">类别：</span>
+                    <div class="form-control">
+                        <select name="modules" id="bigname" ng-change="change_url(obj.x.bigType)" ng-model="obj.x.bigType">
+                            <option value="-1">请选择</option>
+                            <option value="news">新闻</option>
+                            <option value="mall">微商城</option>
+                            <option value="keywords">自动回复</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="classcontainer" ng-if="obj.x.bigType=='news'||obj.x.bigType=='keywords'">
+                <div class="input-group"><span class="input-group-addon">小类：</span>
+                    <select name="modules" ng-model="obj.x.sType">
+                        <option value="-1">请选择</option>
+                        <option value="news">新闻</option>
+                        <option value="mall">微商城</option>
+                        <option value="keywords">自动回复</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="newscontainer" style="display:none;">
+                <div class="input-group" style="width:100%;">
+                    <div class="form-control" id="newslist"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">链接地址：</span>
+                    <input type="text" ng-model="obj.x.url"  name="url" id="add_url" class="form-control" ng-model="obj.x.url">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">描述：</span>
+                    <textarea style="width:100%;height:120px;" id="add_content" name="content" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer clearfix">
+            <button type="submit" class="btn btn-primary" ng-click="submitEdit()"><i class="fa fa-envelope"></i> 确定</button>
+            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" ng-click = "cancelEdit()">
+                <i class="fa fa-times"></i> 取消
+            </button>
+        </div>
+    </form>
+</div>
