@@ -89,4 +89,6 @@ urlpatterns = [
     url(r'^orders/(?P<orderNum>[0-9]+)/', order.OrderDetailView.as_view(), name='orderDetail'),
     # 上传图文消息内的图片获取URL
     url(r'^materials/pubGraphicMt/', material.pubGraphicMt, name='pubGraphicMt'),
+    # 获取ueditor配置
+    url(r'^getUeditorConfig/', common.getUeditorConfig, name='getUeditorConfig'),
 ]

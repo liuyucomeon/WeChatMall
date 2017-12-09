@@ -1,3 +1,4 @@
+import json
 import os
 
 from PIL import Image
@@ -281,3 +282,10 @@ def deleteFile(request):
     if os.path.exists(path):
         removeFile(path)
     return response.Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def getUeditorConfig(request):
+    with open("static/config.json", "r") as f:
+        load_dict = json.load(f)
+    return response.Response(load_dict)
