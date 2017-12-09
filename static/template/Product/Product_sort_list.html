@@ -1,0 +1,85 @@
+<aside class="right-side cloud" style="">
+	<section class="content" style="">
+		<div class="row ">
+			<div class="col-xs-12 connectedSortable">
+				<div class="box">
+					<div class="box-header" style="width:100%;">
+						<a href="#/Product_sort_add/-1" style="margin:5px; " class="btn btn-warning">增加</a>
+					</div>
+					
+					<div class="box-body table-responsive">
+						<table class="table table-bordered table-hover listcon" style="border:none;">
+							<tbody>
+								<tr>
+									<td style="border:none;">
+										<div class="disH" style="width:100%;height:100%;position:relative;">
+											<div id="listwrapper">
+												<div id="listscroller">
+													<div id="showResult">
+														<form id="subForm">
+															<table id="list_table" class="table table-bordered table-hover" style="min-width:768px;">
+																<thead>
+																	<tr>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="title">名称<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;">操作</th>
+																		<th style="text-align:center;white-space:nowrap;">列表</th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="photo">图像<i class="icon"></i></th>
+																		<!-- <th style="text-align:center;white-space:nowrap;" class="sort up" row="shares">分享次数<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="visitor">分享带来访问<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="subscribes">分享带来关注<i class="icon"></i></th> -->
+																		<!-- <th style="text-align:center;white-space:nowrap;" class="sort up" row="moderate">审批状态<i class="icon"></i></th> -->
+																		<!-- <th style="text-align:center;white-space:nowrap;">统计</th> -->
+																	</tr>
+																</thead>
+																	<tbody>
+																		<tr ng-repeat="p in sort_list.results track by $index">
+																			<td>{{$index}}.&nbsp;&nbsp;<a href="javascript:;">{{p.name}}</a></td>
+																			<td style="text-align:center;white-space:nowrap;">
+																			<span><i class="fa fa-edit"></i><a href="#/Product_sort_add/{{p.id}}" class="edit">&nbsp;编辑</a>&nbsp;</span>
+																			<span ng-click="edit(0,$index,p.id)"><i class="fa fa-delete"></i><a href="javascript:;" class="delete">&nbsp;删除</a>&nbsp;</span>
+																			<span ng-click="edit(1,$index,p.id)"><i class="fa fa-up"></i><a href="javascript:;">&nbsp;<span class="up">升</span></a>&nbsp;</span>
+																			<span ng-click="edit(-1,$index,p.id)"><i class="fa fa-down"></i><a href="javascript:;">&nbsp;<span class="down">降</span></a>&nbsp;</span>
+																			</td>
+																			<td style="white-space:nowrap;text-align:center;"><i class="fa fa-listing"></i><a href="javascript:;">&nbsp;共{{p.listCount}}条</a></td>
+																			<td style="white-space:nowrap;text-align:center;"><img src="{{p.icon}}" style="width:30px;height:30px;"></td>
+																			<!-- <td style="white-space:nowrap;text-align:center;">{{p.shareCount}}</td>
+																			<td style="white-space:nowrap;text-align:center;">{{p.shareBringLink}}</td>
+																			<td style="white-space:nowrap;text-align:center;">{{p.shareBringAtten}}</td> -->
+																			<!-- <td style="white-space:nowrap;text-align:center;">已发布</td> -->
+																			<!-- <td style="white-space:nowrap;text-align:center;"><i class="fa fa-stat"></i><a href="javascript:;" &nbsp;统计</a>
+																			</td> -->
+																		</tr>
+																		
+																	
+																	</tbody>
+																<tfoot>
+																<tr>
+																	<td style="white-space:nowrap;text-align:left;" colspan="9">共3项</td>
+																</tr>
+																</tfoot>
+															</table>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="width:100%;white-space:nowrap;min-width:768px;">
+											<div class="dataTables_paginate paging_bootstrap">
+												<ul class="pagination">
+													
+												</ul>
+											</div>
+										</div>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<audio id="mediaaudio"></audio>
+		<link rel="stylesheet" href="./css/owl.css">
+	</section>
+</aside>

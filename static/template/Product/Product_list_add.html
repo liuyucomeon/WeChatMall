@@ -1,0 +1,437 @@
+<aside class="right-side cloud" style="">
+	<section class="content" style="">
+		<div class="row" style="">
+			<div class="col-xs-12" style="">
+				<div class="box" style="">
+					<div class="box-body table-responsive" style="">
+						<form method="post" id="add" enctype="multipart/form-data" action="" style="" novalidate>
+							<table id="example2" class="table table-bordered table-hover" style="min-width: 320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">项目</th>
+									</tr>
+								</thead>
+								<tbody style="">
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">名称&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%"><input type="input" name="title" ng-model="product_Detail.name" placeholder="" value="" style="width:100%;"><span ng-show="product_Detail.name.$error.required">用户名是必须的。</span></td>
+										<td style="width:15%">分类&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%">
+											<select class="category_menu" ng-model="type" ng-options="item.name for item in sort_list.results">
+											</select>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<!-- <td style="width:15%">生产厂商</td>
+										<td style="width:35%">
+											<input type="input" name="manufacturer" id="add_manufacturer" placeholder="" value="" style="width:100%;">
+										</td> -->
+										<td style="width:15%">轮播图图像<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%" class="imgfilelist">
+											<div class="holder">建议:900*500,仅支持格式为bmp,jpg,jpeg,png</div>
+											<div class=" item" ng-repeat="item in product_Detail.icon_list track by $index" ng-if="product_Detail.icons!=''&&product_Detail.icons!=undefined">
+												<img src="http://114.215.220.241/{{item}}" postname="photo" style="width:60px;height:60px;">
+												<div ng-if="product_Detail.icon_list.length>1" ng-click="dele($index,'icon')" class="delete_img icon">×</div>
+											</div>
+											<div ng-change="upload(file,'icon_list')" name="file" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-multiple="true" ngf-select ng-model="file" >{{(file.length==0||file==undefined)?"请选择文件":"上传成功"}}</div>
+										</td>
+										<td style="width:15%">详情图像<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%" class="imgfilelist">
+											<div class="holder">建议:900*500</div>
+											<!-- <div class="inputfile"><input type="file" name="photo[]" id="add_photo"></div><span class="addclick disabled">增加</span> -->
+											<div class=" item" ng-repeat="item in product_Detail.details_list  track by $index" ng-if="product_Detail.details!=''&&product_Detail.details!=undefined">
+												<img src="http://114.215.220.241/{{item}}" postname="photo" style="width:60px;height:60px;">
+												<div ng-if="product_Detail.details_list.length>1" ng-click="dele($index,'details')" class="delete_img icon">×</div>
+											</div>
+											<div ng-change="upload(file,'details_list')" name="file" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-multiple="true" ngf-select ng-model="file1" >{{(file1.length==0||file1==undefined)?"请选择文件":"上传成功"}}</div>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">推荐理由<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%"><textarea ng-model="product_Detail.description" name="seodescription" style="width:100%;height:40px;" placeholder="用户在分享此信息时的描述,重要,务必填写"></textarea></td>
+										<td style="width:15%">规格参数<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%">
+											<!-- <input type="hidden" name="keyword" id="add_keyword" value=""> -->
+											<div class="keywordlist">
+												<div class="item" ng-repeat="p in product_Detail.formats track by $index">{{p.description}}<span class="del" ng-if="product_Detail.formats.length>1" ng-click="del_key_word_choose($index,p.id)"></span></div>
+												<div class="item addkey" ng-click = "addSpec()">+</div>
+											</div>
+										</td>
+									</tr>
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">分享标题</td>
+										<td style="width:35%"><input type="input" name="seotitle" id="add_seotitle" placeholder="" value="" style="width:100%;"></td>
+										<td style="width:15%">分享描述</td>
+										<td style="width:35%"><textarea ng-model="product_Detail.description" name="seodescription" style="width:100%;height:40px;" placeholder="用户在分享此信息时的描述,重要,务必填写"></textarea></td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">分享朋友圈</td>
+										<td style="width:35%">
+											<input type="input" name="seokeywords" id="add_seokeywords" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">卖点</td>
+										<td style="width:35%"><input type="input" name="sellingpoint" id="add_sellingpoint" placeholder="" value="" style="width:100%;"></td>
+									</tr> -->
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">原价</td>
+										<td style="width:35%">
+											<input type="input" name="seokeywords" ng-model="product_Detail.originalPrice" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%"></td>
+										<td style="width:35%"></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align:center;">产品参数</td>
+									</tr>
+									<tr>
+										<td style="width:15%">生产许可证编号</td>
+										<td style="width:35%" >
+											<input type="input" placeholder="生产许可证编号" value="" style="width:100%;" ng-model = "product_Detail.production_license_number ">
+										</td>
+										<td style="width:15%">厂名</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.factoryName;" type="input" placeholder="厂名" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">厂址</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.factoryAddress" type="input" placeholder="厂址" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">厂家联系方式</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.factory_phone" type="input" placeholder="厂家联系方式" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">生产日期开始</td>
+										<td style="width:35%" >
+											<input type="input" style="width:100%;" ng-model = "product_Detail.productionDateFrom ">
+										</td>
+										<td style="width:15%">生产日期结束</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.productionDateTo;" type="input" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">配料表</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.ingredients" placeholder="配料表" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">储藏方法</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.storageMethod" placeholder="储藏方法" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">保质期</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.shelfLife" placeholder="保质期" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">净含量</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.netWeight " placeholder="净含量" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">包装方式</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.packing " placeholder="包装方式" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">售卖方式</td>
+										<td style="width:35%" >
+											<input type="input" ng-model = "product_Detail.selling_mode" placeholder="售卖方式" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">调味料</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.flavoring" type="input" placeholder="调味料" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">品牌</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.brand" type="input" placeholder="品牌" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">系列</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.type" type="input" placeholder="系列" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">规格</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.spec" type="input" placeholder="规格" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">产地</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.origin " type="input" placeholder="产地" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">省份</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.province" type="input" placeholder="省份" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">城市</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.city" type="input" placeholder="城市" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">套餐份量</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.share" type="input" placeholder="套餐份量" value="" style="width:100%;">
+										</td>
+									</tr>
+									<tr>
+										<td style="width:15%">套餐周期</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.period" type="input" placeholder="套餐周期" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">配送频次</td>
+										<td style="width:35%" >
+											<input ng-model = "product_Detail.times" type="input" placeholder="配送频次" value="" style="width:100%;">
+										</td>
+									</tr>
+									<!-- <tr style="">
+										<td colspan="4" style="text-align: left; white-space: normal;">
+											<div class="tab-outer" style="">
+												<div class="tab-title ts">
+													<ul class="nav-tabs">
+														<li class="active" role="content"><a><span>内容<span></span></span></a></li>
+														<li  role="spec"><a><span>规格参数<span></span></span></a></li>
+														<li  role="pack"><a><span>包装售后<span></span></span></a></li>
+													</ul>
+												</div>
+												<div class="tab-content" style="">
+													<div class="tab-item tab-content" style="display:block;opacity:1;">
+														<div class="editor_outer" style="">
+															<div class="editor_left">
+																<div class="editor_left">
+															        <div class="main-left-top clearfix" style="position: relative">
+															    		<div class="myColor">
+															        		<ul class="myUl list-unstyled">
+															                	<li class="myLi recover-color" onmousedown="recoverColor()"></li>
+															                	<li class="myLi" onmousedown="changeColor(&#39;#fde800&#39;)" title="#fde800">
+																					<div class="bg" style="background-color:#fde800;"></div>
+																				</li>
+															                    <li class="myLi" onmousedown="changeColor(&#39;#ffcb15&#39;)" title="#ffcb15">
+																					<div class="bg" style="background-color:#ffcb15;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ffa921&#39;)" title="#ffa921">
+																					<div class="bg" style="background-color:#ffa921;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff691f&#39;)" title="#ff691f">
+																					<div class="bg" style="background-color:#ff691f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff391f&#39;)" title="#ff391f">
+																					<div class="bg" style="background-color:#ff391f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#c53f46&#39;)" title="#c53f46">
+																					<div class="bg" style="background-color:#c53f46;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#d6004a&#39;)" title="#d6004a">
+																					<div class="bg" style="background-color:#d6004a;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff1d6b&#39;)" title="#ff1d6b">
+																					<div class="bg" style="background-color:#ff1d6b;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff4da9&#39;)" title="#ff4da9">
+																					<div class="bg" style="background-color:#ff4da9;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff80c5&#39;)" title="#ff80c5">
+																					<div class="bg" style="background-color:#ff80c5;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ffb4ce&#39;)" title="#ffb4ce">
+																					<div class="bg" style="background-color:#ffb4ce;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ddf56d&#39;)" title="#ddf56d">
+																					<div class="bg" style="background-color:#ddf56d;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#b0f346&#39;)" title="#b0f346">
+																					<div class="bg" style="background-color:#b0f346;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#6fe113&#39;)" title="#6fe113">
+																					<div class="bg" style="background-color:#6fe113;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#87c943&#39;)" title="#87c943">
+																					<div class="bg" style="background-color:#87c943;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#129527&#39;)" title="#129527">
+																					<div class="bg" style="background-color:#129527;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#059d7f&#39;)" title="#059d7f">
+																					<div class="bg" style="background-color:#059d7f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#00589c&#39;)" title="#00589c">
+																					<div class="bg" style="background-color:#00589c;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#4676d9&#39;)" title="#4676d9">
+																					<div class="bg" style="background-color:#4676d9;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#4e99df&#39;)" title="#4e99df">
+																					<div class="bg" style="background-color:#4e99df;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#5faaff&#39;)" title="#5faaff">
+																					<div class="bg" style="background-color:#5faaff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#3abcff&#39;)" title="#3abcff">
+																					<div class="bg" style="background-color:#3abcff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#70d8ff&#39;)" title="#70d8ff">
+																					<div class="bg" style="background-color:#70d8ff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#cccccc&#39;)" title="#cccccc">
+																					<div class="bg" style="background-color:#cccccc;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#999999&#39;)" title="#999999">
+																					<div class="bg" style="background-color:#999999;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#666666&#39;)" title="#666666">
+																					<div class="bg" style="background-color:#666666;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#333333&#39;)" title="#333333">
+																					<div class="bg" style="background-color:#333333;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#000000&#39;)" title="#000000">
+																					<div class="bg" style="background-color:#000000;"></div>
+																				</li>
+															                    <li class="myLi" id="addColor">
+																					<div class="temp_inner bg">+</div>
+																				</li>
+															                </ul>
+															    		</div>
+																	<div class="main-left-bottom">
+																		<div class="navtab" id="commonStyle">
+																			<ul class="tabul" role="tablist" id="styleTab"></ul>
+																	    </div>
+																	    <script id="style-list" type="text/html">
+																			{{each list as item index}}
+																			<li role="presentation" id="{{item.listid}}" {{if item.listid=='title'}} class="tab-style-item active"{{/if}}><em class="jiao"></em>{{if item.listid=="titles"}}<div class="listnew-logo"></div>{{/if}}<a href="javascript:void(0);" class="style-text">{{item.listname}}</a></li>
+																			{{/each}} 
+																		</script>
+																		<script>
+																			refreshStylelist('style-list','styleTab',stylelist);
+																			refreshStyleitem('style-item','tab-content-style',stylelist[0].listitem);
+																			insertStyleitem(stylelist[0].listitem);    
+																		</script>
+																		<div id="tab-content-style"></div>  
+																	</div>
+																</div>
+																<link rel="stylesheet" href="./css/page.loadnew.css">   
+																<script id="style-item" type="text/html">
+																    <div id="id" role='tabpanel' class="tab-pane active">
+																    	<div id="panel_body" class="panel-body　list-group" style="height:{{panelheight}}px; overflow: auto;">
+																    		{{each list as item}}
+																    		<div id="block_{{item.itemid}}" style='position:relative;min-height:65px;border-bottom:1px solid #ddd;'>{{if item.itemnew =='1'}}
+																    			<div class="new-logo"></div>{{/if}}
+																    			<a class='list-group-item shifutip' href='javascript:void(0);' id="{{item.itemid}}" style='max-width:297px;border:none;margin-bottom:0px;'></a>
+																    			<span class="soucang" id="soucang_{{item.itemid}}" soucang="{{item.soucang}}" onclick=styleValue('{{item.itemid}}') {{if item.itemid=="M01"}}style="display:none;"{{/if}}>
+																    				<span id="heart"></span>
+																    				<span id="heart_son_white"></span>
+																    				<span id="heart_son_red"></span>
+																    			</span>
+																    		</div>
+																    		{{/each}}
+																        	<div class="more-style">
+																        		<a href="#" class="more-style-link" onclick="styleCenterCheck()"><span class="more-style-add"></span><span class="more-style-text">更多样式</span></a>
+																        	</div>
+																    	</div>
+																    </div>
+																</script>
+															</div>
+															<div class="editor_right" style="">
+																<script id="content" name="content" type="text/plain">
+															        
+															    </script>
+															    <script type="text/javascript">
+															        
+															    </script>
+
+																<textarea name="content" style="width: 100%; height: 400px; display: none;"></textarea>
+																<div class="editor_btn">
+																	<div id="btn_box" class="box_btn">
+																		<button type="button" class="btn  btn-xs" onclick="clearLocalData()" id="qingkong">清&nbsp;空</button>
+																		<div class="btn_box_right">
+																			<button type="button" class="btn  btn-xs" onclick="look()" id="yulan">预&nbsp;&nbsp;览</button>
+																		</div>
+																	</div>
+																</div>
+																<div id="tool_bar" style="display: none;">
+																	<div class="tool_bar_content"><img title="复制" src="./images/bar_copy.png" id="tool_bar_copy" class=""><img title="删除" src="./images/bar_del.png" id="tool_bar_del"><img title="前插入空行" src="./images/bar_insert_before.png" id="tool_bar_isBefore"><img title="后插入空行" src="./images/bar_insert_after.png" id="tool_bar_isAfter"></div>
+																	<div id="tip_copy_success">复制成功</div>
+																</div>
+																<div class="preview_back" id="preview-background" onclick="noLook()"></div>
+																<div class="preview_box" id="preview-box">
+																	<div class="preview_lis">
+																	</div>
+																	<div id="look" class="preview-look">
+																		<div class="content-box" id="contentBox" tabindex="5000" style="overflow: hidden; outline: none;"></div>
+																	</div>
+																	<div class="preview_btn"></div>
+																</div>
+															</div>
+
+														</div>
+													</div>
+
+													<div class="tab-item tab-spec">
+														<script id="spec" name="content" type="text/plain">
+															请编辑内容
+														</script>
+													</div>
+													<div class="tab-item tab-pack">
+														<script id="pack" name="content" type="text/plain">
+															请编辑内容
+														</script>
+		
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr> -->
+									
+									<tr>
+										<td colspan="4" style="text-align:center;">
+											<button ng-click="submit()" class="btn btn-warning">{{id==-1?"保存":"修改"}}</button>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							<script>
+								$(".nav-tabs li").click(function(event){
+									var role=this.getAttribute("role");
+									// $("input[name=sendtype]",form).val(role);
+									var tabCon = $(this).parents(".tab-outer").find(".tab-content");
+									var tab = $(this).parent();
+									if(this.className.search(/active/g)<0){
+										tab.find("li").removeClass("active");
+										$(this).addClass("active");
+										$(".tab-item",tabCon).hide();
+										$(".tab-item",tabCon).css("opacity","0");
+										$(".tab-"+role,tabCon).show();
+										$(".tab-"+role,tabCon).css("opacity","1");
+									}
+								});
+							</script>
+							
+							<input type="hidden" value="0" name="appid">
+							<input type="hidden" value="news" name="module">
+							<input type="hidden" id="extlink" value="">
+						</form>
+						<div class="dataTables_paginate paging_bootstrap">
+							<ul class="pagination">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- <script src="./app/dom.js"></script> -->
+</aside>

@@ -1,0 +1,99 @@
+<aside class="right-side cloud" style="">
+	<section class="content" style="">
+		<div class="row ">
+			<div class="col-xs-12 connectedSortable">
+				<div class="box">
+					<div class="box-header" style="width:100%;">
+						<a href="#/News_list_add/-1" style="margin:5px; " class="btn btn-warning" >增加</a>
+						<!-- <button style="margin:5px;float:right; " class="btn btn-warning spiderQQdigi">获取数码新闻</button> -->
+					</div>
+					<div class="box-body table-responsive">
+						<table class="table table-bordered table-hover listcon" style="border:none;">
+							<tbody>
+								<tr>
+									<td style="border:none;">
+										<div class="disH" style="width:100%;height:100%;position:relative;">
+											<div id="listwrapper">
+												<div id="listscroller">
+													<div id="showResult">
+														<form id="subForm">
+															<table id="list_table" class="table table-bordered table-hover" style="min-width:1440px;">
+																<thead>
+																	<tr>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="title">名称<i class="icon"></i>
+																		</th>
+																		<th style="text-align:center;white-space:nowrap;">操作</th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="classid">分类<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="views">阅读次数<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="comments">评论<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="shares">分享次数<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="visitor">分享带来访问<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="subscribes">分享带来关注<i class="icon"></i></th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr ng-repeat = "p in newsList track by $index">
+																		<td>
+																			{{$index}}&nbsp;&nbsp;
+																			<a href="javascript:;" style="    width: 300px;display: inline-block;height: 20px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;    vertical-align: middle;">{{p.name}}</a>
+																		</td>
+																		<td style="text-align:center;white-space:nowrap;">
+																			<span><i class="fa fa-edit"></i><a href="#/News_list_add/{{p.id}}" class="edit">&nbsp;编辑</a>&nbsp;</span>
+																			<span ng-click="dele_news(p.id,$index)"><i class="fa fa-delete"></i><a href="javascript:;" class="delete">&nbsp;删除</a>&nbsp;</span>
+																			<span><i class="fa fa-pushit"></i><a href="javascript:;" class="pushit">&nbsp;推送</a>&nbsp;</span>
+																			<!-- <span><i class="fa fa-priority"></i><a href="javascript:;" class="priority">&nbsp;置顶</a>&nbsp;</span>
+																			<span><i class="fa fa-sorts"></i><a href="javascript:;" class="sorts">&nbsp;展示</a>&nbsp;</span>
+																			<span><i class="fa fa-multiclass"></i><a href="javascript:;" class="multiclass">&nbsp;多类别</a>&nbsp;</span>
+																			<span><i class="fa fa-copytoblog"></i><a href="javascript:;" class="copytoblog">&nbsp;复制到博客</a>&nbsp;</span> -->
+																			
+																		</td>
+																		<td style="white-space:nowrap;text-align:center;">
+																			<a href="javascript:;" ng-click="search_news_by_type(p.type)">{{p.newsTypeName}}</a>
+																		</td>
+																		<td style="text-align:center;">{{p.readCount}}</td>
+																		<td style="white-space:nowrap;text-align:center;">
+																			<a href="#/News_replay/1">{{p.commentCount}}</a>
+																		</td>
+																		<td style="white-space:nowrap;text-align:center;">
+																			<i class="fa fa-shares"></i>
+																			<a href="javascript:;">{{p.shareCount}}</a>
+																		</td>
+																		<td style="white-space:nowrap;text-align:center;">
+																			<i class="fa fa-visitor"></i>
+																				<a href="javascript:;">{{p.shareBringAccess}}</a>
+																		</td>
+																		<td style="white-space:nowrap;text-align:center;">
+																			<i class="fa fa-subscribes"></i>
+																			<a href="javascript:;">{{p.shareBringAttention
+}}</a>
+																		</td>
+																	</tr>
+																</tbody>
+																<tfoot>
+																	<tr>
+																		<td style="white-space:nowrap;text-align:left;" colspan="9">共{{count}}项</td>
+																	</tr>
+																</tfoot>
+															</table>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="width:100%;white-space:nowrap;min-width:1440px;">
+											<div class="dataTables_paginate paging_bootstrap">
+												<paging totalCount="30" currentPage="1" pageSize="15" onPagechange="page()"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<audio id="mediaaudio"></audio>
+		<link rel="stylesheet" href="./css/owl.css">
+	</section>
+</aside>

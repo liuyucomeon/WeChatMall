@@ -1,0 +1,10 @@
+/*可以在这里添加你自己的css*/
+@font-face{font-family: "WawatiSC";src: url("/mobile/data/fonts/hkwawati.ttf");}
+@font-face{font-family: "KaitiSC";src: url("/mobile/data/fonts/KaiTiSC.TTF");}
+@font-face{font-family: "HeitiSC";src: url("/mobile/data/fonts/Heiti.ttf");}
+@font-face{font-family: "ZkGD";src: url("/mobile/data/fonts/zhankugaoduanti.ttf");}
+@font-face{font-family: "ZkKL";src: url("/mobile/data/fonts/zhankukuaileti.ttf");}
+@font-face{font-family: "kaiti";src: url("/mobile/data/fonts/kaiti.ttf");}
+@font-face{font-family: "simsun";src: url("/mobile/data/fonts/simsun.ttc");}
+
+.view img{max-width:100%;}

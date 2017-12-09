@@ -1,0 +1,31 @@
+<div class="itembox">
+        <section id="shifu_p_023" onmousedown="shifuMouseDownStyle('shifu_p_023')">
+                <div style="width:100%;font-size:12px;position:relative;cursor:pointer;padding:5px 8px;text-align:start;hyphens:auto;line-height:1.6;font-style: normal;font-size: 16px;word-wrap: break-word;-ms-text-size-adjust:100%;-webkit-text-size-adjust: 100%;color: #3e3e3e;box-sizing: border-box;">
+                        <section style="width:100%;background-color:#fff;padding-left:10px;padding-right: 10px;overflow: hidden;font-size: 12px;-webkit-transition: .2s;-moz-transition: .2s;-ms-transition: .2s;-o-transition: .2s;transition: .2s;box-sizing: border-box;">
+                                <section style="margin: 0.5em 0px; text-align: right;">
+                                        <div style="display: inline-block; padding: 1em; background-color: rgb(249, 110, 87); background:#ebd5bd;box-shadow: rgb(136, 136, 136) 2px 2px 4px;">
+                                                <section style="text-align: center;">
+                                                        <div style="padding: 10px; border: 0.35em solid rgb(157, 121, 87); border-radius: 0.8em; background-color: rgb(254, 249, 217);">
+                                                                <section style="text-align: center;"><img style="max-width: 100%;vertical-align:middle"  src="/mobile/data/editor/month_201611/14797078277630.png"></section>
+                                                                <section style="margin: 1em 0px;">
+                                                                        <div class="stylebg" bg="/mobile/data/editor/month_201611/14797808714028.png" style="box-sizing:border-box;padding: 0px 0.2em; line-height: 36px; background-repeat: repeat;color: rgb(152, 145, 117); text-align: left; font-size: 120%;">
+                                                                                <section>企业+<br>企业+是一套基于微信公众号，企业自主营销平台</section>
+                                                                        </div>
+                                                                </section>
+                                                        </div>
+                                                </section>
+                                        </div>
+                                </section>
+                        </section>
+                </div>
+        </section>
+</div>
+<script>
+        $("#shifu_p_023 .stylebg").each(function(){
+                var cur = $(this),
+                        bgurl = httpurl + cur.attr("bg");
+                cur.css({"background-image":"url("+bgurl+")"});
+                cur.removeAttr("class");
+                cur.removeAttr("bg");
+        });
+</script>

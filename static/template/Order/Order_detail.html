@@ -1,0 +1,88 @@
+<aside class="right-side cloud" style="">
+
+	<section class="content" style="">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-body table-responsive">
+						<form method="post" id="add" enctype="multipart/form-data" action="">
+							<table id="example2" class="table table-bordered table-hover" style="min-width:320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">订单详情</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="4" style="background: #eee">基本信息</th>
+									</tr>
+									<tr>
+										<td>收货人</td>
+										<td>{{Order_detail.customerAddress.receiver}}</td>
+										<td>联系电话</td>
+										<td>{{Order_detail.customerAddress.phone}}</td>
+									</tr>
+									<tr>
+										<td>收货地址</td>
+										<td colspan="3">{{Order_detail.customerAddress.address}}</td>
+									</tr>
+									<tr>
+										<td>订单号</td>
+										<td>{{Order_detail.orderNum}}</td>
+										<td>交易号</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>交易状态</td>
+										<td colspan="3" style="color: #f00"><!-- 运输中(离开【杭州中心】,达到【北京部】) -->{{status[p.status]}}
+										</td>
+									</tr>
+									<tr>
+										<td>创建时间</td>
+										<td>{{Order_detail.createTime}}</td>
+										<td>付款时间</td>
+										<td>2017-11-11  00:00:00</td>
+									</tr>
+									<tr>
+										<td>发货时间</td>
+										<td>----------------</td>
+										<td>收货时间</td>
+										<td>----------------</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<table class="table table-bordered table-hover" style="min-width:320px;">
+							<thead>
+								<tr>
+									<td colspan="4" style="background: #eee">商品列表</th>
+								</tr>
+								<tr>
+									<th>商品名称</th>
+									<th>商品单价</th>
+									<th>商品数量</th>
+									<th>运费</th>
+								</tr>
+								
+							</thead>
+							<tbody>
+								<tr ng-repeat="p in Order_detail.commoditys">
+									<td>牛肉干({{p.commodityFormat.description}})</td>
+									<td>{{p.commodityFormat.currentPrice}}</td>
+									<td>{{p.count}}</td>
+									<td>10</td>
+								</tr>
+								
+								<tr>
+									<td colspan="3"></td>
+									<td>总价：{{Order_detail.totalPrice}}</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</aside>

@@ -1,0 +1,75 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancelEdit()">×</button>
+		<h4 class="modal-title"><i class="fa fa-envelope-o"></i> 规格参数</h4>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+		<div class="modal-body">
+			<div class="form-group">
+				<div class="input-group" style="width: 100%">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<!-- <th></th> -->
+								<th>规格</th>
+								<th>库存</th>
+								<th>价格</th>
+								<th>图像</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-if="obj.length>0" ng-repeat = "p in obj track by $index">
+								<!-- <td align="center" style="width: 5%"><input type="checkbox"></td> -->
+								<td style="width: 15%">
+									<input type="text" ng-model="p.description" style="width: 100%" ng-if="p.contenteditable">
+									{{!p.contenteditable?p.description:""}}
+								</td>
+								<td style="width: 15%"><input type="text" ng-model="p.inventory" style="width: 100%" ng-if="p.contenteditable">
+									{{!p.contenteditable?p.inventory:""}}</td>
+								<td style="width: 15%"><input type="text" ng-model="p.currentPrice" style="width: 100%" ng-if="p.contenteditable">
+									{{!p.contenteditable?p.currentPrice:""}}</td>
+								<td style="width: 25%" class="imgfilelist">
+									<div class=" item" ng-if="!p.contenteditable">
+										<img src="http://114.215.220.241/{{p.image}}" postname="photo" style="width:60px;height:60px;">
+										<!-- <div ng-if="p.contenteditable" class="delete_img icon">×</div> -->
+									</div>
+									
+									<div  ng-if="p.contenteditable" ng-change="upload(p.file,'spec',p)" name="file" class=" {{(p.file==''||p.file==undefined)&&(p.image==undefined||p.image=='')?'inputfile':''}}"  ngf-select ng-model="p.file" >{{(p.file.length==0||p.file==undefined)&&(p.image==undefined||p.image=='')?"请选择文件":""}}
+										<div class=" item" ng-if="p.image!=undefined&&p.image!=''">
+											<img src="http://114.215.220.241/{{p.image}}" postname="photo" style="width:60px;height:60px;">
+											<div class="delete_img icon" style="width:auto;">更换图片</div>
+										</div>
+									</div>
+								</td>
+								<td style="width: 30%"><button class="btn btn-warning" ng-click="deleteSpec($index,p.id)">删除</button><button ng-if="!p.contenteditable" class="btn btn-warning" ng-click="update($index)">修改</button><button ng-if="p.contenteditable" class="btn btn-warning" ng-click="saveupdate($index,p.id)">保存修改</button></td>
+							</tr>
+							<tr ng-if="obj.length == 0">
+								<td colspan="5">还没有创建规格！</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<!-- <tr><td colspan="3">添加规格</td></tr> -->
+							<tr>
+								<td colspan="5" style="text-align:center;">
+									<button  class="btn btn-warning" ng-click="addSpecItem()">添加规格</button>
+								</td>
+							</tr>
+						</tfoot>
+
+					</table>
+					<!-- <input type="text" class="form-control" ng-model = "key_word">
+					<span class="input-group-addon additem" ng-click="addKeyWord(key_word)" style="background-color:#52B72A;color:#fff;">添加关键字</span> -->
+				</div>
+			</div>
+			<input type="hidden" id="keys" >
+			<div class="keywordlist">
+				<div class="item {{p.active?'active':''}}" ng-click="keywordChoose($index)" ng-repeat="p in key_word_list">{{p.name}}</div>
+			</div>
+		</div>
+		<div class="modal-footer clearfix">
+			<button type="submit" class="btn btn-primary" ng-click="submitEdit()"><i class="fa fa-envelope"></i> 确定</button>
+			<button type="button" class="btn btn-danger pull-left" ng-click="cancelEdit()"><i class="fa fa-times"></i> 取消</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,40 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancelEdit()">×</button>
+		<h4 class="modal-title"><i class="fa fa-envelope-o"></i> 确认发货</h4>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+		<div class="modal-body">
+			<div class="form-group">
+				<div class="input-group" style="width: 100%">
+					<table class="table table-bordered table-hover">
+						<tbody>
+							<tr>
+								<td>快递公司</td>
+								<td>
+									<select name="" id="" ng-model="$parent.shortName" ng-options="item.fullName for item in compny">
+										<option value="-1" selected="true">--请选择快递公司--</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>快递单号</td>
+								<td><input type="text" placeholder="请填写快递单号" ng-model="$parent.trackingNumber"></td>
+							</tr>
+							<tr>
+								<td>卖家备注</td>
+								<td><input type="text" placeholder="请填写备注" ng-model="$parent.remarks"></td>
+							</tr>
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+			
+		</div>
+		<div class="modal-footer clearfix">
+			<button type="submit" class="btn btn-primary" ng-click="submitEdit()"><i class="fa fa-envelope"></i> 确定</button>
+			<button type="button" class="btn btn-danger pull-left" ng-click="cancelEdit()"><i class="fa fa-times"></i> 取消</button>
+		</div>
+	</form>
+</div>

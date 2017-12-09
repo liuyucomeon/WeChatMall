@@ -1,0 +1,89 @@
+<aside class="right-side cloud">
+	<section class="content">
+	<link href="./css/mpmenu.css" type="text/css" rel="stylesheet">
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<button class="btn btn-warning" style="margin:5px;" ng-click="publishMenu()">生成菜单</button>
+				<div class="dot-tip">新菜单24小时后生效。您可以取关后重新关注</div>
+				<div class="box-body table-responsive">
+					<table class="table table-bordered table-hover">
+						<tbody>
+							<tr>
+								<td style="padding:0;  background-color: #F4F5F9;">
+									<div class="menu_setting_area">
+										<div class="inner_left">
+											<div class="title t-table">
+												<div class="t-cell">菜单管理</div>
+												<div ng-click = "editMenu(1)" class="t-cell icon add_menu"><i class="fa fa-plus"></i>添加一级菜单</div>
+											</div>
+											<div class="mplist">
+												<dl ng-repeat = "p in menuList ">
+													<dt mpid="13" class="t-table">
+														<div class="t-cell">{{p.name}}</div>
+														<div class="t-cell icon ">
+															<span ng-click="changeMenuList(1,0,listMark)"><i class="fa fa-arrow-up"></i><a href="javascript:;" class="up_mp">升</a></span><span ng-click="changeMenuList(1,1,listMark)"><i class="fa fa-arrow-down"></i><a href="javascript:;" class="down_mp">降</a></span><span ng-click = "editMenu(1,listMark,p)"><i class="fa fa-edit"></i><a href="javascript:;" class="edit_mp">编辑</a></span><span ng-click="changeMenuList(1,2,listMark)"><i class="fa fa-delete"></i><a href="javascript:;" class="delete_mp">删除</a></span>
+															<div style="display:none"><span ng-bind="listMark=$index" ></span></div>
+														</div>
+														
+													</dt>
+													<dd mpid="25" class="t-table" ng-repeat="x in p.childMenuList  track by $index">
+														<div class="t-cell">{{x.name}}</div>
+														<div class="t-cell icon ">
+															<span ng-click="changeMenuList(2,0,listMark,$index)"><i class="fa fa-arrow-up"></i><a href="javascript:;" class="up_mp">升</a></span><span ng-click="changeMenuList(2,1,listMark,$index)"><i class="fa fa-arrow-down"></i><a href="javascript:;" class="down_mp">降</a></span><span ng-click = "editMenu(2,listMark,x,$index)"><i class="fa fa-edit"></i><a href="javascript:;" class="edit_mp">编辑</a></span><span ng-click="changeMenuList(2,2,listMark,$index)"><i class="fa fa-delete"></i><a href="javascript:;" class="delete_mp">删除</a></span>
+														</div>
+													</dd>
+													<dd class="t-table">
+														<div class="t-cell add_child" ng-click = "editMenu(2,$index)" style="text-align:left;"><i class="fa fa-plus"></i>添加二级菜单</div>
+													</dd>
+												</dl>
+											</div>
+										</div>
+										<div class="inner_right">
+											<div class="title t-table">
+												<div class="t-cell" style="width:100%;text-align:center;">预览效果</div>
+											</div>
+											<div class="mpmenu">
+												<div class="border">
+													<div class="outer">
+														<div class="b_menu t-table">
+															<div class="menu_bar t-cell">
+																<div class="fa_left">
+																	<i class="fa fa-list"></i>
+																</div>
+															</div>
+															<div class="t-cell b_list">
+																<div ng-click="showSecondMenu($event.target)"  class="b_item_list" ng-repeat = "p in menuList track by $index">
+																	<div class="b_item menuitem focus" mpid="13">
+																		<img src="./images/icon-menu.png">
+																		<span class="mptitle">{{p.name}}</span>
+																		<div class="sub_item" style="display: none; transform: scale(1);">
+																			<ul>
+																				<li class="menuitem" mpid="16" ng-repeat = "x in p.list"><span class="mptitle">{{x.name}}</span></li>
+																			</ul>
+																		</div>
+																	</div>
+																</div>
+																
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</section>
+</aside>
+
+
+

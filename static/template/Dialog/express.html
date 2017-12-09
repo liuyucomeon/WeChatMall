@@ -1,0 +1,32 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancelEdit()">×</button>
+		<h4 class="modal-title"><i class="fa fa-envelope-o"></i> 查看物流</h4>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+		<div class="modal-body">
+			<div class="form-group">
+				<div class="input-group">
+					<table class="table-bordered table table-striped">
+						<thead>
+							<tr>
+								<td>时间</td>
+								<td>位置</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="p in express_detail.result.list">
+								<td>{{p.datetime}}</td>
+								<td>{{p.remark}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+		<div class="modal-footer clearfix">
+			<button type="submit" class="btn btn-primary" ng-click="cancelEdit()"><i class="fa fa-envelope"></i> 确定</button>
+		</div>
+	</form>
+</div>

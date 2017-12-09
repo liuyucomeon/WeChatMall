@@ -1,0 +1,31 @@
+
+<!-- saved from url=(0084)http://beijingyan88177777.foodplus.boka.cn/admin/templates/stylenew/title/t_004.html -->
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<div class="itembox">
+    <section id="shifu_t_004" onmousedown="shifuMouseDownStyle(&#39;shifu_t_004&#39;)">
+        <div style="background: #fefefe;padding:13px;overflow: hidden;box-sizing: border-box;">
+            <div style="overflow:hidden;font-size:16px;word-break:break-word;">
+                <section style="margin:0;padding:0;text-align:center">
+                    <section class="stylebg" bg="./mobile/data/14806626017929.png" style="text-align:center;display:inline-block;width:100%;background-repeat:no-repeat;background-size:100% 100%;">
+                            <section style="padding:0;color:inherit;text-align:center;width:65%;margin:0 auto;">
+                                <p class="bk_fontcolor" style="font-size:16px;color:#fefefe;line-height:30px;margin:0;">请输入标题</p>
+                            </section>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+	$("#shifu_t_004 .stylebg").each(function(){
+		var cur = $(this),
+			bgurl = httpurl + cur.attr("bg");
+		cur.css({"background-image":"url("+bgurl+")"});
+		cur.removeAttr("class");
+		cur.removeAttr("bg");
+	});
+</script></body></html>

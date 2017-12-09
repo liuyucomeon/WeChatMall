@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)http://beijingyan88177777.foodplus.boka.cn/admin/login.php -->
+<html class="lockscreen" style="min-height: 637px;">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>登录</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	    <link href="./css/admin.css" rel="stylesheet" type="text/css">
+        <link href="./css/boka.css" rel="stylesheet" type="text/css">
+        <link href="./css/font.css" rel="stylesheet" type="text/css">
+        <script src="./js/jquery/jquery.min.js"></script>
+        <script src="./js/jquery/jquery.form.js" type="text/javascript"></script>
+        <script src="./js/base64.min.js" type="text/javascript"></script>
+    	<script type="text/javascript">
+    		var ticket = 'U3NCfECtmlRRNaClTyy4t_K8humnG20VyqM971M_pnfnxlG3ln_yzOodXiPOKNAAOrsS7RbEIpX4oqSxL8d9QA';
+    		var cur_domain = document.domain;
+    		var firstIndex = cur_domain.indexOf(".");
+    		var lastIndex = cur_domain.lastIndexOf(".");
+    		var uploaddir = "/data/user/b/beijingyan88177777/upload/";
+
+    		var preStr="";
+    		if(firstIndex==lastIndex){
+    			preStr = "www";
+    		}else{
+    			preStr = cur_domain.substr(0,firstIndex);
+    		}
+    	</script>
+        <!-- angular -->
+        <script src="http://cdn.bootcss.com/angular.js/1.2.7/angular.js"></script>
+    </head>
+    <body style="min-height: 637px;" ng-app="LoginApp" ng-controller="LoginCtrl">
+        <div class="center" style="position: absolute; top: 104.5px; left: 450px;">
+            <div class="headline text-center" id="time">10:21:18 AM</div>
+            <div class="lockscreen-name" onclick="location.href='./index.html'">北京宴</div>
+            <div class="lockscreen-item">
+                <div class="lockscreen-image">
+                    <img src="./images/61785.jpg" alt="user image" >
+                    <!-- onerror="javascript:this.src=&#39;/data/upload/avatar/user.jpg&#39;;" -->
+                </div>
+                <div class="lockscreen-credentials">
+                    <form id="login_form">
+                		<div class="input-group">
+	                    	<input type="text" ng-model="username" class="form-control" placeholder="用户名" value="">
+	                    	<br>
+	                    	<br>
+	                        <input type="password" ng-model="userpassword" class="form-control" placeholder="密码" value="">
+	                        <div class="input-group-btn">
+	                            <button class="btn btn-flat" id="login" ng-click="login(username,userpassword)"><i class="fa fa-arrow-right text-muted"></i></button>
+	                        </div>
+		                </div>
+                	</form>
+                </div>
+		        <div class="list"></div>
+            </div>
+
+            <div class="lockscreen-link">
+            	<div>请用<a href="https://www.baidu.com/s?wd=Chrome" target="_blank"><span style="color:red;">Chrome</span></a>或者<a href="https://www.baidu.com/s?wd=Firefox" target="_blank"><span style="color:red;">Firefox</span></a>浏览器登录管理控制台</div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(function() {
+                startTime();
+                $(".center").center();
+                $(window).resize(function() {
+                    $(".center").center();
+                });
+            });
+
+            function startTime(){
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+
+                // add a zero in front of numbers<10
+                m = checkTime(m);
+                s = checkTime(s);
+
+                var day_or_night = (h > 11) ? "PM" : "AM";
+
+                if (h > 12)
+                    h -= 12;
+
+                $('#time').html(h + ":" + m + ":" + s + " " + day_or_night);
+                setTimeout(function() {
+                    startTime()
+                }, 500);
+            }
+
+            function checkTime(i){
+                if (i < 10)
+                {
+                    i = "0" + i;
+                }
+                return i;
+            }
+
+            jQuery.fn.center = function() {
+                this.css("position", "absolute");
+                this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+                        $(window).scrollTop()) - 30 + "px");
+                this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+                        $(window).scrollLeft()) + "px");
+                return this;
+            }
+        </script>
+        <script src="./app/login.js"></script>
+    </body>
+</html>

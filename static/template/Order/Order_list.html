@@ -1,0 +1,116 @@
+<aside class="right-side cloud" style="">
+	<style>
+		.ui-datepicker{
+			top:104px !important;
+		}
+	</style>
+
+	<section class="content" style="">
+		<div class="row ">
+			<div class="col-xs-12 connectedSortable">
+				<div class="box">
+					
+					<div class="box-header" style="width:100%;">
+						<input type="text" class="calender btn btn-border" value="11" ng-model="createTimeFrom">
+						<span>——</span>
+						<input type="text" class="calender btn btn-border"  value="11" ng-model="createTimeTo">
+						<input type="text" placeholder="请输入订单号" ng-model="orderNum" class="btn btn-border"><button style="margin:5px; " class="btn btn-warning" ng-click="search()">搜索</button>
+					</div>
+					<!-- <div class="box-header"></div> -->
+					<div class="box-body table-responsive">
+					
+						<table class="table table-bordered table-hover listcon" style="border:none;">
+							<tbody>
+								<tr>
+									<td style="border:none;">
+										<div class="disH" style="width:100%;height:100%;position:relative;">
+											<div id="listwrapper">
+												<div id="listscroller">
+													<div id="showResult">
+														<form id="subForm">
+															<table id="list_table" class="table table-bordered table-hover" style="min-width:1440px;">
+																<thead>
+																	<tr>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="title">订单编号<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;">用户名</th>
+																		<th style="text-align:center;white-space:nowrap;">联系电话</th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="classid">地区<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="moderate">下单时间<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="views">下单金额<i class="icon"></i></th>
+																		<!-- <th style="text-align:center;white-space:nowrap;" class="sort up" row="shares">发票信息<i class="icon"></i></th> -->
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="subscribes">订单状态<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;">操作</th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="visitor">客户备注<i class="icon"></i></th>
+																		<th style="text-align:center;white-space:nowrap;" class="sort up" row="visitor">商家备注<i class="icon"></i></th>
+																	</tr>
+																</thead>
+																	<tbody>
+																		<tr ng-repeat="p in order_list track by $index">
+																			<td>{{$index+1}}.&nbsp;&nbsp;<a href="#/Order_detail/{{p.orderNum}}">{{p.orderNum}}</a></td>
+																			<td style="text-align:center;white-space:nowrap;">
+																			<a href="#">{{p.customerAddress.receiver}}
+																			</a></td>
+																			<td style="text-align:left;">{{p.customerAddress.phone}}</td>
+																			<td style="white-space:nowrap;text-align:center;">{{p.customerAddress.address}}</td>
+																			<td style="white-space:nowrap;text-align:center;">{{p.createTime}}</td>
+																			<td style="text-align:center;">{{p.totalPrice}}</td>
+																			<!-- <td style="white-space:nowrap;text-align:center;"><i class="fa fa-shares"></i><a href="javascript:;" >&nbsp;0</a></td> -->
+																			<td style="white-space:nowrap;text-align:center;"><i class="fa fa-subscribes"></i><a href="javascript:;" ng-click="search(p.status)">&nbsp;{{status[p.status]}}</a></td>
+																			<td style="white-space:nowrap;text-align:center;"><!-- <i class="fa fa-visitor"></i> --><a ng-if="p.status==2" href="javascript:;" ng-click="deliver($index,p.orderNum)">&nbsp;发货</a><a ng-if="p.status==3" ng-click="express(p)" href="javascript:;" >&nbsp;查看物流</a><!-- <a href="javascript:void(0);" ng-if="p.status==5||p.status==0" ng-click="dele(p.id)">&nbsp;删除</a> --></td>
+																			<td style="white-space:nowrap;text-align:center;">&nbsp;{{p.leaveMessage}}</td>
+																			<td style="white-space:nowrap;text-align:center;">&nbsp;{{p.remarks}}</td>
+																		</tr>
+																	
+																	</tbody>
+																<tfoot>
+																<tr>
+																	<td style="white-space:nowrap;text-align:left;" colspan="10">共5项</td>
+																</tr>
+																</tfoot>
+															</table>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="width:100%;white-space:nowrap;min-width:1440px;">
+											<div class="dataTables_paginate paging_bootstrap">
+												<paging totalCount="30" currentPage="1" pageSize="15"/>
+											</div>
+										</div>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <input type="text"> -->
+		<audio id="mediaaudio"></audio>
+		<link rel="stylesheet" href="./css/owl.css">
+	<script>
+		$.datepicker.regional[ "zh-CN" ] = {
+			closeText: "关闭",
+			prevText: "&#x3C;上月",
+			nextText: "下月&#x3E;",
+			currentText: "今天",
+			monthNames: [ "一月","二月","三月","四月","五月","六月",
+			"七月","八月","九月","十月","十一月","十二月" ],
+			monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
+			"七月","八月","九月","十月","十一月","十二月" ],
+			dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
+			dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
+			dayNamesMin: [ "日","一","二","三","四","五","六" ],
+			weekHeader: "周",
+			dateFormat: "yy-mm-dd",
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: true,
+			yearSuffix: "年" };
+		$.datepicker.setDefaults( $.datepicker.regional[ "zh-CN" ] );
+		$( ".calender" ).datepicker({dateFormat: "yy-mm-dd"});
+	</script>
+	</section>
+</aside>

@@ -1,0 +1,24 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancelEdit()">×</button>
+		<h4 class="modal-title"><i class="fa fa-envelope-o"></i> 关键字</h4>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+		<div class="modal-body">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" class="form-control" ng-model = "key_word">
+					<span class="input-group-addon additem" ng-click="addKeyWord(key_word)" style="background-color:#52B72A;color:#fff;">添加关键字</span>
+				</div>
+			</div>
+			<input type="hidden" id="keys" >
+			<div class="keywordlist">
+				<div class="item {{p.active?'active':''}}" ng-click="keywordChoose($index)" ng-repeat="p in key_word_list">{{p.name}}</div>
+			</div>
+		</div>
+		<div class="modal-footer clearfix">
+			<button type="submit" class="btn btn-primary" ng-click="submitEdit()"><i class="fa fa-envelope"></i> 确定</button>
+			<button type="button" class="btn btn-danger pull-left" ng-click="cancelEdit()"><i class="fa fa-times"></i> 取消</button>
+		</div>
+	</form>
+</div>

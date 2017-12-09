@@ -1,0 +1,433 @@
+<aside class="right-side cloud" style="">
+	<section class="content" style="">
+		<div class="row" style="">
+			<div class="col-xs-12" style="">
+				<div class="box" style="">
+					<div class="box-body table-responsive" style="">
+						<form method="post" id="add" enctype="multipart/form-data" action="" style="">
+							<table id="example2" class="table table-bordered table-hover" style="min-width: 320px;">
+								<thead>
+									<tr>
+										<th colspan="4" style="text-align:center;">项目</th>
+									</tr>
+								</thead>
+								<tbody style="">
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">
+											名称&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i>
+										</td>
+										<td style="width:35%">
+											<input type="input" name="title" ng-model="News_detail.name" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">分类&nbsp;<i style="color:red;font-size:11px;" class="fa fa-star"></i></td>
+										<td style="width:35%">
+											<select class="category_menu" id="add_classid" ng-model="News_detail.type">
+												<option ng-repeat="p in sortList" value="{{p.id}}" >{{p.name}}</option>
+											</select>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">作者</td>
+										<td style="width:35%">
+											<input type="input" name="author"  ng-model="News_detail.author" placeholder="" value="" style="width:100%;">
+										</td>
+										<!-- <td style="width:15%">关键词</td>
+										<td style="width:35%">
+											<div class="keywordlist">
+												<div class="item"  ng-repeat="p in key_word_choose track by $index">{{p}}<span class="del" ng-click="del_key_word_choose($index)"></span></div>
+												<div class="item addkey" ng-click="editKeyWord()">+</div>
+											</div>
+										</td> -->
+										<td style="width:15%">封面&nbsp;
+											<i style="color:red;font-size:11px;" class="fa fa-star"></i>
+										</td>
+										<td style="width:35%">
+											<div class="holder">建议:900*500</div>
+											<div class="imgfilelist" ng-if="News_detail.cover!=undefined&&News_detail.cover!= ''">
+												<div class="item">
+													<img src="http://114.215.220.241/{{News_detail.cover}}" postname="photo" style="width:60px;height:60px;">
+													<div  ng-click="deleImg(News_detail.cover)" class="delete_img icon">×</div>
+													<a class="download_img icon" target="_blank" href="http://114.215.220.241/{{News_detail.cover}}">
+													<i class="fa fa-download"></i></a>
+												</div>
+											</div>
+											
+											<div ng-if="News_detail.cover==undefined||News_detail.cover== ''" ng-change="upload(file,0)" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-select ng-model="file">{{(file==""||file==undefined)?"请选择文件":file.name}}</div>
+										</td>
+
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">分享标题</td>
+										<td style="width:35%">
+											<input type="input" name="seotitle" ng-model="News_detail.shareTitle" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">分享描述</td>
+										<td style="width:35%">
+											<textarea ng-model="News_detail.shareDescription" name="seodescription" style="width:100%;height:40px;" placeholder="用户在分享此信息时的描述,重要,务必填写"></textarea>
+										</td>
+									</tr>
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">分享朋友圈</td>
+										<td style="width:35%">
+											<input type="input" name="seokeywords" id="add_seokeywords" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">定时发布时间</td>
+										<td style="width:35%">
+											<input type="input" name="activetime" class="time" placeholder="" value="" style="width:100%;" id="mobiscroll1509703010709" readonly="">
+										</td>
+									</tr> -->
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">来源</td>
+										<td style="width:35%">
+											<input type="input" name="origin" id="add_origin" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">标题链接</td>
+										<td style="width:35%">
+											<input type="input" name="titleprofile" id="add_titleprofile" placeholder="链接地址完整时，点击标题将直接跳转" value="" style="width:100%;">
+										</td>
+									</tr> -->
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">副标题</td>
+										<td style="width:35%">
+											<input type="input" name="vicetitle" id="add_vicetitle" placeholder="" value="" style="width:100%;">
+										</td>
+										<td style="width:15%">编辑</td>
+										<td style="width:35%">
+											<input type="input" name="editor" id="add_editor" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr> -->
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">封面&nbsp;
+											<i style="color:red;font-size:11px;" class="fa fa-star"></i>
+										</td>
+										<td style="width:35%">
+											<div class="holder">建议:900*500</div>
+											<div class="imgfilelist" ng-if="News_detail.cover!=undefined&&News_detail.cover!= ''">
+												<div class="item">
+													<img src="http://114.215.220.241/{{News_detail.cover}}" postname="photo" style="width:60px;height:60px;">
+													<div  ng-click="deleImg(News_detail.cover)" class="delete_img icon">×</div>
+													<a class="download_img icon" target="_blank" href="http://114.215.220.241/{{News_detail.cover}}">
+													<i class="fa fa-download"></i></a>
+												</div>
+											</div>
+											
+											<div ng-if="News_detail.cover==undefined||News_detail.cover== ''" ng-change="upload(file,0)" class="inputfile {{(file==''||file==undefined)?'':'active'}}" ngf-select ng-model="file">{{(file==""||file==undefined)?"请选择文件":file.name}}</div>
+										</td>
+										<td style="width:15%">音频</td>
+										<td style="width:35%">
+											<textarea id="add_media" name="media" style="width:100%;height:40px;" placeholder="请将&lt;iframe&gt;&lt;/iframe&gt;代码粘帖到此处"></textarea>
+										</td>
+									</tr> -->
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">音频文件</td>
+										<td style="width:35%">
+											<div class="imgfilelist" ng-if="News_detail.audio!=undefined&&News_detail.audio!= ''">
+												<div class="item">
+													<audio  ng-src="{{News_detail.audio1}}" controls="controls">
+														您的浏览器不支持 audio 标签。
+													</audio>
+													<div ng-click="deleImg(News_detail.audio,'audio')" class="delete_img icon">×</div>
+													<a class="download_img icon" target="_blank" href="http://114.215.220.241/{{News_detail.audio}}">
+													<i class="fa fa-download"></i></a>
+												</div>
+											</div>
+											
+											<!-- <input type="input" name="mediaurl" ng-model="News_detail.audio" placeholder="" value="" style="width:100%;"> -->
+											<div ng-if="News_detail.audio==undefined||News_detail.audio== ''" ng-change="upload(audio,1,'audio')" class="inputfile {{(audio==''||audio==undefined)?'':'active'}}" ngf-select ng-model="audio">{{(audio==""||audio==undefined)?"请选择文件":audio.name}}</div>
+										</td>
+										<td style="width:15%">视频</td>
+										<td style="width:35%">
+											<!-- <textarea ng-model="News_detail.video" name="video" style="width:100%;height:40px;" placeholder="请将&lt;iframe&gt;&lt;/iframe&gt;代码粘帖到此处"></textarea> -->
+											<div class="imgfilelist" ng-if="News_detail.video!=undefined&&News_detail.video!= ''">
+												<div class="item">
+													<video  ng-src="{News_detail.video1}}" controls="controls">
+														您的浏览器不支持 audio 标签。
+													</video>
+													<div ng-click="deleImg(News_detail.video,'video')" class="delete_img icon">×</div>
+													<a class="download_img icon" target="_blank" href="http://114.215.220.241/{{News_detail.video}}">
+													<i class="fa fa-download"></i></a>
+												</div>
+											</div>
+											
+											<div ng-if="News_detail.video==undefined||News_detail.video== ''" ng-change="upload(video,1,'video')" class="inputfile {{(video==''||video==undefined)?'':'active'}}" ngf-select ng-model="video">{{(video==""||video==undefined)?"请选择文件":video.name}}</div>
+										</td>
+									</tr>
+									<!-- <tr style="white-space:nowrap;">
+										<td style="width:15%">是否显示标题图片</td>
+										<td style="width:35%">
+											<select name="showphoto" id="add_showphoto" style="width:100%;">
+												<option value="">请选择</option>
+												<option value="0" selected="">否</option>
+												<option value="1">是</option>
+											</select>
+										</td>
+										<td style="width:15%">摘要</td>
+										<td style="width:35%">
+											<textarea ng-model="News_detail.summary" name="summary" style="width:100%;height:40px;" placeholder=""></textarea>
+										</td>
+									</tr>
+									<tr style="white-space:nowrap;">
+										<td style="width:15%">付费阅读</td>
+										<td style="width:35%">
+											<input type="input" name="price" id="add_price" placeholder="" value="" style="width:100%;">
+										</td>
+									</tr> -->
+									<tr style="">
+										<td colspan="4" style="text-align: left; white-space: normal;">
+											<div class="tab-outer" style="">
+												<div class="tab-title ts">
+													<ul class="nav-tabs">
+														<li class="active" role="content"><a><span>内容<span></span></span></a></li>
+													</ul>
+												</div>
+												<div class="tab-content" style="">
+													<div class="tab-item tab-content" style="display:block;opacity:1;">
+														<div class="editor_outer" style="">
+															<div class="editor_left">
+																<div class="editor_left">
+															        <!-- 调色板内容 -->
+															        <div class="main-left-top clearfix" style="position: relative">
+															    		<div class="myColor">
+															        		<ul class="myUl list-unstyled">
+															                	<li class="myLi recover-color" onmousedown="recoverColor()"></li>
+															                	<li class="myLi" onmousedown="changeColor(&#39;#fde800&#39;)" title="#fde800">
+																					<div class="bg" style="background-color:#fde800;"></div>
+																				</li>
+															                    <li class="myLi" onmousedown="changeColor(&#39;#ffcb15&#39;)" title="#ffcb15">
+																					<div class="bg" style="background-color:#ffcb15;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ffa921&#39;)" title="#ffa921">
+																					<div class="bg" style="background-color:#ffa921;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff691f&#39;)" title="#ff691f">
+																					<div class="bg" style="background-color:#ff691f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff391f&#39;)" title="#ff391f">
+																					<div class="bg" style="background-color:#ff391f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#c53f46&#39;)" title="#c53f46">
+																					<div class="bg" style="background-color:#c53f46;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#d6004a&#39;)" title="#d6004a">
+																					<div class="bg" style="background-color:#d6004a;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff1d6b&#39;)" title="#ff1d6b">
+																					<div class="bg" style="background-color:#ff1d6b;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff4da9&#39;)" title="#ff4da9">
+																					<div class="bg" style="background-color:#ff4da9;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ff80c5&#39;)" title="#ff80c5">
+																					<div class="bg" style="background-color:#ff80c5;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ffb4ce&#39;)" title="#ffb4ce">
+																					<div class="bg" style="background-color:#ffb4ce;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#ddf56d&#39;)" title="#ddf56d">
+																					<div class="bg" style="background-color:#ddf56d;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#b0f346&#39;)" title="#b0f346">
+																					<div class="bg" style="background-color:#b0f346;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#6fe113&#39;)" title="#6fe113">
+																					<div class="bg" style="background-color:#6fe113;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#87c943&#39;)" title="#87c943">
+																					<div class="bg" style="background-color:#87c943;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#129527&#39;)" title="#129527">
+																					<div class="bg" style="background-color:#129527;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#059d7f&#39;)" title="#059d7f">
+																					<div class="bg" style="background-color:#059d7f;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#00589c&#39;)" title="#00589c">
+																					<div class="bg" style="background-color:#00589c;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#4676d9&#39;)" title="#4676d9">
+																					<div class="bg" style="background-color:#4676d9;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#4e99df&#39;)" title="#4e99df">
+																					<div class="bg" style="background-color:#4e99df;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#5faaff&#39;)" title="#5faaff">
+																					<div class="bg" style="background-color:#5faaff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#3abcff&#39;)" title="#3abcff">
+																					<div class="bg" style="background-color:#3abcff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#70d8ff&#39;)" title="#70d8ff">
+																					<div class="bg" style="background-color:#70d8ff;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#cccccc&#39;)" title="#cccccc">
+																					<div class="bg" style="background-color:#cccccc;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#999999&#39;)" title="#999999">
+																					<div class="bg" style="background-color:#999999;"></div>
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#666666&#39;)" title="#666666">
+																					<div class="bg" style="background-color:#666666;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#333333&#39;)" title="#333333">
+																					<div class="bg" style="background-color:#333333;"></div>
+
+																				</li>
+																				<li class="myLi" onmousedown="changeColor(&#39;#000000&#39;)" title="#000000">
+																					<div class="bg" style="background-color:#000000;"></div>
+																				</li>
+															                    <li class="myLi" id="addColor">
+																					<div class="temp_inner bg">+</div>
+																				</li>
+																				<script>
+																					$("#addColor").spectrum();
+																				</script>
+															                </ul>
+															    		</div>
+																	</div>
+																	<!-- 微信样式 -->
+																	<div class="main-left-bottom">
+																		<div class="navtab" id="commonStyle">
+																			<ul class="tabul" role="tablist" id="styleTab"></ul>
+																	    </div>
+
+																	    <script id="style-list" type="text/html">
+																			{{each list as item index}}
+																			<li role="presentation" id="{{item.listid}}" {{if item.listid=='title'}} class="tab-style-item active"{{/if}}><em class="jiao"></em>{{if item.listid=="titles"}}<div class="listnew-logo"></div>{{/if}}<a href="javascript:void(0);" class="style-text">{{item.listname}}</a></li>
+																			{{/each}} 
+																		</script>
+																		<script>
+																			refreshStylelist('style-list','styleTab',stylelist);
+																			refreshStyleitem('style-item','tab-content-style',stylelist[0].listitem);
+    																		insertStyleitem(stylelist[0].listitem);    
+																		</script>
+
+																		<div id="tab-content-style"></div>
+
+																	    <script id="style-item" type="text/html">
+																	        <div id="id" role='tabpanel' class="tab-pane active">
+																	            	<div id="panel_body" class="panel-body　list-group" style="height:{{panelheight}}px; overflow: auto;">
+																	            		{{each list as item}}
+																	                		<div id="block_{{item.itemid}}" style='position:relative;min-height:65px;border-bottom:1px solid #ddd;'>{{if item.itemnew =='1'}}<div class="new-logo"></div>{{/if}}<a class='list-group-item shifutip' href='javascript:void(0);' id="{{item.itemid}}" style='max-width:297px;border:none;margin-bottom:0px;'></a><span class="soucang" id="soucang_{{item.itemid}}" soucang="{{item.soucang}}" onclick=styleValue('{{item.itemid}}') {{if item.itemid=="M01"}}style="display:none;"{{/if}}><span id="heart"></span><span id="heart_son_white"></span><span id="heart_son_red"></span></span>
+																	                		</div>
+																	            		{{/each}}
+																	                	<div class="more-style"><a href="#" class="more-style-link" onclick="styleCenterCheck()"><span class="more-style-add"></span><span class="more-style-text">更多样式</span></a></div>
+																	            	</div>
+																	        </div>
+																		</script>
+																	</div>
+																</div>
+																<link rel="stylesheet" href="./css/page.loadnew.css">   
+
+																<!--页面内容切换需要JS-->
+
+																<!--滚动条-->
+
+																<!--复制内容JS-->
+
+																<!--页面JS-->
+
+																<!-- 保存草稿时上传封面图JS -->
+
+																<!-- 生成分类列表 -->
+																<script id="style-list" type="text/html">
+																	{{each list as item}}
+																	<li role="presentation" id="{{item.listid}}" {{if item.listid=='title'}} class="tab-style-item active"{{/if}}><em class="jiao"></em>{{if item.listid=="titles"}}<div class="listnew-logo"></div>{{/if}}<a href="javascript:void(0);" class="style-text">{{item.listname}}</a></li>
+																	{{/each}}
+																</script>
+																<!-- 绘制样式 -->
+																<script id="style-item" type="text/html">
+																    <div id="id" role='tabpanel' class="tab-pane active">
+																    	<div id="panel_body" class="panel-body　list-group" style="height:{{panelheight}}px; overflow: auto;">
+																    		{{each list as item}}
+																    		<div id="block_{{item.itemid}}" style='position:relative;min-height:65px;border-bottom:1px solid #ddd;'>{{if item.itemnew =='1'}}
+																    			<div class="new-logo"></div>{{/if}}
+																    			<a class='list-group-item shifutip' href='javascript:void(0);' id="{{item.itemid}}" style='max-width:297px;border:none;margin-bottom:0px;'></a>
+																    			<span class="soucang" id="soucang_{{item.itemid}}" soucang="{{item.soucang}}" onclick=styleValue('{{item.itemid}}') {{if item.itemid=="M01"}}style="display:none;"{{/if}}>
+																    				<span id="heart"></span>
+																    				<span id="heart_son_white"></span>
+																    				<span id="heart_son_red"></span>
+																    			</span>
+																    		</div>
+																    		{{/each}}
+																        	<div class="more-style">
+																        		<a href="#" class="more-style-link" onclick="styleCenterCheck()"><span class="more-style-add"></span><span class="more-style-text">更多样式</span></a>
+																        	</div>
+																    	</div>
+																    </div>
+																</script>
+															<!-- 绘制用户名窗口 -->
+															</div>
+															<div class="editor_right" style="">
+																<!-- <div id="content" class="edui-default" style="width: 100%;">
+																</div>
+																<textarea name="content" style="width: 100%; height: 400px; display: none;"></textarea> -->
+
+																<script id="content" name="content" type="text/plain">
+															    </script>
+															    <!-- 实例化编辑器 -->
+															    <script type="text/javascript">
+															        // var ue = UE.getEditor('content',{
+															        // 	initialFrameWidth :null
+															        // });
+															        
+
+															        
+
+															    </script>
+																<div class="editor_btn">
+																	<div id="btn_box" class="box_btn">
+																		<button type="button" class="btn  btn-xs" onclick="clearLocalData()" id="qingkong">清&nbsp;空</button>
+																		<div class="btn_box_right">
+																			<button type="button" class="btn  btn-xs" onclick="look()" id="yulan">预&nbsp;&nbsp;览</button>
+																		</div>
+																	</div>
+																</div>
+																<div id="tool_bar" style="display: none;">
+																	<div class="tool_bar_content"><img title="复制" src="./images/bar_copy.png" id="tool_bar_copy" class=""><img title="删除" src="./images/bar_del.png" id="tool_bar_del"><img title="前插入空行" src="./images/bar_insert_before.png" id="tool_bar_isBefore"><img title="后插入空行" src="./images/bar_insert_after.png" id="tool_bar_isAfter"></div>
+																	<div id="tip_copy_success">复制成功</div>
+																</div>
+																<div class="preview_back" id="preview-background" onclick="noLook()"></div>
+																<div class="preview_box" id="preview-box">
+																	<!-- <div class="preview_lis">
+																		<div id="preview_out" onclick="noLook()"><img src="./images/out_btn.png"></div>
+																	</div> -->
+																	<div id="look" class="preview-look">
+																		<div class="content-box" id="contentBox" tabindex="5000" style="overflow: hidden; outline: none;"></div>
+																	</div>
+																	<div class="preview_btn"></div>
+																</div>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+									
+									<tr>
+										<td colspan="4" style="text-align:center;">
+											<button id="submit" class="btn btn-warning" ng-click="submit()">保存</button>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							
+							<input type="hidden" value="0" name="appid">
+							<input type="hidden" value="news" name="module">
+							<input type="hidden" id="extlink" value="">
+						</form>
+						<div class="dataTables_paginate paging_bootstrap">
+							<ul class="pagination">
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</aside>

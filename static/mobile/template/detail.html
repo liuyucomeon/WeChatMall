@@ -1,0 +1,63 @@
+<div data-page="news" class="page no-navbar news bg-white border-box page-on-center">
+	<div class="page-content infinite-scroll">
+		<style>
+			.news .commArea .biaoqing img{
+				vertical-align: middle;
+			}
+		</style>
+			<div class="content-block">
+			<div class="bg-white viewarea">
+				<div class="news-title">{{detail.shareDescription}}</div>
+				<div class="news-vicetitle"></div>
+				<div class="news-info clear" style="position:relative;">
+					<span class="font color-black">{{detail.publishTime}}</span>
+					<span class="font color-gray"></span>
+					<span class="font">{{detail.author}}</span>
+				</div>
+				<div class="news-content">
+					<div class="mobile-content">
+						<div class="news-show fontcolor border-box" ng-bind-html="detail.content | to_trusted">
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="news_bottom color-gray control border-box">
+					<div class="read_div">
+						<span class="fontcolor">阅读</span>
+						<span id="read_num" class="fontcolor">{{detail.readCount}}</span>
+					</div>
+					
+					<div class="dig_div read_div" module="news" moduleid="53">
+					
+						<span class="digicon"></span>
+						<span class="dig_num">27</span>
+					</div>
+					<div class="button btnshare dig_div">
+						<i class="fa fa-share"></i>分享
+					</div>
+					<!-- <div class="button nopadding">
+						<div class="btnfavorite none">
+							<i class="fa fa-star-o"></i>
+						</div>
+					</div> -->
+				</div>
+
+				<div class="qrcodebg">
+					<div class="padding10 align_center db qrbginner">
+						<div class="bg clear">
+							<img class="img1" src="./images/fingerprint.gif">
+							<div class="img2">
+								<img src="./images/qrcode_87.png">
+							</div>
+						</div>
+						<div class="more">
+  							<span>长按二维码,关注公众号</span>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
