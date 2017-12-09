@@ -17,11 +17,11 @@ class Hotel(models.Model):
     boss = models.ForeignKey('Staff', models.CASCADE, 'hotels', default=None,
                              null=True, help_text="酒店董事长")
     # 微信公众号id
-    appId = models.CharField(max_length=100, default='', blank=True, help_text="微信公众号id")
+    appId = models.CharField(max_length=100, default=None, null=True, help_text="微信公众号id")
     # 公众号密钥(先这样存着吧，不安全。。。)
-    appsecret = models.CharField(max_length=100, default='', blank=True, help_text="公众号密钥")
+    appsecret = models.CharField(max_length=100, default=None, null=True, help_text="公众号密钥")
     # 微信公众号原始id
-    originId = models.CharField(max_length=50, default='', blank=True, help_text="微信公众号原始id,toUserName,"
+    originId = models.CharField(max_length=50, default=None, null=True, help_text="微信公众号原始id,toUserName,"
                                                                                  "fromUserName需要")
 
     class Meta:

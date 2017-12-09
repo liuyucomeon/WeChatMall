@@ -1,6 +1,8 @@
 import json
+from io import BytesIO
 
 import requests
+from PIL import Image
 from django_redis import get_redis_connection
 from rest_framework import status
 from rest_framework.decorators import api_view, schema
@@ -35,9 +37,21 @@ def pubGraphicMt(request):
     hotel = Hotel.objects.get(id=data["hotelId"])
     accessToken = getAccessToken(hotel)
     file = request.FILES['file']
-    files =  { 'media' : ('tmp.jpg',file,'image/jpg')}
+    # 创建缩略图
+    img = Image.open(file)
+    img = img.resize((800, 800), Image.ANTIALIAS)
+    output = BytesIO()
+    if len(img.split()) == 4:
+        r, g, b, a = img.split()  # 利用split和merge将通道从四个转换为三个
+        toImage = Image.merge("RGB", (r, g, b))
+        toImage.save(output,"JPEG", quality=100)
+    else:
+        img.save(output, "JPEG", quality=100)
+
+    files =  {'media' : ('tmp.jpg',output.getvalue(),'image/jpg')}
     url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + accessToken
     result = requests.post(url, files=files)
     if "errcode" in result.text:
         return Response(result.text, status=status.HTTP_400_BAD_REQUEST)
-    return Response(result.text)
+    else:
+        return Response(json.loads(result.text))
