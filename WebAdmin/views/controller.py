@@ -9,9 +9,10 @@ import random
 # from datetime import *
 
 
-ROOT = os.path.dirname(__file__)
-
 #本地上传图片时构造json返回值
+from WeChatMall.settings import SERVER_URL
+
+
 class JsonResult(object):
     def __init__(self,state="未知错误",url="",title="",original="",error="null"):
         super(JsonResult,self).__init__()
@@ -90,14 +91,20 @@ def uploadFile(request,config):
         try:
             truelyName = buildFileName(filename)
             webUrl = config.SavePath + truelyName
-            savePath = ROOT + webUrl
-            f = codecs.open(savePath, "wb")
+
+            dt = datetime.now()
+            timeStr = dt.strftime('%Y%m%d')
+
+            savePath = "uploaded/ueditor/" + timeStr + "/"
+            os.makedirs(savePath, exist_ok=True)
+            saveFile = savePath + webUrl
+            f = codecs.open(saveFile, "wb")
             for chunk in buf.chunks():
                 f.write(chunk)
             f.flush()
             f.close()
             result.state = "SUCCESS"
-            result.url = truelyName
+            result.url = SERVER_URL + saveFile
             result.title = truelyName
             result.original = truelyName
             response = HttpResponse(buildJsonResult(result))
@@ -119,7 +126,7 @@ def listFileManage(request, imageManagerListPath, imageManagerAllowFiles, listsi
     start = pstart == None and int(pstart) or 0
     psize = request.GET.get("size")
     size = psize == None and int(GetConfigValue(listsize)) or int(psize)
-    localPath = ROOT + imageManagerListPath
+    localPath = SERVER_URL + imageManagerListPath
     filelist = []
     exts = list(imageManagerAllowFiles)
     index = start

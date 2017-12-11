@@ -168,6 +168,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "uploaded"),
 )
 
 # logging日志配置
@@ -254,8 +255,8 @@ LOGGING = {
 }
 
 # 服务器信息
-# SERVER_URL = 'http://114.215.220.241:8083/'
-# SERVER_URL = 'http://127.0.0.1:80/'
+SERVER_URL = 'http://114.215.220.241/'
+# SERVER_URL = 'http://127.0.0.1:8080/'
 
 
 REST_FRAMEWORK = {
