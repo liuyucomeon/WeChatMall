@@ -275,6 +275,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = default_headers + (
     'token',
     'openid',
+    'X_Requested_With',
 )
 
 logger = logging.getLogger('django')

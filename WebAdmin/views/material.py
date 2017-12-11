@@ -55,3 +55,4 @@ def pubGraphicMt(request):
         return Response(result.text, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(json.loads(result.text))
+
