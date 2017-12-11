@@ -8080,14 +8080,16 @@ UE.Editor.defaultOptions = function(editor){
                 me.options.imageUrl && me.setOpt('serverUrl', me.options.imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2'));
 
                 var configUrl = me.getActionUrl('config'),
-                    isJsonp = utils.isCrossDomainUrl(configUrl);
+                   // isJsonp = utils.isCrossDomainUrl(configUrl);
+                   isJsonp = false;
 
                 /* 发出ajax请求 */
                 me._serverConfigLoaded = false;
 
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
-                    'dataType': isJsonp ? 'jsonp':'',
+                    //'dataType': isJsonp ? 'jsonp':'',
+                    'dataType': "",
                     'onsuccess':function(r){
                         try {
                             var config = isJsonp ? r:eval("("+r.responseText+")");
