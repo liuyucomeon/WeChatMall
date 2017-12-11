@@ -95,7 +95,7 @@ def uploadFile(request,config):
             dt = datetime.now()
             timeStr = dt.strftime('%Y%m%d')
 
-            savePath = "uploaded/ueditor/" + timeStr + "/"
+            savePath = "uploaded/ueditor/" + timeStr + "/" + config.PathFormat
             os.makedirs(savePath, exist_ok=True)
             saveFile = savePath + webUrl
             f = codecs.open(saveFile, "wb")
