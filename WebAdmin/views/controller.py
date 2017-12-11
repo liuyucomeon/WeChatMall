@@ -138,8 +138,8 @@ def listFileManage(request, imageManagerListPath, imageManagerAllowFiles, listsi
 def configHandler(request):
     content = getConfigContent()
     callback = request.GET.get("callback")
-    if callback:
-        return HttpResponse("{0}{1}".format(callback,json.dumps(content)))
+    # if callback:
+    #     return HttpResponse("{0}{1}".format(callback,json.dumps(content)))
     return HttpResponse(json.dumps(content))
 
 #图片上传控制
