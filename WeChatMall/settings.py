@@ -103,13 +103,6 @@ DATABASES = {
         #     'host': '127.0.0.1',
         #     'port': 3306,
         # }
-        'OPTIONS': {
-            'database': 'WeChatMall',
-            'user': 'root',
-            'password': 'beijingyan',
-            'host': '114.215.220.241',
-            'port': 3306,
-        }
     }
 }
 
@@ -255,7 +248,6 @@ LOGGING = {
 }
 
 # 服务器信息
-SERVER_URL = 'http://114.215.220.241/'
 # SERVER_URL = 'http://127.0.0.1:8080/'
 
 
@@ -282,6 +274,4 @@ CORS_ALLOW_HEADERS = default_headers + (
 logger = logging.getLogger('django')
 
 # 微信公众号参数
-# APPID = "wx3e306817b699239a"
-# APPSECRET = "692fa6b125786ee8a5567ccd09f23b7c"
 wechatUrl = "http://api.weixin.qq.com/cgi-bin/"
